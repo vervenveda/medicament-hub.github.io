@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Noetic Kids – Feelings & Emotions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', system-ui, sans-serif;
+      background: linear-gradient(135deg, #fde68a, #a7f3d0, #bfdbfe);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .game {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 720px;
+      padding: 28px 32px 34px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      color: #2563eb;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #475569;
+      margin-bottom: 22px;
+    }
+    .question {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    .answers button {
+      font-size: 1.2rem;
+      padding: 16px 14px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      background: #e0f2fe;
+      transition: transform .15s, background .15s;
+    }
+    .answers button:hover { transform: scale(1.05); }
+    .answers button.correct { background: #bbf7d0; }
+    .answers button.wrong { background: #fecaca; }
+    .footer {
+      margin-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+      color: #334155;
+    }
+    .btn {
+      background: #22c55e;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .btn:hover { background: #16a34a; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="game">
+  <h1>How Do I Feel?</h1>
+  <div class="subtitle">Feelings · Emotions · Kind Choices</div>
+
+  <div id="playArea">
+    <div id="question" class="question"></div>
+    <div id="answers" class="answers"></div>
+    <div class="footer">
+      <span id="progress"></span>
+      <button id="nextBtn" class="btn hidden">Next</button>
+    </div>
+  </div>
+
+  <div id="endArea" class="hidden">
+    <h2 style="text-align:center; color:#2563eb;">Great Job! 🌈</h2>
+    <p id="result" style="text-align:center; font-size:1.3rem;"></p>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="btn" onclick="startGame()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- QUESTION DATA (25) ---------------- */
+const QUESTIONS = [
+  {q:'When someone takes your toy, how might you feel?', a:['Happy','Sad','Sleepy'], c:1},
+  {q:'If a friend hugs you, how do you feel?', a:['Angry','Loved','Scared'], c:1},
+  {q:'What should you do if someone is crying?', a:['Laugh','Help them','Ignore'], c:1},
+  {q:'When you break something by accident, what is a good choice?', a:['Hide','Say sorry','Run away'], c:1},
+  {q:'If you feel angry, what can help?', a:['Hit','Take deep breaths','Yell'], c:1},
+  {q:'How do you feel when you share?', a:['Happy','Mad','Bored'], c:0},
+  {q:'If someone says something mean, what should you do?', a:['Be mean back','Tell a grown-up','Cry forever'], c:1},
+  {q:'What feeling makes you smile?', a:['Joy','Fear','Anger'], c:0},
+  {q:'If you feel scared, what helps?', a:['Ask for help','Hide forever','Scream'], c:0},
+  {q:'What is a kind action?', a:['Sharing','Pushing','Ignoring'], c:0},
+  {q:'If you lose a game, how might you feel?', a:['Sad','Happy','Sleepy'], c:0},
+  {q:'What should you do if someone is hurt?', a:['Help','Laugh','Walk away'], c:0},
+  {q:'If you are happy, what can you do?', a:['Smile','Cry','Hide'], c:0},
+  {q:'What feeling tells you something is wrong?', a:['Fear','Joy','Pride'], c:0},
+  {q:'If someone shares with you, what should you say?', a:['Thank you','Nothing','Go away'], c:0},
+  {q:'What can you do when you feel mad?', a:['Talk about it','Break things','Hit'], c:0},
+  {q:'How do you feel when you help someone?', a:['Proud','Angry','Scared'], c:0},
+  {q:'If someone says “no,” what should you do?', a:['Listen','Yell','Cry'], c:0},
+  {q:'What feeling makes your heart feel warm?', a:['Love','Fear','Anger'], c:0},
+  {q:'If you feel tired, what helps?', a:['Rest','Run','Yell'], c:0},
+  {q:'What is a good choice at school?', a:['Listening','Running away','Yelling'], c:0},
+  {q:'If someone is different from you, what should you do?', a:['Be kind','Laugh','Ignore'], c:0},
+  {q:'What feeling helps you make friends?', a:['Kindness','Anger','Fear'], c:0},
+  {q:'If you make a mistake, what is okay?', a:['Try again','Give up','Hide'], c:0},
+  {q:'What should you do if you feel confused?', a:['Ask for help','Run','Cry'], c:0}
+];
+
+/* ---------------- GAME LOGIC ---------------- */
+let gameQuestions = [];
+let index = 0;
+let score = 0;
+let locked = false;
+
+const qEl = document.getElementById('question');
+const aEl = document.getElementById('answers');
+const progressEl = document.getElementById('progress');
+const nextBtn = document.getElementById('nextBtn');
+const playArea = document.getElementById('playArea');
+const endArea = document.getElementById('endArea');
+const resultEl = document.getElementById('result');
+
+function startGame() {
+  gameQuestions = shuffle([...QUESTIONS]).slice(0,5);
+  index = 0;
+  score = 0;
+  playArea.classList.remove('hidden');
+  endArea.classList.add('hidden');
+  loadQuestion();
+}
+
+function loadQuestion() {
+  locked = false;
+  nextBtn.classList.add('hidden');
+  const q = gameQuestions[index];
+  qEl.textContent = q.q;
+  aEl.innerHTML = '';
+  q.a.forEach((text,i)=>{
+    const b = document.createElement('button');
+    b.textContent = text;
+    b.onclick = ()=>selectAnswer(b,i);
+    aEl.appendChild(b);
+  });
+  progressEl.textContent = `Question ${index+1} of 5`;
+}
+
+function selectAnswer(btn, i) {
+  if (locked) return;
+  locked = true;
+  const q = gameQuestions[index];
+  const buttons = aEl.querySelectorAll('button');
+  buttons[q.c].classList.add('correct');
+  if (i === q.c) score++; else btn.classList.add('wrong');
+  nextBtn.classList.remove('hidden');
+}
+
+nextBtn.onclick = ()=>{
+  index++;
+  if (index < gameQuestions.length) loadQuestion();
+  else endGame();
+};
+
+function endGame() {
+  playArea.classList.add('hidden');
+  endArea.classList.remove('hidden');
+  resultEl.textContent = `You got ${score} out of 5 right! 🌟`;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+startGame();
+</script>
+
+</body>
+</html>
