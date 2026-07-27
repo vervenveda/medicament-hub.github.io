@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PLERA — 11th Grade P.E. — Mini Textbook Reader (Enhanced)</title>
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:7px; --maxw:1111px; --content-font:15px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#061225);color:var(--ink);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px}
+.wrapper{width:92%;max-width:var(--maxw);display:grid;grid-template-columns:266px 1fr 255px;gap:12px}
+.sidebar{background:var(--panel);border-radius:7px;padding:16px;box-shadow:0 7px 24px rgba(2,6,23,0.6);height:calc(100vh - 48px);overflow:auto}
+.brand{font-size:14px;font-weight:700;color:var(--accent-strong);margin-bottom:7px}
+.chapter-item{padding:8px;border-radius:8px;margin:8px 0;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,0.02)}
+.chapter-item.active{background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03))}
+.main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:14px;min-height:640px;overflow:auto;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.title{font-weight:800;font-size:20px}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{background:var(--accent);color:#04232a;padding:6px 10px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+.reader{background:var(--glass);padding:16px;border-radius:8px;color:var(--ink);margin-bottom:12px}
+.section-title{font-weight:800;margin-top:12px;margin-bottom:6px}
+.kv{color:var(--muted);font-size:12px}
+.note{width:100%;min-height:160px;background:transparent;color:#fffff0;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;resize:vertical}
+.dt{font-weight:700}
+.quick-quiz{margin-top:8px;padding:8px;border-radius:6px;border:1px dashed rgba(255,255,255,0.03)}
+@media (max-width:1100px){ .wrapper{grid-template-columns:1fr} .sidepanel{order:3} .sidebar{order:2} }
+@media print { body{background:transparent} .sidebar,.sidepanel,.controls,.header{display:none} .reader{box-shadow:none;border-radius:0;background:transparent} }
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <aside class="sidebar">
+      <div class="brand">PLERA — 11th Grade P.E. — Reader</div>
+      <div class="kv">Study reader — matches the class portal (open-book weeks)</div>
+
+      <div style="margin-top:12px">
+        <input id="searchTOC" placeholder="Search chapters..." style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--ink)"/>
+      </div>
+
+      <div style="margin-top:12px" id="toc"></div>
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="exportReader" class="btn ghost small">Export</button>
+        <button id="importReader" class="btn ghost small">Import</button>
+        <input type="file" id="importReaderFile" accept="application/json" style="display:none"/>
+      </div>
+
+      <div style="margin-top:12px" class="kv">Notes & progress saved locally. This reader uses a separate storage key from the class portal so content stays separate.</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="chapterTitle">Week A1 — Sport Science & Testing Basics</div>
+          <div class="kv" id="chapterSubtitle">Energy systems & baseline testing</div>
+        </div>
+        <div class="controls">
+          <button id="decText" class="btn ghost">A–</button>
+          <button id="incText" class="btn ghost">A+</button>
+          <button id="markRead" class="btn">Mark Read</button>
+          <button id="playTTS" class="btn">▶ Read Aloud</button>
+          <button id="stopTTS" class="btn ghost">■ Stop</button>
+          <button id="printChap" class="btn ghost">Print</button>
+        </div>
+      </div>
+
+      <div class="reader" id="readerArea" style="font-size:var(--content-font);line-height:var(--content-line)"></div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:800">Notes</div>
+      <textarea id="notes" class="note" placeholder="Study notes for current chapter..."></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button id="saveNotes" class="btn">Save</button>
+        <button id="clearNotes" class="btn ghost">Clear</button>
+        <button id="downloadNotes" class="btn ghost">Download</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="kv">Progress</div>
+        <div class="kv" id="progressInfo" style="margin-top:6px">0% — not read</div>
+      </div>
+    </aside>
+  </div>
+
+<script>
+/* ======================== Enhanced content for each week ======================== */
+/* Each week now includes: Overview / Key Terms / Study Guide / Practice Tasks / Quick Review Questions / Suggested Reading */
+const CURRICULUM = {
+  A1:{
+    title:'Week A1 — Sport Science & Testing Basics',
+    subtitle:'Energy systems & baseline testing',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Human movement is powered by three interacting energy systems. In practical testing, we use short sprints and power tests to assess anaerobic systems and shuttle/beep testing to estimate aerobic capacity. Baseline measures (20m sprint, vertical jump, plank, shuttle/beep) create objective starting points for training and comparison.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li><strong>ATP–PC</strong> — immediate energy (very short efforts, <10s)</li>
+          <li><strong>Glycolytic</strong> — short, high-intensity efforts (~10s–2min)</li>
+          <li><strong>Oxidative</strong> — endurance, aerobic metabolism (minutes+)</li>
+          <li><strong>Baseline Test</strong> — standardized measure to track change (reliable & valid)</li>
+        </ul>
+
+        <div class="section-title">Study Guide (step-by-step)</div>
+        <ol>
+          <li>Read the overview and underline the three energy systems.</li>
+          <li>Match each baseline test to the system it primarily evaluates (e.g., vertical jump → power/ATP-PC).</li>
+          <li>Practice running a 20m sprint and learn how to record times consistently.</li>
+          <li>Review testing safety and warm-up routines before conducting any test.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Conduct a vertical jump and plank test—record the values and note effort and technique.</li>
+          <li>Set up a 20m shuttle for the beep test and practice one level to learn pacing.</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>Which energy system powers a 6-second sprint?</li>
+            <li>Give one baseline test for measuring power.</li>
+            <li>Why is a standardized warm-up important?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul>
+          <li>SHAPE America — High school standards and grade-level outcomes (PE teaching goals).</li>
+          <li>20m Shuttle (multistage) test protocol — overview of test use and interpretation.</li>
+        </ul>
+      </div>`
+  },
+
+  A2:{
+    title:'Week A2 — Interval Training & Pacing',
+    subtitle:'Work:rest, RPE & talk test',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Interval training manipulates work-to-rest ratios to target specific systems and adaptations. Use subjective tools (RPE, talk test) alongside objective markers to individualize load and avoid overreach.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li><strong>Work:Rest Ratio</strong> — relation of effort time to recovery time</li>
+          <li><strong>RPE</strong> — rate of perceived exertion (subjective intensity)</li>
+          <li><strong>Talk Test</strong> — simple practical gauge of intensity</li>
+        </ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Compare common ratios (1:1, 1:2, 4×4) and map them to training goals.</li>
+          <li>Practice using RPE 1–10 in a 10-minute interval set and record perception vs heart-rate (if available).</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Design a beginner 20-minute session using 1:1 intervals and log perceived difficulty.</li>
+          <li>Apply the talk test: record whether you can speak comfortably during recovery and hard intervals.</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>What does 1:1 work:rest mean?</li>
+            <li>How can the talk test help scale intensity?</li>
+            <li>Why track RPE across sessions?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Material on interval design and RPE from coaching & PE pedagogy sources.</li></ul>
+      </div>`
+  },
+
+  A3:{
+    title:'Week A3 — Strength Mechanics & Movement Quality',
+    subtitle:'Squat, hinge, press & progressions',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Fundamental movement patterns (squat, hinge, press) are the foundation of safe strength development. Emphasize technique, controlled eccentric work, and progressive overload while using feedback (video or partner) to correct form.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li><strong>Eccentric</strong> — muscle lengthening under load</li>
+          <li><strong>Progressive Overload</strong> — gradual increases in load/complexity</li>
+          <li><strong>Movement Quality</strong> — technique, range, control</li>
+        </ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Learn coaching cues for squat, hinge and press; film 1–2 reps and note top 3 errors.</li>
+          <li>Practice bodyweight progressions before adding external load.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Complete a 3×8 bodyweight squat session focusing on depth and trunk alignment.</li>
+          <li>Use video to compare your form against a model (coach demo).</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>What is eccentric control and why is it important?</li>
+            <li>Name one simple progression for the hinge pattern.</li>
+            <li>How does progressive overload protect learners?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>NSCA / CSEP guidance on youth resistance training & safe progressions.</li></ul>
+      </div>`
+  },
+
+  A4:{
+    title:'Week A4 — Sports Nutrition & Hydration',
+    subtitle:'Fueling and timing',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Nutrition supports training adaptations and recovery. For most high-school athletes: carbohydrates before and after high-intensity sessions, protein to support repair, and attention to hydration/electrolytes for longer sessions.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li><strong>Refuelling window</strong> — 30–120 min post-exercise for glycogen/protein intake</li>
+          <li><strong>Electrolytes</strong> — sodium, potassium; important during prolonged sweat loss</li>
+        </ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>List practical snack combos (banana+yogurt; toast+peanut butter) and the timing.</li>
+          <li>Make a hydration plan for a 90-minute session (pre, during, post).</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Log one training day’s food and fluids; compare with the refuelling window guidance.</li>
+          <li>Discuss supplement claims with a trusted adult—prioritize evidence-based choices.</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>Why include carbs before intense training?</li>
+            <li>When is the post-workout refuelling window?</li>
+            <li>When are electrolytes more important?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Joint position stand: Nutrition & Athletic Performance (2016) — practical guidance for fueling.</li></ul>
+      </div>`
+  },
+
+  A5:{
+    title:'Week A5 — Biomechanics & Movement Analysis',
+    subtitle:'Joint action & correction',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Biomechanics gives vocabulary to describe movement (flexion, extension, abduction, adduction). Slow-motion video is a powerful tool to spot timing and sequencing errors that create injury risk or performance loss.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li>Flexion / Extension / Abduction / Adduction</li>
+          <li>Kinetic chain — joints and muscles working together</li>
+        </ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Define the terms with body examples (e.g., knee flexion during hamstring curl).</li>
+          <li>Watch one movement at 0.5× speed and write down the top two correction points.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Record a squat and mark any valgus (knee caving) or loss of depth; suggest one corrective drill.</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>What is abduction vs adduction?</li>
+            <li>Give one corrective drill for knee valgus.</li>
+            <li>Why is sequencing important?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Applied biomechanics primer and video analysis how-to (coach resources).</li></ul>
+      </div>`
+  },
+
+  A6:{
+    title:'Week A6 — Assessment & Coaching Basics',
+    subtitle:'Retest & SMART goals',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Assessment is cyclical—test, train, retest. Use SMART objectives to set clear, measurable targets and teach peer coaching skills (constructive feedback, respectful phrasing).</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul>
+          <li>SMART — Specific, Measurable, Achievable, Relevant, Time-bound</li>
+          <li>Reliability / Validity — important test properties</li>
+        </ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Review how to set one SMART goal from your baseline test results.</li>
+          <li>Practice giving one piece of constructive feedback to a peer after a drill.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul>
+          <li>Create a 6-week mini-program with a SMART goal and weekly micro-goals.</li>
+          <li>Conduct a peer retest and review improvements.</li>
+        </ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol>
+            <li>Write a SMART goal for improving vertical jump.</li>
+            <li>What makes a test reliable?</li>
+            <li>Why peer coaching helps learning?</li>
+          </ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Assessment & measurement basics for PE teachers (SHAPE / pedagogy sources).</li></ul>
+      </div>`
+  },
+
+  /* Module B (deeper content) */
+  B1:{
+    title:'Week B1 — Periodization & Program Design',
+    subtitle:'Macro/meso/micro',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Program design sequences training across time to peak for performance and prevent overtraining. Macrocycles cover seasons, mesocycles are blocks (weeks–months), and microcycles are typically one week. Monitoring trends (RPE, load) helps adapt plans.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Macro / Meso / Microcycle</li><li>Deload</li><li>Training load (volume × intensity)</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Sketch a 12-week plan with a 1-week deload and specify the objective of each mesocycle.</li>
+          <li>List 3 monitoring measures you would track weekly.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Design a microcycle (7 days) for a strength-focused week including RPE targets.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol><li>What is a deload and why use it?</li><li>Give one way to monitor load.</li></ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Long-term athlete development resources and periodization primers.</li></ul>
+      </div>`
+  },
+
+  B2:{
+    title:'Week B2 — Power & Plyometrics',
+    subtitle:'Progressions & landing',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Plyometrics trains power by improving the stretch-shortening cycle. Safety requires gradual progression (low → moderate → high intensity), solid landing mechanics, and a base of strength.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Stretch–shortening cycle</li><li>Landing mechanics</li><li>Contrast training</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol><li>Compare examples of low-, mid-, and high-intensity plyos. Learn landing cues (soft knees, hip hinge).</li></ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Complete a beginner plyo circuit with hops & skips and film landings for review.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol><li>Why pair strength with plyometrics?</li><li>Give one landing cue.</li></ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Systematic reviews & practical guides on plyometric progressions.</li></ul>
+      </div>`
+  },
+
+  B3:{
+    title:'Week B3 — Injury Prevention & Rehab',
+    subtitle:'Screening & return-to-play',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Prevention includes screening for asymmetries and providing corrective exercise. Rehabilitation follows phases (protect → restore → strengthen → return) and uses objective criteria to progress athletes back to sport.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Screening<br><li>Return-to-play criteria</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol><li>Learn common red flags that require professional referral.</li><li>Practice basic protective strategies for common lower-limb injuries.</li></ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Perform a simple functional screen (single-leg squat) and note asymmetries.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz">
+          <ol><li>Name the rehab phases in order.</li><li>What is a red flag?</li></ol>
+        </div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Return-to-play frameworks and screening guidelines (athletic trainer resources).</li></ul>
+      </div>`
+  },
+
+  B4:{
+    title:'Week B4 — Sports Psychology',
+    subtitle:'Routines, imagery & arousal',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Psychology underpins performance—pre-performance routines, imagery, and breath control are evidence-based tools to manage arousal and improve focus.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Imagery</li><li>Pre-performance routine</li><li>Arousal management</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol><li>Create a 3-step pre-performance routine and practice it before drills.</li></ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Practice a short imagery script prior to a skill drill for 3 days; record perceived performance.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz"><ol><li>What does imagery rehearse?</li></ol></div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Intro to sports psychology tactics for athletes and teams.</li></ul>
+      </div>`
+  },
+
+  B5:{
+    title:'Week B5 — Tactics & Analytics',
+    subtitle:'Small-sided games & video',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Small-sided games increase decision-making under pressure. Video analysis plus contextual metrics (sprints, acceleration counts) allow coaches to design targeted drills and measure progress.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Small-sided games</li><li>Contextual metrics</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol><li>Understand how to use a single metric (e.g., accelerations) in context and why numbers need coaching interpretation.</li></ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Run a 4v4 small-sided game and note three decision-making moments you would coach.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz"><ol><li>How do small-sided games help tactical development?</li></ol></div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Coaching resources on small-sided games and practical analytics primers.</li></ul>
+      </div>`
+  },
+
+  B6:{
+    title:'Week B6 — Capstone & Final Prep',
+    subtitle:'Program design & final',
+    body:`
+      <div class="section">
+        <div class="section-title">Overview</div>
+        <p>Combine the course learning into a short evidence-based program (4–6 weeks). The final is cumulative and assesses applied knowledge and rationale.</p>
+
+        <div class="section-title">Key Terms</div>
+        <ul><li>Evidence-based design</li><li>Presentation rationale</li></ul>
+
+        <div class="section-title">Study Guide</div>
+        <ol>
+          <li>Use baseline data to build a SMART program and justify each weekly objective with a short evidence note (1 paragraph).</li>
+          <li>Create a 5-minute presentation summarizing your program & expected outcomes.</li>
+        </ol>
+
+        <div class="section-title">Practice Tasks</div>
+        <ul><li>Draft your program and peer-review with a classmate; revise using peer feedback.</li></ul>
+
+        <div class="section-title">Quick Review Questions</div>
+        <div class="quick-quiz"><ol><li>What makes a program evidence-based?</li></ol></div>
+
+        <div class="section-title">Suggested Reading</div>
+        <ul><li>Capstone prep: sample program templates & example rationales (teacher resources).</li></ul>
+      </div>`
+  }
+};
+
+const ORDER = ['A1','A2','A3','A4','A5','A6','B1','B2','B3','B4','B5','B6'];
+const READER_KEY = 'PE11_TEXTBOOK_READER_V1';
+let readerState = { current:'A1', progress:{} };
+
+/* ============ UI refs ============ */
+const toc = document.getElementById('toc');
+const chapterTitle = document.getElementById('chapterTitle');
+const chapterSubtitle = document.getElementById('chapterSubtitle');
+const readerArea = document.getElementById('readerArea');
+const notesEl = document.getElementById('notes');
+const saveNotes = document.getElementById('saveNotes'), clearNotes = document.getElementById('clearNotes'), downloadNotes = document.getElementById('downloadNotes');
+const incText = document.getElementById('incText'), decText = document.getElementById('decText'), markRead = document.getElementById('markRead');
+const playTTS = document.getElementById('playTTS'), stopTTS = document.getElementById('stopTTS'), printChap = document.getElementById('printChap');
+const exportReader = document.getElementById('exportReader'), importReader = document.getElementById('importReader'), importReaderFile = document.getElementById('importReaderFile');
+const searchTOC = document.getElementById('searchTOC');
+const progressInfo = document.getElementById('progressInfo');
+
+/* ============ load / save ============ */
+function loadReader(){ try{ const raw = localStorage.getItem(READER_KEY); if(raw) readerState = JSON.parse(raw); }catch(e){ console.warn(e); } }
+function saveReader(){ localStorage.setItem(READER_KEY, JSON.stringify(readerState)); renderProgress(); }
+
+/* ============ render TOC ============ */
+function renderTOC(filter=''){
+  toc.innerHTML = '';
+  ORDER.forEach(id=>{
+    const data = CURRICULUM[id];
+    if(filter && !( (data.title+data.subtitle+stripHtml(data.body)).toLowerCase().includes(filter.toLowerCase()) )) return;
+    const el = document.createElement('div'); el.className = 'chapter-item'; el.dataset.id = id;
+    if(id === readerState.current) el.classList.add('active');
+    const pct = readerState.progress[id] ? (readerState.progress[id].readPct || (readerState.progress[id].marked?100:0)) : 0;
+    el.innerHTML = `<div><strong>${id}</strong> — ${data.title}</div><div class="kv">${pct}%</div>`;
+    el.onclick = ()=> openChapter(id);
+    toc.appendChild(el);
+  });
+}
+
+/* ============ open chapter ============ */
+function openChapter(id){
+  readerState.current = id; saveReader();
+  const d = CURRICULUM[id];
+  chapterTitle.textContent = d.title;
+  chapterSubtitle.textContent = d.subtitle;
+  readerArea.innerHTML = d.body;
+  notesEl.value = (readerState.progress[id] && readerState.progress[id].notes) || '';
+  renderProgress();
+  // scroll reader to top for long chapters
+  readerArea.scrollTop = 0;
+}
+
+/* ============ progress rendering ============ */
+function renderProgress(){
+  const id = readerState.current;
+  const p = readerState.progress[id] || {};
+  const pct = p.readPct || (p.marked?100:0) || 0;
+  progressInfo.textContent = `${pct}% — ${p.marked ? 'marked read' : 'not read'}`;
+  document.querySelectorAll('.chapter-item').forEach(it=>it.classList.toggle('active', it.dataset.id === id));
+}
+
+/* ============ notes handlers ============ */
+saveNotes.onclick = ()=> {
+  const id = readerState.current;
+  readerState.progress[id] = readerState.progress[id] || {};
+  readerState.progress[id].notes = notesEl.value;
+  readerState.progress[id].timestamp = Date.now();
+  saveReader();
+  alert('Notes saved locally.');
+};
+clearNotes.onclick = ()=> {
+  if(confirm('Clear notes?')){
+    const id = readerState.current;
+    notesEl.value='';
+    if(readerState.progress[id]) delete readerState.progress[id].notes;
+    saveReader();
+  }
+};
+downloadNotes.onclick = ()=> {
+  const id = readerState.current;
+  const txt = notesEl.value || '';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download = `${id}_notes.txt`; a.click();
+};
+
+/* ============ text size ============ */
+let fontSize = 15;
+incText.onclick = ()=> { fontSize = Math.min(28,fontSize+2); renderFont(); };
+decText.onclick = ()=> { fontSize = Math.max(12,fontSize-2); renderFont(); };
+function renderFont(){ readerArea.style.fontSize = fontSize+'px'; }
+
+/* ============ mark read ============ */
+markRead.onclick = ()=> {
+  const id = readerState.current;
+  readerState.progress[id] = readerState.progress[id] || {};
+  readerState.progress[id].marked = !readerState.progress[id].marked;
+  readerState.progress[id].readPct = readerState.progress[id].marked?100:0;
+  saveReader(); renderProgress();
+  alert(readerState.progress[id].marked ? 'Marked read' : 'Marked unread');
+};
+
+/* ============ TTS ============ */
+playTTS.onclick = ()=> {
+  const text = readerArea.innerText || readerArea.textContent || '';
+  if(!text) return alert('No chapter content.');
+  if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.rate=1; u.pitch=1;
+  window.speechSynthesis.speak(u);
+};
+stopTTS.onclick = ()=> { if(window.speechSynthesis.speaking) window.speechSynthesis.cancel(); };
+
+/* ============ print ============ */
+printChap.onclick = ()=>{
+  const id = readerState.current; const d = CURRICULUM[id];
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>${d.title}</title><style>body{font-family:Arial,Helvetica,sans-serif;color:#111;padding:28px}</style></head><body><h1>${d.title}</h1><h3>${d.subtitle}</h3>${d.body}</body></html>`;
+  const w = window.open('','_blank','width=900,height=700'); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),300);
+};
+
+/* ============ export / import ============ */
+exportReader.onclick = ()=> { const blob = new Blob([JSON.stringify(readerState,null,2)],{type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='pe11_reader_export.json'; a.click(); };
+importReader.onclick = ()=> importReaderFile.click();
+importReaderFile.addEventListener('change', async e=> {
+  const f = e.target.files[0]; if(!f) return;
+  try{ const t = await f.text(); const j = JSON.parse(t);
+    if(j){ readerState = j; saveReader(); openChapter(readerState.current || 'A1'); renderTOC(); alert('Reader import loaded.'); }
+  }catch(err){ alert('Import failed: '+err); } e.target.value='';
+});
+
+/* ============ search TOC ============ */
+searchTOC.addEventListener('input', ()=> renderTOC(searchTOC.value || ''));
+
+/* ============ utils ============ */
+function stripHtml(s){ return s.replace(/<[^>]*>/g,''); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* ============ init ============ */
+function init(){ loadReader(); renderTOC(); renderFont(); openChapter(readerState.current || 'A1'); }
+init();
+</script>
+</body>
+</html>
