@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Health is Wealth — Mini Trivia</title>
+<style>
+  :root{
+    --hiw-bg1:#071326;
+    --hiw-bg2:#061826;
+    --hiw-card:rgba(8,18,38,0.96);
+    --hiw-line:rgba(148,163,184,0.4);
+    --hiw-ink:#e5f0ff;
+    --hiw-muted:rgba(226,232,240,0.78);
+    --hiw-accent:#7dd3fc;
+    --hiw-good:#34d399;
+    --hiw-warn:#fbbf24;
+    --hiw-bad:#fb7185;
+    --hiw-radius:21px;
+    --hiw-radius2:14px;
+    --hiw-shadow:0 18px 42px rgba(0,0,0,.45);
+    --hiw-fz:20px;
+    --hiw-fz-small:18px;
+  }
+
+  *{box-sizing:border-box;}
+
+  /* Container */
+  .hiw-trivia{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color: var(--hiw-ink);
+  }
+
+  .hiw-card{
+    background:
+      radial-gradient(900px 600px at 0% 0%, rgba(125,211,252,0.18), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, rgba(52,211,153,0.14), transparent 60%),
+      linear-gradient(180deg,var(--hiw-bg1),var(--hiw-bg2));
+    border-radius: var(--hiw-radius);
+    border:1px solid rgba(148,163,184,0.55);
+    box-shadow: var(--hiw-shadow);
+    padding: 18px 18px 20px;
+  }
+
+  .hiw-header{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom: 12px;
+  }
+
+  .hiw-title{
+    font-size: clamp(22px, 2.6vw, 30px);
+    margin:0;
+    letter-spacing:.02em;
+  }
+
+  .hiw-sub{
+    margin:4px 0 0;
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    max-width: 520px;
+    line-height:1.35;
+  }
+
+  .hiw-tag{
+    align-self:flex-start;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,0.7);
+    padding:7px 11px;
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    display:inline-flex;
+    gap:6px;
+    align-items:center;
+    background: rgba(15,23,42,0.7);
+  }
+
+  .hiw-tag-dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background: var(--hiw-good);
+  }
+
+  .hiw-hidden{display:none;}
+
+  /* Screens */
+  .hiw-screen{
+    margin-top: 10px;
+  }
+
+  .hiw-intro{
+    font-size: var(--hiw-fz);
+    color: var(--hiw-muted);
+    line-height:1.4;
+    margin: 8px 0 14px;
+  }
+
+  .hiw-start-stats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom: 12px;
+  }
+
+  .hiw-pill{
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,0.7);
+    padding:7px 12px;
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    background: rgba(15,23,42,0.82);
+  }
+
+  .hiw-btn-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .hiw-btn{
+    appearance:none;
+    border-radius:999px;
+    border:1px solid rgba(148,163,184,0.7);
+    background: rgba(15,23,42,0.9);
+    color: var(--hiw-ink);
+    font-size: var(--hiw-fz-small);
+    padding:9px 16px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    user-select:none;
+    transition: background .18s ease, transform .05s ease, border-color .18s ease;
+  }
+  .hiw-btn:hover{
+    background: rgba(30,64,175,0.9);
+    border-color: rgba(125,211,252,0.9);
+  }
+  .hiw-btn:active{ transform:translateY(1px); }
+  .hiw-btn[disabled]{
+    opacity:.5;
+    cursor:default;
+    transform:none;
+  }
+
+  .hiw-btn-primary{
+    background: linear-gradient(180deg, rgba(125,211,252,0.35), rgba(37,99,235,0.3));
+    border-color: rgba(125,211,252,0.95);
+  }
+
+  .hiw-btn-ghost{
+    background: transparent;
+    border-style:dashed;
+  }
+
+  /* Question screen */
+  .hiw-meta{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:8px;
+    align-items:center;
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    margin-bottom:8px;
+  }
+
+  .hiw-progress{
+    position:relative;
+    width:100%;
+    height:8px;
+    border-radius:999px;
+    background: rgba(15,23,42,0.9);
+    overflow:hidden;
+    border:1px solid rgba(148,163,184,0.55);
+    margin-bottom: 12px;
+  }
+  .hiw-progress-bar{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:0%;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--hiw-accent), var(--hiw-good));
+    transition: width .25s ease-out;
+  }
+
+  .hiw-question-text{
+    font-size: var(--hiw-fz);
+    line-height:1.4;
+    margin-bottom: 10px;
+  }
+
+  .hiw-answers{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom: 10px;
+  }
+
+  .hiw-answer{
+    width:100%;
+    text-align:left;
+    padding: 10px 12px;
+    border-radius: var(--hiw-radius2);
+    border:1px solid rgba(148,163,184,0.7);
+    background: rgba(15,23,42,0.9);
+    color: var(--hiw-ink);
+    font-size: var(--hiw-fz-small);
+    cursor:pointer;
+    transition: background .16s ease, border-color .16s ease, transform .05s ease;
+  }
+  .hiw-answer:hover{
+    background: rgba(37,99,235,0.75);
+    border-color: rgba(125,211,252,0.96);
+  }
+  .hiw-answer:active{ transform:translateY(1px); }
+  .hiw-answer[disabled]{
+    cursor:default;
+    opacity:.95;
+    transform:none;
+  }
+  .hiw-answer.correct{
+    border-color: var(--hiw-good);
+    background: rgba(22,163,74,0.25);
+  }
+  .hiw-answer.incorrect{
+    border-color: var(--hiw-bad);
+    background: rgba(248,113,113,0.15);
+  }
+
+  .hiw-explanation{
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    line-height:1.4;
+    min-height: 40px;
+    margin-bottom: 10px;
+  }
+
+  .hiw-next-row{
+    display:flex;
+    justify-content:flex-end;
+  }
+
+  /* Results */
+  .hiw-result-main{
+    text-align:center;
+    margin-bottom: 14px;
+  }
+
+  .hiw-badge{
+    display:inline-flex;
+    padding:7px 14px;
+    border-radius:999px;
+    border:1px solid rgba(129,140,248,0.9);
+    background: radial-gradient(circle at 0 0, rgba(129,140,248,0.45), transparent 60%);
+    font-size: var(--hiw-fz-small);
+    margin-bottom:10px;
+  }
+
+  .hiw-score-big{
+    font-size: 30px;
+    font-weight:700;
+    margin-bottom: 6px;
+  }
+
+  .hiw-progress-large{
+    height: 10px;
+    margin-top: 4px;
+  }
+
+  .hiw-percent{
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    margin-top: 6px;
+  }
+
+  .hiw-result-note{
+    font-size: var(--hiw-fz-small);
+    color: var(--hiw-muted);
+    margin: 10px 0 0;
+    line-height:1.35;
+  }
+
+  .hiw-result-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+  }
+
+  /* Disclaimer */
+  .hiw-disclaimer{
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(148,163,184,0.9);
+    text-align:center;
+    line-height:1.35;
+  }
+
+  @media (max-width:600px){
+    .hiw-card{ padding: 16px 14px 16px; }
+    .hiw-intro{ font-size: 18px; }
+    .hiw-question-text{ font-size: 18px; }
+    .hiw-answer{ font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="hiw-trivia">
+  <div class="hiw-card">
+    <div class="hiw-header">
+      <div>
+        <h1 class="hiw-title">Health is Wealth — Mini Quiz</h1>
+        <p class="hiw-sub">
+          Gentle, general wellness questions about movement, food, sleep, and daily habits.
+          No grades, just practice.
+        </p>
+      </div>
+      <div class="hiw-tag">
+        <span class="hiw-tag-dot"></span>
+        <span>Wellness check-in</span>
+      </div>
+    </div>
+
+    <!-- START SCREEN -->
+    <div class="hiw-screen hiw-start" id="hiw-start">
+      <p class="hiw-intro">
+        You’ll get a short set of questions (shuffled each round). Answer at your own pace,
+        read the explanations, and notice what feels supportive for your body and life.
+      </p>
+
+      <div class="hiw-start-stats">
+        <div class="hiw-pill" id="hiw-best-pill">Best streak: —</div>
+        <div class="hiw-pill">Questions per round: ~7</div>
+      </div>
+
+      <div class="hiw-btn-row">
+        <button class="hiw-btn hiw-btn-primary" id="hiw-start-btn" type="button">
+          ▶ Start Mini Quiz
+        </button>
+        <button class="hiw-btn hiw-btn-ghost" id="hiw-start-practice" type="button">
+          ❓ Show one practice question
+        </button>
+      </div>
+    </div>
+
+    <!-- QUESTION SCREEN -->
+    <div class="hiw-screen hiw-hidden" id="hiw-question">
+      <div class="hiw-meta">
+        <span id="hiw-q-counter">Question 1 of 7</span>
+        <span id="hiw-score-mini">Score: 0</span>
+      </div>
+      <div class="hiw-progress">
+        <div class="hiw-progress-bar" id="hiw-progress-bar"></div>
+      </div>
+
+      <div class="hiw-question-text" id="hiw-question-text"></div>
+      <div class="hiw-answers" id="hiw-answers"></div>
+      <div class="hiw-explanation" id="hiw-explanation"></div>
+
+      <div class="hiw-next-row">
+        <button class="hiw-btn" id="hiw-next" type="button" disabled>
+          Next ▷
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="hiw-screen hiw-hidden" id="hiw-result">
+      <div class="hiw-result-main">
+        <div class="hiw-badge" id="hiw-title-badge">Curious Explorer</div>
+        <div class="hiw-score-big" id="hiw-final-score">0 / 0</div>
+        <div class="hiw-progress hiw-progress-large">
+          <div class="hiw-progress-bar" id="hiw-result-bar"></div>
+        </div>
+        <div class="hiw-percent" id="hiw-percent-label">0%</div>
+        <p class="hiw-result-note" id="hiw-result-note"></p>
+      </div>
+
+      <div class="hiw-result-actions">
+        <button class="hiw-btn hiw-btn-primary" id="hiw-play-again" type="button">
+          🔁 Play Again
+        </button>
+        <button class="hiw-btn" id="hiw-back-start" type="button">
+          ⬅ Back to Intro
+        </button>
+        <button class="hiw-btn hiw-btn-ghost" id="hiw-clear-best" type="button">
+          🧹 Clear Best Streak
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p class="hiw-disclaimer">
+    This mini quiz is for education and reflection only and does not diagnose, treat, or
+    replace medical care. Always follow the advice of your own health-care team.
+  </p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const MAX_QUESTIONS = 7;
+  const KEY_BEST = "hiw_trivia_best_streak_v1";
+
+  const QUESTIONS = [
+    {
+      id:"hydration",
+      text:"Which of these is usually a helpful sign you’re generally well hydrated?",
+      options:[
+        "Your urine is a pale straw or light lemonade color most of the day",
+        "You almost never drink fluids and often feel dizzy",
+        "Your urine is very dark yellow most of the day"
+      ],
+      correct:0,
+      explanation:"Pale, light-colored urine is one common sign of adequate hydration for many people. Very dark urine or frequent dizziness can be a sign to check in on fluids or medical care."
+    },
+    {
+      id:"sleep",
+      text:"For many adults, which sleep pattern is most often linked with better overall health?",
+      options:[
+        "Getting about 7–9 hours of sleep most nights",
+        "Regularly sleeping 3–4 hours per night",
+        "Regularly sleeping 12 or more hours per night"
+      ],
+      correct:0,
+      explanation:"Many guidelines suggest most adults do best with roughly 7–9 hours of sleep per night, though individual needs can vary."
+    },
+    {
+      id:"plate",
+      text:"Which plate pattern best reflects a simple balanced-meal idea?",
+      options:[
+        "Half vegetables or fruit, about a quarter protein, and a quarter whole grains or starchy foods",
+        "Mostly sugary drinks, plus one large item of any kind",
+        "Only protein with no vegetables or carbohydrates"
+      ],
+      correct:0,
+      explanation:"A simple plate pattern many people use is: plenty of vegetables or fruit, a good protein source, and some higher-fiber carbohydrates."
+    },
+    {
+      id:"movement",
+      text:"Which is an example of light movement you can sprinkle through the day?",
+      options:[
+        "Short walking breaks, gentle stretching, or standing up regularly",
+        "Only doing one long, intense workout once a month",
+        "Avoiding movement to ‘save energy’"
+      ],
+      correct:0,
+      explanation:"Small movement snacks—like short walks and stretches—can support circulation, mood, and comfort between longer workouts or on busy days."
+    },
+    {
+      id:"snack",
+      text:"Which snack is most in line with pairing fiber and protein to help you feel satisfied?",
+      options:[
+        "Greek yogurt or a fortified alternative with berries",
+        "Candy and soda",
+        "Plain crackers only"
+      ],
+      correct:0,
+      explanation:"Combining protein with fiber (for example, yogurt + berries, hummus + veggies, nuts + fruit) often helps many people feel pleasantly full for longer."
+    },
+    {
+      id:"ultra",
+      text:"In general wellness conversations, what’s often encouraged about ultra-processed foods?",
+      options:[
+        "Enjoy them sometimes, but base most meals on less processed foods",
+        "Rely on them for every meal because they are always the most nutritious option",
+        "Avoid all food groups and eat only ultra-processed snacks"
+      ],
+      correct:0,
+      explanation:"Many people aim to center meals around less processed foods (like fruits, vegetables, beans, grains, and basic proteins) while enjoying ultra-processed foods in more limited amounts."
+    },
+    {
+      id:"screen",
+      text:"Which habit may support better sleep for many people?",
+      options:[
+        "Creating a wind-down routine and reducing bright screens close to bedtime",
+        "Drinking a lot of caffeine right before lying down",
+        "Checking stressful messages in bed all night"
+      ],
+      correct:0,
+      explanation:"A simple bedtime routine and less intense screen time close to bed can help some people fall asleep more easily."
+    },
+    {
+      id:"stress",
+      text:"When stress spikes in the middle of the day, which small practice can be helpful for many people?",
+      options:[
+        "Taking a few slow, deeper breaths and pausing for a moment",
+        "Ignoring your body completely for hours",
+        "Only pushing harder without any breaks"
+      ],
+      correct:0,
+      explanation:"Short pauses—like gentle breathing or a brief walk—can help some people reset their nervous system during stressful moments."
+    },
+    {
+      id:"sugar",
+      text:"In general wellness, what is often encouraged regarding added sugars?",
+      options:[
+        "Be aware of them and keep very sugary drinks and snacks to smaller or less frequent portions",
+        "Rely on sugary drinks for most hydration needs",
+        "Skip all food groups except sweets"
+      ],
+      correct:0,
+      explanation:"Many people choose to limit added sugars—especially in drinks—and build most of their energy from whole foods instead."
+    },
+    {
+      id:"body_signals",
+      text:"What’s a helpful way to relate to your body’s hunger and fullness signals?",
+      options:[
+        "Notice them without judgment and respond with regular, balanced meals and snacks",
+        "Ignore them completely and never eat until you feel unwell",
+        "Assume your body is ‘wrong’ and never listen to it"
+      ],
+      correct:0,
+      explanation:"Tuning into hunger, fullness, and comfort cues with curiosity (not criticism) can help many people find a more sustainable way of eating."
+    }
+  ];
+
+  // DOM references
+  const root = document.querySelector(".hiw-trivia");
+  if(!root) return;
+
+  const startScreen     = root.querySelector("#hiw-start");
+  const questionScreen  = root.querySelector("#hiw-question");
+  const resultScreen    = root.querySelector("#hiw-result");
+
+  const bestPill        = root.querySelector("#hiw-best-pill");
+  const startBtn        = root.querySelector("#hiw-start-btn");
+  const practiceBtn     = root.querySelector("#hiw-start-practice");
+
+  const qCounterEl      = root.querySelector("#hiw-q-counter");
+  const scoreMiniEl     = root.querySelector("#hiw-score-mini");
+  const progressBar     = root.querySelector("#hiw-progress-bar");
+  const questionTextEl  = root.querySelector("#hiw-question-text");
+  const answersEl       = root.querySelector("#hiw-answers");
+  const explanationEl   = root.querySelector("#hiw-explanation");
+  const nextBtn         = root.querySelector("#hiw-next");
+
+  const titleBadgeEl    = root.querySelector("#hiw-title-badge");
+  const finalScoreEl    = root.querySelector("#hiw-final-score");
+  const resultBar       = root.querySelector("#hiw-result-bar");
+  const percentLabelEl  = root.querySelector("#hiw-percent-label");
+  const resultNoteEl    = root.querySelector("#hiw-result-note");
+  const playAgainBtn    = root.querySelector("#hiw-play-again");
+  const backStartBtn    = root.querySelector("#hiw-back-start");
+  const clearBestBtn    = root.querySelector("#hiw-clear-best");
+
+  let currentQuestions = [];
+  let currentIndex = 0;
+  let score = 0;
+  let bestStreak = loadBest();
+
+  function loadBest(){
+    try{
+      const raw = localStorage.getItem(KEY_BEST);
+      if(!raw) return 0;
+      const n = Number(raw);
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    }catch(e){
+      return 0;
+    }
+  }
+
+  function saveBest(n){
+    try{
+      localStorage.setItem(KEY_BEST, String(n));
+    }catch(e){}
+  }
+
+  function updateBestPill(){
+    if(bestStreak > 0){
+      bestPill.textContent = "Best streak: " + bestStreak + " correct";
+    }else{
+      bestPill.textContent = "Best streak: —";
+    }
+  }
+
+  function shuffleCopy(list){
+    const arr = list.slice();
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function pickQuestions(count){
+    const shuffled = shuffleCopy(QUESTIONS);
+    return shuffled.slice(0, Math.min(count, shuffled.length));
+  }
+
+  function showScreen(name){
+    startScreen.classList.toggle("hiw-hidden", name !== "start");
+    questionScreen.classList.toggle("hiw-hidden", name !== "question");
+    resultScreen.classList.toggle("hiw-hidden", name !== "result");
+  }
+
+  function startGame(fullRound){
+    currentQuestions = fullRound ? pickQuestions(MAX_QUESTIONS) : pickQuestions(1);
+    currentIndex = 0;
+    score = 0;
+    showScreen("question");
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    const q = currentQuestions[currentIndex];
+    if(!q) return;
+
+    qCounterEl.textContent = "Question " + (currentIndex + 1) + " of " + currentQuestions.length;
+    scoreMiniEl.textContent = "Score: " + score;
+    const progress = currentIndex === 0 ? 0 : Math.round((currentIndex / currentQuestions.length) * 100);
+    progressBar.style.width = progress + "%";
+
+    questionTextEl.textContent = q.text;
+    answersEl.innerHTML = "";
+    explanationEl.textContent = "";
+    nextBtn.disabled = true;
+
+    q.options.forEach(function(opt, idx){
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "hiw-answer";
+      btn.textContent = opt;
+      btn.dataset.idx = String(idx);
+      btn.addEventListener("click", onAnswerClick);
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function onAnswerClick(ev){
+    const btn = ev.currentTarget;
+    const chosen = Number(btn.dataset.idx || 0);
+    const q = currentQuestions[currentIndex];
+
+    const answerButtons = answersEl.querySelectorAll(".hiw-answer");
+    answerButtons.forEach(function(b){
+      b.disabled = true;
+      const idx = Number(b.dataset.idx || 0);
+      if(idx === q.correct){
+        b.classList.add("correct");
+      }else if(idx === chosen && idx !== q.correct){
+        b.classList.add("incorrect");
+      }
+    });
+
+    const correct = chosen === q.correct;
+    if(correct) score++;
+
+    explanationEl.textContent = q.explanation || (correct
+      ? "Nice work—that lines up with many general wellness conversations."
+      : "Thanks for trying—read the note, then move to the next question."
+    );
+
+    scoreMiniEl.textContent = "Score: " + score;
+    nextBtn.disabled = false;
+  }
+
+  function showResults(){
+    showScreen("result");
+
+    const total = currentQuestions.length || 1;
+    finalScoreEl.textContent = score + " / " + total;
+    const ratio = score / total;
+    const percent = Math.round(ratio * 100);
+    percentLabelEl.textContent = percent + "%";
+
+    resultBar.style.width = percent + "%";
+
+    let title;
+    if(ratio === 1){
+      title = "Wellness Guardian";
+    }else if(ratio >= 0.7){
+      title = "Health Steward";
+    }else if(ratio >= 0.4){
+      title = "Curious Explorer";
+    }else{
+      title = "Getting Started";
+    }
+    titleBadgeEl.textContent = title;
+
+    if(score > bestStreak){
+      bestStreak = score;
+      saveBest(bestStreak);
+      resultNoteEl.textContent =
+        "New personal best for this round: " + score +
+        " correct. Tiny, consistent steps add up over time.";
+    }else if(bestStreak > 0){
+      resultNoteEl.textContent =
+        "You answered " + score + " this round. Your best streak so far is " +
+        bestStreak + " correct. You can play again any time.";
+    }else{
+      resultNoteEl.textContent =
+        "Nice work checking in. You can replay this quiz to build a personal streak over time.";
+    }
+
+    updateBestPill();
+  }
+
+  // Event wiring
+  startBtn.addEventListener("click", function(){
+    startGame(true);
+  });
+
+  practiceBtn.addEventListener("click", function(){
+    startGame(false);
+  });
+
+  nextBtn.addEventListener("click", function(){
+    currentIndex++;
+    if(currentIndex >= currentQuestions.length){
+      showResults();
+    }else{
+      renderQuestion();
+    }
+  });
+
+  playAgainBtn.addEventListener("click", function(){
+    startGame(true);
+  });
+
+  backStartBtn.addEventListener("click", function(){
+    showScreen("start");
+  });
+
+  clearBestBtn.addEventListener("click", function(){
+    if(!confirm("Clear your saved best streak for this quiz?")) return;
+    try{
+      localStorage.removeItem(KEY_BEST);
+    }catch(e){}
+    bestStreak = 0;
+    updateBestPill();
+    alert("Best streak cleared.");
+  });
+
+  // Init
+  updateBestPill();
+  showScreen("start");
+})();
+</script>
+</body>
+</html>
