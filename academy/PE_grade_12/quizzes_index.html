@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PLERA — 12th Grade P.E. — Textbook Reader & Study Guide</title>
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:7px; --maxw:1200px; --content-font:15px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+html,body{height:99%;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#061225);color:var(--ink)}
+.container{width:92%;max-width:var(--maxw);margin:20px auto;display:grid;grid-template-columns:280px 1fr 300px;gap:12px;min-height:78vh}
+.sidebar{background:var(--panel);border-radius:var(--radius);padding:14px;overflow:auto;height:calc(100vh - 64px);box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:14px;overflow:auto;height:calc(100vh - 64px);box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.sidepanel{background:var(--panel);border-radius:var(--radius);padding:14px;overflow:auto;height:calc(100vh - 64px);box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.brand{font-weight:800;color:var(--accent-strong);margin-bottom:8px}
+.search{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--ink)}
+.chapter-item{padding:8px;border-radius:8px;margin:8px 0;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
+.chapter-item.active{background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03))}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.title{font-weight:800;font-size:20px}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{background:var(--accent);color:#04232a;padding:6px 10px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+.reader{background:var(--glass);padding:16px;border-radius:8px;color:var(--ink);margin-bottom:12px}
+.note{width:100%;min-height:160px;background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;resize:vertical}
+.kv{color:var(--muted);font-size:12px}
+.small{font-size:13px;padding:6px 8px;border-radius:6px}
+@media (max-width:1100px){ .container{grid-template-columns:1fr} .sidebar{order:1} .main{order:2} .sidepanel{order:3} .sidebar,.main,.sidepanel{height:auto} }
+</style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="brand">PLERA — 12th Grade P.E. — Reader</div>
+      <div class="kv">Companion study guide for PE 701 / PE 801 — separate from quizzes</div>
+      <input id="searchTOC" class="search" placeholder="Search chapters / keywords..." style="margin-top:12px"/>
+      <div id="toc" style="margin-top:12px"></div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="exportReader" class="btn ghost small">Export</button>
+        <button id="importReader" class="btn ghost small">Import</button>
+        <input type="file" id="importReaderFile" accept="application/json" style="display:none"/>
+      </div>
+      <div style="margin-top:12px" class="kv">Local only: notes & progress saved in your browser.</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="chapterTitle">Week A1 — Advanced Strength & Power Foundations</div>
+          <div class="kv" id="chapterSubtitle">Force-velocity, rate of force development</div>
+        </div>
+        <div class="controls">
+          <button id="decText" class="btn ghost small">A–</button>
+          <button id="incText" class="btn ghost small">A+</button>
+          <button id="markRead" class="btn small">Mark Read</button>
+          <button id="playTTS" class="btn small">▶ Read Aloud</button>
+          <button id="stopTTS" class="btn ghost small">■ Stop</button>
+          <button id="printChap" class="btn ghost small">Print</button>
+        </div>
+      </div>
+
+      <div id="readerArea" class="reader" style="font-size:var(--content-font);line-height:var(--content-line)"></div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:800">Notes</div>
+      <textarea id="notes" class="note" placeholder="Study notes for current chapter..."></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button id="saveNotes" class="btn small">Save</button>
+        <button id="clearNotes" class="btn ghost small">Clear</button>
+        <button id="downloadNotes" class="btn ghost small">Download</button>
+      </div>
+      <div style="margin-top:12px">
+        <div class="kv">Progress</div>
+        <div class="kv" id="progressInfo" style="margin-top:6px">0% — not read</div>
+      </div>
+
+      <div style="margin-top:12px" class="kv">
+        Further reading (verified): SHAPE America; sports nutrition & VBT reviews; NSCA guides on youth resistance training; HRV monitoring literature.
+      </div>
+    </aside>
+  </div>
+
+<script>
+/* ========== Expanded study content for 12th grade (A1–A6, B1–B6) ========== */
+const CURRICULUM = {
+  A1: {
+    title:'Week A1 — Advanced Strength & Power Foundations',
+    subtitle:'Force-velocity relationship, rate of force development (RFD)',
+    body: `
+      <h2>Overview</h2>
+      <p>The force-velocity curve explains how maximal force and maximal velocity are inversely related. Rate of force development (RFD) is critical for explosive sport actions (sprints, jumps, throws). Training should include targeted force and velocity work alongside strength foundations.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>Force-velocity curve:</strong> trade-off between force and movement speed.</li>
+        <li><strong>RFD:</strong> how quickly force is produced.</li>
+        <li><strong>Specificity:</strong> training should match sport demands.</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Perform a simple countermovement jump test and record best of 3 (track improvements weekly).</li>
+        <li>Session design: warm-up → activation (band/plyo) → technical barbell work (low-moderate load, explosive intent) → accessory strength (slow, loaded).</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Compare training sessions focused on 'force' (heavy, slow) versus 'velocity' (lighter, fast) and note how power output changes.</p>
+      <h3>Further reading</h3>
+      <ul>
+        <li>Short review on force-velocity and RFD (see recommended library).</li>
+      </ul>
+    `
+  },
+  A2: {
+    title:'Week A2 — Advanced Periodization & Peaking',
+    subtitle:'Block periodization, tapering and peaking',
+    body: `
+      <h2>Overview</h2>
+      <p>Block periodization (accumulation → transmutation → realization) helps athletes concentrate on a limited number of physical qualities to peak at key competitions.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>Accumulation:</strong> build general capacity.</li>
+        <li><strong>Transmutation:</strong> convert to sport-specific qualities.</li>
+        <li><strong>Realization/taper:</strong> sharpen and reduce fatigue to peak.</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Draft a 6-week block plan for a hypothetical athlete (include microcycles and a short taper).</li>
+        <li>Identify monitoring metrics (RPE, readiness score) to guide taper length.</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Sketch timelines and overlay competition dates; practice justifying choices (volume, intensity, recovery).</p>
+      <h3>Further reading</h3>
+      <ul><li>Block periodization literature & peaking methods.</li></ul>
+    `
+  },
+  A3: {
+    title:'Week A3 — Advanced Testing & Performance Metrics',
+    subtitle:'Velocity-based training, force profiling, GPS',
+    body: `
+      <h2>Overview</h2>
+      <p>Modern monitoring uses velocity-based training (VBT), GPS, and force profiling to individualize programs. Learn how to interpret velocity loss, acute:chronic workload, and what the data imply for training decisions.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>VBT:</strong> measure movement speed to autoregulate load.</li>
+        <li><strong>Acute:Chronic workload ratio (ACWR):</strong> helps detect sudden load spikes.</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Collect simple VBT data (bar speed with smartphone app or practical proxy) and plot trends across sessions.</li>
+        <li>Compute a 7-day vs 28-day load to see acute:chronic changes.</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Practice interpreting small datasets: when would you lower load? When to maintain?</p>
+      <h3>Further reading</h3>
+      <ul><li>VBT review articles & guides.</li></ul>
+    `
+  },
+  A4: {
+    title:'Week A4 — Recovery, Regeneration & Sleep',
+    subtitle:'Sleep hygiene, HRV, modalities & readiness',
+    body: `
+      <h2>Overview</h2>
+      <p>Recovery includes sleep, nutrition, active recovery and modalities (cold, compression). HRV is an emerging tool for readiness monitoring; interpret it with context.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>HRV:</strong> variability between heart beats — a marker of autonomic balance and recovery.</li>
+        <li><strong>Active recovery:</strong> low-intensity movement to promote circulation and recovery.</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Keep a 7-day sleep & RPE diary and note correlations to perceived performance.</li>
+        <li>Try a recovery session (easy bike/walk + mobility) and compare next-day readiness.</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Focus on principles: consistency of sleep schedule matters more than single 'hack' days.</p>
+      <h3>Further reading</h3>
+      <ul><li>Selected HRV and recovery reviews.</li></ul>
+    `
+  },
+  A5: {
+    title:'Week A5 — Advanced Nutrition & Supplement Strategy',
+    subtitle:'Periodized fueling, evidence-based supplements',
+    body: `
+      <h2>Overview</h2>
+      <p>Periodize carbohydrate and protein around sessions; be critical of supplements — choose those with evidence and known safety. Be mindful of contamination and doping risk.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>Periodized nutrition:</strong> aligning intake to training demands.</li>
+        <li><strong>Evidence-based supplement:</strong> supported by high-quality research (e.g., creatine, caffeine).</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Create a day-of-training meal plan for a heavy training day vs a light day.</li>
+        <li>Research one supplement (safety, evidence, contamination risk) and summarize findings.</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Emphasize safety & regulation — look up label transparency and third-party testing.</p>
+      <h3>Further reading</h3>
+      <ul><li>Sports nutrition position statements and supplement guidance.</li></ul>
+    `
+  },
+  A6: {
+    title:'Week A6 — Leadership, Coaching & Ethics',
+    subtitle:'Team leadership, pedagogy, informed consent',
+    body: `
+      <h2>Overview</h2>
+      <p>Good coaching balances performance and athlete welfare: leadership models, safeguarding, informed consent, and clear communication are essential for long-term athlete development.</p>
+      <h3>Key terms</h3>
+      <ul>
+        <li><strong>Informed consent:</strong> athletes understand risks and agree to participation.</li>
+        <li><strong>Safeguarding:</strong> protecting participants from harm.</li>
+      </ul>
+      <h3>Practical tasks</h3>
+      <ol>
+        <li>Draft a short informed consent template for basic testing sessions.</li>
+        <li>Role-play a brief athlete feedback conversation focusing on constructive language.</li>
+      </ol>
+      <h3>Study tips</h3>
+      <p>Practice writing short, actionable coaching cues; reflect on ethical scenarios and how you'd handle them.</p>
+      <h3>Further reading</h3>
+      <ul><li>Coaching ethics & leadership frameworks.</li></ul>
+    `
+  },
+
+  B1: {
+    title:'Week B1 — High-Performance Power & Olympic Derivatives',
+    subtitle:'Snatch/clean derivates, transfer to sport',
+    body: `
+      <h2>Overview</h2>
+      <p>Use clean/snatch derivatives to develop high-velocity triple extension. Technique and progressions are critical; focus on sequencing and coordination before load.</p>
+      <h3>Practical tasks</h3>
+      <ol><li>Practice hip extension drills and tempo jumps; pair with light technical pulls.</li></ol>
+      <h3>Study tips</h3><p>Watch short coaching clips and note common sequencing cues.</p>
+    `
+  },
+  B2: {
+    title:'Week B2 — Injury Management & Advanced Rehab',
+    subtitle:'Criteria-based progression & return to performance',
+    body: `
+      <h2>Overview</h2>
+      <p>Objective tests (strength, hop tests, functional movement) guide staged return-to-play: protect → restore → strengthen → return to performance.</p>
+      <h3>Practical tasks</h3><ol><li>Design a staged 4-week progression for a lower-limb strain (focus on measurable milestones).</li></ol>
+    `
+  },
+  B3: {
+    title:'Week B3 — Sports Technology & Data Ethics',
+    subtitle:'Wearables, privacy, consent & governance',
+    body: `
+      <h2>Overview</h2>
+      <p>Wearables provide powerful metrics, but data governance, consent, and privacy are essential — create clear policies on ownership, retention, and sharing.</p>
+      <h3>Practical tasks</h3><ol><li>Draft a one-page data consent form describing what data will be collected and how it will be used.</li></ol>
+    `
+  },
+  B4: {
+    title:'Week B4 — Mental Skills for Elite Performance',
+    subtitle:'Resilience, pressure handling, imagery mastery',
+    body: `
+      <h2>Overview</h2>
+      <p>Psychological skills training (imagery, self-talk, routines) and stress inoculation improve performance under pressure; simulation drills help prepare athletes.</p>
+      <h3>Practical tasks</h3><ol><li>Create a brief pre-performance routine and practice imagery for a specific skill.</li></ol>
+    `
+  },
+  B5: {
+    title:'Week B5 — Tactical Periodization & Match Models',
+    subtitle:'Integrating tactics into training blocks',
+    body: `
+      <h2>Overview</h2>
+      <p>Tactical periodization ties training content directly to the team's tactical model using representative practice and small-sided scenarios.</p>
+      <h3>Practical tasks</h3><ol><li>Design a small-sided game (3v3) focused on a single tactical objective and explain the drill cues.</li></ol>
+    `
+  },
+  B6: {
+    title:'Week B6 — Capstone & Final Prep',
+    subtitle:'Design a season-ready 6-week performance plan',
+    body: `
+      <h2>Overview</h2>
+      <p>Capstone: produce a 6-week plan (microcycle by microcycle) including testing schedule, nutrition, recovery, and measurable criteria — prepare for the closed-book cumulative exam.</p>
+      <h3>Practical tasks</h3><ol><li>Prepare a one-page rationale and a 3-minute oral summary of your 6-week plan.</li></ol>
+    `
+  }
+};
+
+const ORDER = ['A1','A2','A3','A4','A5','A6','B1','B2','B3','B4','B5','B6'];
+const STORAGE_KEY = 'PE12_TEXTBOOK_READER_V1';
+let state = { current: 'A1', progress: {} };
+
+/* ====== UI refs ====== */
+const toc = document.getElementById('toc');
+const chapterTitle = document.getElementById('chapterTitle');
+const chapterSubtitle = document.getElementById('chapterSubtitle');
+const readerArea = document.getElementById('readerArea');
+const notesEl = document.getElementById('notes');
+const saveNotes = document.getElementById('saveNotes'), clearNotes = document.getElementById('clearNotes'), downloadNotes = document.getElementById('downloadNotes');
+const incText = document.getElementById('incText'), decText = document.getElementById('decText'), markRead = document.getElementById('markRead');
+const playTTS = document.getElementById('playTTS'), stopTTS = document.getElementById('stopTTS'), printChap = document.getElementById('printChap');
+const exportReader = document.getElementById('exportReader'), importReader = document.getElementById('importReader'), importReaderFile = document.getElementById('importReaderFile');
+const searchTOC = document.getElementById('searchTOC');
+const progressInfo = document.getElementById('progressInfo');
+
+/* ====== load/save ====== */
+function loadState(){ try{ const raw = localStorage.getItem(STORAGE_KEY); if(raw) state = JSON.parse(raw); } catch(e){} }
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); renderProgress(); }
+
+/* ====== render TOC ====== */
+function renderTOC(filter=''){
+  toc.innerHTML = '';
+  ORDER.forEach(id=>{
+    const d = CURRICULUM[id];
+    if(filter && !( (d.title + d.subtitle + stripHtml(d.body)).toLowerCase().includes(filter.toLowerCase()) )) return;
+    const el = document.createElement('div'); el.className='chapter-item'; el.dataset.id=id;
+    if(id === state.current) el.classList.add('active');
+    const pct = state.progress[id] ? (state.progress[id].readPct || (state.progress[id].marked?100:0)) : 0;
+    el.innerHTML = `<div style="max-width:200px"><strong>${id}</strong> — ${d.title}</div><div class="kv">${pct}%</div>`;
+    el.onclick = ()=> openChapter(id);
+    toc.appendChild(el);
+  });
+}
+
+/* ====== open chapter ====== */
+function openChapter(id){
+  state.current = id; saveState();
+  const d = CURRICULUM[id];
+  chapterTitle.textContent = d.title;
+  chapterSubtitle.textContent = d.subtitle;
+  readerArea.innerHTML = d.body;
+  notesEl.value = (state.progress[id] && state.progress[id].notes) || '';
+  renderProgress();
+}
+
+/* ====== progress ====== */
+function renderProgress(){
+  const id = state.current;
+  const p = state.progress[id] || {};
+  const pct = p.readPct || (p.marked?100:0) || 0;
+  progressInfo.textContent = `${pct}% — ${p.marked ? 'marked read' : 'not read'}`;
+  document.querySelectorAll('.chapter-item').forEach(it=>it.classList.toggle('active', it.dataset.id === id));
+}
+
+/* ====== notes handlers ====== */
+saveNotes.onclick = ()=> { const id = state.current; state.progress[id] = state.progress[id] || {}; state.progress[id].notes = notesEl.value; state.progress[id].timestamp = Date.now(); saveState(); alert('Notes saved locally.'); };
+clearNotes.onclick = ()=> { if(confirm('Clear notes?')){ const id = state.current; notesEl.value=''; if(state.progress[id]) delete state.progress[id].notes; saveState(); } };
+downloadNotes.onclick = ()=> { const id = state.current; const txt = notesEl.value || ''; const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt],{type:'text/plain'})); a.download = `${id}_notes.txt`; a.click(); };
+
+/* ====== font size ====== */
+let fontSize = 15;
+incText.onclick = ()=> { fontSize = Math.min(28,fontSize+2); renderFont(); };
+decText.onclick = ()=> { fontSize = Math.max(12,fontSize-2); renderFont(); };
+function renderFont(){ readerArea.style.fontSize = fontSize + 'px'; }
+
+/* ====== mark read ====== */
+markRead.onclick = ()=> { const id = state.current; state.progress[id] = state.progress[id] || {}; state.progress[id].marked = !state.progress[id].marked; state.progress[id].readPct = state.progress[id].marked?100:0; saveState(); renderProgress(); alert(state.progress[id].marked ? 'Marked read' : 'Marked unread'); };
+
+/* ====== TTS ====== */
+playTTS.onclick = ()=> {
+  const text = readerArea.innerText || readerArea.textContent || '';
+  if(!text) return alert('No chapter content.');
+  if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.rate=1; u.pitch=1;
+  window.speechSynthesis.speak(u);
+};
+stopTTS.onclick = ()=> { if(window.speechSynthesis.speaking) window.speechSynthesis.cancel(); };
+
+/* ====== print ====== */
+printChap.onclick = ()=> {
+  const id = state.current; const d = CURRICULUM[id];
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>${d.title}</title><style>body{font-family:Arial,Helvetica,sans-serif;color:#111;padding:28px}</style></head><body><h1>${d.title}</h1><h3>${d.subtitle}</h3>${d.body}</body></html>`;
+  const w = window.open('','_blank','width=900,height=700'); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),300);
+};
+
+/* ====== export / import ====== */
+exportReader.onclick = ()=> { const blob = new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='pe12_reader_export.json'; a.click(); };
+importReader.onclick = ()=> importReaderFile.click();
+importReaderFile.addEventListener('change', async e=> { const f = e.target.files[0]; if(!f) return; try{ const t = await f.text(); const j = JSON.parse(t); if(j){ state = j; saveState(); openChapter(state.current || 'A1'); renderTOC(); alert('Reader import loaded.'); } } catch(err){ alert('Import failed: '+err); } e.target.value=''; });
+
+/* ====== search ====== */
+searchTOC.addEventListener('input', ()=> renderTOC(searchTOC.value || ''));
+
+/* ====== utils & init ====== */
+function stripHtml(s){ return s ? s.replace(/<[^>]*>/g,'') : ''; }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function init(){ loadState(); renderTOC(); renderFont(); openChapter(state.current || 'A1'); }
+init();
+</script>
+</body>
+</html>
