@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mindscape –Belief Distributions (Info Gain)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  :root{
+    --bg1:#1b2735;
+    --bg2:#090a0f;
+    --panel:rgba(20,30,50,0.96);
+    --panel2:rgba(12,18,32,0.86);
+    --ink:#eaeaea;
+    --muted:#a8b3c7;
+    --muted2:#7f8aa3;
+    --line:rgba(255,255,255,0.12);
+    --btn:#4ea1ff;
+    --btn2:#2e7de6;
+    --chip:#243b55;
+    --chip2:#2c4a6f;
+    --good:#22c55e;
+    --bad:#ef4444;
+    --warn:#f59e0b;
+    --ring:rgba(78,161,255,.35);
+    --radius:16px;
+    --shadow:0 0 40px rgba(0,0,0,0.6);
+  }
+  *{ box-sizing:border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 18px;
+  }
+  #app {
+    width: 96%;
+    max-width: 888px;
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 44px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  h1, h2 {
+    text-align: center;
+    font-weight: 666;
+    margin: 33px 24px;
+    letter-spacing:.02em;
+  }
+  .subtitle{
+    text-align:center;
+    color: var(--muted);
+    font-size: .92rem;
+    margin: 0 0 14px;
+  }
+
+  .panel{
+    background: var(--panel2);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px;
+    padding: 14px 14px 12px;
+    margin-top: 12px;
+  }
+
+  .row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+    font-size: .86rem;
+    white-space: nowrap;
+  }
+  .pill strong{ color: var(--ink); }
+
+  .btn{
+    background: var(--btn);
+    border: none;
+    color: #06101e;
+    font-weight: 800;
+    padding: 10px 14px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: transform .06s, background .18s;
+  }
+  .btn:hover{ background: var(--btn2); color: #eef6ff; }
+  .btn:active{ transform: translateY(1px); }
+  .btn.secondary{
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.22);
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .btn.secondary:hover{
+    border-color: rgba(78,161,255,0.55);
+    color: #e7f2ff;
+    background: rgba(78,161,255,0.10);
+  }
+  .btn.danger{
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.35);
+    color: #ffd1d1;
+    font-weight: 800;
+  }
+  .btn.danger:hover{ background: rgba(239,68,68,0.18); }
+
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap: wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+  select{
+    background: rgba(0,0,0,0.18);
+    color: var(--ink);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 11px;
+    padding: 8px 10px;
+    outline: none;
+  }
+  select:focus{
+    border-color: rgba(78,161,255,0.65);
+    box-shadow: 0 0 0 3px var(--ring);
+  }
+
+  .grid2{
+    display:grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 12px;
+    align-items:start;
+  }
+  @media (max-width: 920px){
+    .grid2{ grid-template-columns: 1fr; }
+  }
+
+  .chips{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 9px 10px;
+    border-radius: 999px;
+    background: var(--chip);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #dbe7ff;
+    cursor: pointer;
+    user-select: none;
+  }
+  .chip:hover{ background: var(--chip2); }
+  .chip input{ accent-color: var(--btn); }
+  .chip.off{
+    opacity: .55;
+    background: rgba(36,59,85,0.45);
+  }
+
+  .scenario {
+    font-size: 1.08rem;
+    line-height: 1.6;
+    margin: 14px 0 10px;
+    color: #eef3ff;
+  }
+  .choice {
+    background: #243b55;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    padding: 14px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align:left;
+    transition: background .18s, border .18s, transform .06s;
+    outline:none;
+  }
+  .choice:hover { background: #3a6073; border-color: rgba(78,161,255,0.55); }
+  .choice:active{ transform: translateY(1px); }
+  .choice.good{ border-color: rgba(34,197,94,0.55); }
+  .choice.bad{ border-color: rgba(239,68,68,0.55); }
+
+  .feedback {
+    margin-top: 12px;
+    font-style: italic;
+    opacity: 0.95;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.14);
+    color: #e7f2ff;
+    white-space: pre-wrap;
+  }
+
+  .smallNote{
+    margin-top: 10px;
+    color: var(--muted2);
+    font-size: .82rem;
+    line-height:1.35;
+  }
+
+  .hidden { display: none; }
+
+  .barWrap{
+    width:100%;
+    height: 10px;
+    border-radius: 999px;
+    overflow:hidden;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.08);
+    margin-top: 10px;
+  }
+  .bar{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, rgba(78,161,255,.95), rgba(34,197,94,.85));
+    transition: width .25s ease;
+  }
+
+  .calHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom: 10px;
+  }
+  .calTitle{
+    font-weight: 900;
+    letter-spacing:.02em;
+  }
+  .calNav{ display:flex; gap:8px; align-items:center; }
+  .calBtn{
+    padding: 7px 10px;
+    border-radius: 11px;
+    border:1px solid rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.14);
+    color: var(--ink);
+    cursor:pointer;
+  }
+  .calBtn:hover{ border-color: rgba(78,161,255,0.55); }
+  .calGrid{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+  .dow{
+    color: var(--muted);
+    font-size: .78rem;
+    text-align:center;
+    padding: 4px 0 0;
+  }
+  .day{
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 8px 8px 10px;
+    min-height: 54px;
+    cursor:pointer;
+    position:relative;
+  }
+  .day:hover{ border-color: rgba(78,161,255,0.45); }
+  .day.muted{ opacity:.45; cursor:default; }
+  .dayNum{ font-size: .9rem; font-weight: 900; }
+  .dot{
+    position:absolute;
+    right: 10px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(168,179,199,.38);
+    border: 1px solid rgba(168,179,199,.22);
+  }
+  .day.done .dot{
+    background: rgba(34,197,94,.85);
+    border-color: rgba(34,197,94,.45);
+  }
+  .day.today{
+    border-color: rgba(78,161,255,.65);
+    box-shadow: 0 0 0 3px rgba(78,161,255,0.16);
+  }
+  .miniScore{
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: .78rem;
+    line-height:1.1;
+  }
+  .calInfo{
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.14);
+    color: #dbe7ff;
+    font-size: .88rem;
+    line-height: 1.35;
+    min-height: 44px;
+  }
+
+  .reviewItem{
+    padding: 12px;
+    border-radius: 12px;
+    border:1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.12);
+    margin-bottom: 10px;
+  }
+  .reviewQ{ font-weight: 900; margin-bottom: 6px; line-height: 1.25; }
+  .tag{
+    display:inline-block;
+    font-size:.75rem;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,0.18);
+    color: var(--muted);
+    margin-left: 8px;
+  }
+  .ansLine{ margin: 4px 0; color: #dbe7ff; font-size:.92rem; }
+  .ansLine b{ color: var(--ink); }
+  .ok{ color: #86efac; }
+  .no{ color: #fca5a5; }
+</style>
+</head>
+
+<body>
+<div id="app">
+  <h1>Mindscape</h1>
+  <div class="subtitle">Daily Mind Skills Scenarios · Categories · Difficulty · <b>Belief Distributions</b></div>
+
+  <!-- HOME -->
+  <div id="homePanel" class="panel">
+    <div class="row">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <span class="pill" id="statLine">Loading…</span>
+        <span class="pill" id="streakLine">Streak: —</span>
+        <span class="pill" id="skillLine">Belief: —</span>
+        <span class="pill" id="engineLine">Engine: —</span>
+      </div>
+      <div class="controls">
+        <button id="dailyBtn" class="btn">Start Today’s Workout</button>
+        <button id="resumeBtn" class="btn secondary hidden">Resume</button>
+        <button id="resetBtn" class="btn danger">Reset Data</button>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:12px;">
+      <!-- Left: Settings -->
+      <div class="panel" style="margin:0;">
+        <div class="row">
+          <span class="pill"><strong>Custom Session</strong></span>
+          <span class="pill" title="Keyboard: 1–4 choices · N next · Esc home">Keyboard: 1–4 · N · Esc</span>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <label class="pill" title="Scenes per session">
+            Scenes
+            <select id="countSel" aria-label="Scene count">
+              <option value="6">6</option>
+              <option value="10" selected>10</option>
+              <option value="12">12</option>
+              <option value="15">15</option>
+            </select>
+          </label>
+
+          <label class="pill" title="Guided shows insights after each choice; Challenge reveals after the session">
+            Mode
+            <select id="modeSel" aria-label="Mode">
+              <option value="guided" selected>Guided</option>
+              <option value="challenge">Challenge</option>
+            </select>
+          </label>
+
+          <label class="pill" title="Starting difficulty (used as initial target if Adaptive is ON)">
+            Start
+            <select id="startDiffSel" aria-label="Start difficulty">
+              <option value="1">Easy</option>
+              <option value="2" selected>Medium</option>
+              <option value="3">Hard</option>
+            </select>
+          </label>
+
+          <label class="pill" title="Adaptive updates your belief distribution by category">
+            <input id="adaptiveChk" type="checkbox" checked style="accent-color:var(--btn);transform:translateY(1px);" />
+            Adaptive
+          </label>
+
+          <label class="pill" title="Monte Carlo simulates future scene paths to pick the best next scene">
+            <input id="mcChk" type="checkbox" checked style="accent-color:var(--btn);transform:translateY(1px);" />
+            Monte Carlo
+          </label>
+
+          <button id="startBtn" class="btn secondary">Start Custom</button>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <label class="pill" title="How many Monte Carlo rollouts per decision (higher = smarter, slower)">
+            Rollouts
+            <select id="mcRolloutsSel" aria-label="MC rollouts">
+              <option value="30">30</option>
+              <option value="60" selected>60</option>
+              <option value="90">90</option>
+              <option value="120">120</option>
+            </select>
+          </label>
+
+          <label class="pill" title="How many steps ahead to simulate (capped by remaining scenes)">
+            Horizon
+            <select id="mcHorizonSel" aria-label="MC horizon">
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+            </select>
+          </label>
+
+          <label class="pill" title="What the Monte Carlo engine optimizes for">
+            Goal
+            <select id="mcGoalSel" aria-label="MC goal">
+              <option value="mastery" selected>Mastery</option>
+              <option value="flow">70% Flow</option>
+              <option value="stability">Stability</option>
+              <option value="infogain">Info Gain</option>
+            </select>
+          </label>
+
+          <label class="pill" title="Exploration: chance to pick a near-best option (adds variety)">
+            Explore
+            <select id="mcExploreSel" aria-label="MC exploration">
+              <option value="0.00">0%</option>
+              <option value="0.05" selected>5%</option>
+              <option value="0.10">10%</option>
+              <option value="0.15">15%</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="chips" id="catChips"></div>
+
+        <div class="smallNote">
+          Mindscape is a reflection + skills sandbox (not diagnosis or therapy). It tracks practice signals, not traits.
+        </div>
+
+        <div class="smallNote" id="cloudLine">Internal Cloud: …</div>
+      </div>
+
+      <!-- Right: Calendar -->
+      <div class="panel" style="margin:0;">
+        <div class="calHeader">
+          <div class="calTitle" id="calTitle">Calendar</div>
+          <div class="calNav">
+            <button class="calBtn" id="prevMonthBtn">←</button>
+            <button class="calBtn" id="todayBtn">Today</button>
+            <button class="calBtn" id="nextMonthBtn">→</button>
+          </div>
+        </div>
+
+        <div class="calGrid" id="calDow"></div>
+        <div class="calGrid" id="calGrid"></div>
+        <div class="calInfo" id="calInfo">Click a day to view workout details.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAY -->
+  <div id="playPanel" class="panel hidden">
+    <div class="row">
+      <span class="pill" id="progressPill">Scene 1 / 10</span>
+      <div class="controls">
+        <button id="homeBtn" class="btn secondary">Home</button>
+        <button id="nextBtn" class="btn hidden">Next</button>
+      </div>
+    </div>
+
+    <div class="barWrap" aria-hidden="true"><div id="bar" class="bar"></div></div>
+
+    <div class="row" style="margin-top:10px;">
+      <span class="pill" id="sceneMeta">Category · Difficulty</span>
+      <span class="pill" id="adaptMeta">Belief: —</span>
+      <span class="pill" id="mcMeta">MC: —</span>
+    </div>
+
+    <h2 id="sceneTitle" style="margin-top:14px;"></h2>
+    <div id="scenario" class="scenario"></div>
+    <div id="choices"></div>
+
+    <div id="feedback" class="feedback hidden"></div>
+
+    <div class="row" style="margin-top:12px;">
+      <div class="controls" style="justify-content:flex-start;">
+        <button class="btn secondary" id="groundBtn">Ground</button>
+        <button class="btn secondary" id="pauseBtn">Pause</button>
+      </div>
+      <span class="pill" id="modeHint">Guided mode shows insights after each choice.</span>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultPanel" class="panel hidden">
+    <div class="row">
+      <h2 style="margin:0;">Session Complete</h2>
+      <span class="pill" id="resultMeta">—</span>
+    </div>
+    <div id="scoreText" class="scenario" style="margin:10px 0 0;"></div>
+    <div class="controls" style="justify-content:flex-start;margin-top:12px;">
+      <button id="reviewBtn" class="btn secondary">Review</button>
+      <button id="retryBtn" class="btn secondary">Retry Missed</button>
+      <button id="newBtn" class="btn">New Session</button>
+      <button id="homeBtn2" class="btn secondary">Home</button>
+    </div>
+  </div>
+
+  <!-- REVIEW -->
+  <div id="reviewPanel" class="panel hidden">
+    <div class="row">
+      <h2 style="margin:0;">Review</h2>
+      <div class="controls">
+        <button id="reviewHomeBtn" class="btn secondary">Home</button>
+        <button id="reviewNewBtn" class="btn">New Session</button>
+      </div>
+    </div>
+    <div id="reviewList" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   INTERNAL CLOUD
+========================= */
+const Cloud = {
+  dir: 'mindscape_psychology',
+  key(k){ return this.dir + ':' + k; },
+  save(k,v){ try{ localStorage.setItem(this.key(k), JSON.stringify(v)); }catch(e){} },
+  load(k,f=null){ try{ const x = localStorage.getItem(this.key(k)); return x ? JSON.parse(x) : f; }catch(e){ return f; } },
+  del(k){ try{ localStorage.removeItem(this.key(k)); }catch(e){} },
+  listKeys(){
+    try{
+      const pref = this.dir + ':';
+      const out = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && k.startsWith(pref)) out.push(k.slice(pref.length));
+      }
+      out.sort();
+      return out;
+    }catch(e){ return []; }
+  },
+  nuke(){ this.listKeys().forEach(k=>this.del(k)); }
+};
+
+/* =========================
+   HELPERS
+========================= */
+const CATS = ['Neuro','Clinical','Social','Research Methods'];
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function ymd(d){ const dt=new Date(d); return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`; }
+function todayKey(){ return ymd(new Date()); }
+function addDays(dateObj, days){ const d=new Date(dateObj); d.setDate(d.getDate()+days); return d; }
+function monthName(m){ return ['January','February','March','April','May','June','July','August','September','October','November','December'][m]; }
+function nowISO(){ return new Date().toISOString(); }
+function sigmoid(x){ return 1/(1+Math.exp(-x)); }
+function diffLabel(d){ return d<=1 ? 'Easy' : d>=3 ? 'Hard' : 'Medium'; }
+function fmt(n, d=2){ return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toFixed(d); }
+
+/* =========================
+   BELIEF DISTRIBUTIONS (mu,var) in ability space [1..3]
+   - EKF-style update with logistic observation
+========================= */
+const MODEL = {
+  A: 1.35,         // discrimination
+  R: 0.10,         // measurement noise
+  Q: 0.004,        // small process noise (prevents var collapse)
+  VAR_MIN: 0.025,
+  VAR_MAX: 0.60
+};
+
+function pFromMu(mu, d){ return clamp(sigmoid(MODEL.A*(mu - d)), 0.05, 0.95); }
+function sigmaFromVar(v){ return Math.sqrt(Math.max(v, 0)); }
+
+function ekfUpdate(state, d, y, gain=1.0){
+  // state: {mu,var}
+  const mu = state.mu;
+  const v  = clamp(state.var, MODEL.VAR_MIN, MODEL.VAR_MAX);
+
+  const p = pFromMu(mu, d);
+  const H = MODEL.A * p * (1 - p); // derivative wrt mu
+
+  const S = (H*H)*v + MODEL.R;
+  const K = (v*H) / S;
+
+  const mu2 = clamp(mu + gain*K*(y - p), 1, 3);
+  let v2 = (1 - gain*K*H)*v + MODEL.Q;
+  v2 = clamp(v2, MODEL.VAR_MIN, MODEL.VAR_MAX);
+
+  state.mu = mu2;
+  state.var = v2;
+
+  return {p, H, K, S};
+}
+
+function expectedIG(state, d){
+  // expected reduction in variance from seeing an item at difficulty d
+  const mu = state.mu;
+  const v  = clamp(state.var, MODEL.VAR_MIN, MODEL.VAR_MAX);
+  const p  = pFromMu(mu, d);
+  const H  = MODEL.A * p * (1 - p);
+  const postVar = 1 / ( (1/v) + (H*H)/MODEL.R );
+  const ig = 0.5 * Math.log(v / postVar); // nats
+  return clamp(ig, 0, 10);
+}
+
+/* =========================
+   STORAGE KEYS
+========================= */
+const K = {
+  STATS: 'stats_v2',
+  LAST: 'last_v2',
+  HISTORY: 'history_v2',
+  ACTIVE: 'active_session_v2',
+  WORKOUTS: 'daily_workouts_v2',
+  SKILL: 'belief_model_v2',
+  SETTINGS: 'ui_settings_v2'
+};
+
+function defaultStats(){ return { best: 0, sessions: 0, scoreSum: 0, totalScenes: 0, lastAt: null }; }
+
+function defaultBeliefModel(){
+  const cats = {};
+  CATS.forEach(c=>cats[c]={mu:2.0, var:0.16});
+  return { overall:{mu:2.0, var:0.16}, cats, updatedAt:null };
+}
+
+function getStats(){ return Cloud.load(K.STATS, defaultStats()); }
+function setStats(s){ Cloud.save(K.STATS, s); }
+
+function getBeliefModel(){
+  const m = Cloud.load(K.SKILL, defaultBeliefModel());
+  // defensive hydration
+  if(!m.overall) m.overall = {mu:2.0, var:0.16};
+  if(!m.cats) m.cats = {};
+  CATS.forEach(c=>{
+    if(!m.cats[c]) m.cats[c] = {mu:2.0, var:0.16};
+    if(typeof m.cats[c].mu !== 'number') m.cats[c].mu = 2.0;
+    if(typeof m.cats[c].var !== 'number') m.cats[c].var = 0.16;
+  });
+  if(typeof m.overall.mu !== 'number') m.overall.mu = 2.0;
+  if(typeof m.overall.var !== 'number') m.overall.var = 0.16;
+  return m;
+}
+function setBeliefModel(m){ Cloud.save(K.SKILL, m); }
+
+function loadWorkouts(){ return Cloud.load(K.WORKOUTS, {}); }
+
+/* =========================
+   SCENES
+========================= */
+const SCENES = [
+  { cat:'Social', d:2, title:"The Unfinished Signal",
+    text:"A message arrives and ends earlier than expected. Your mind starts filling in the blanks.",
+    best:2,
+    explain:"Skillful responses test reality, reduce assumptions, and protect connection.",
+    choices:[
+      { text:"Assume something is wrong.", v:0.20, insight:"Mind-reading can amplify uncertainty." },
+      { text:"React immediately to relieve tension.", v:0.25, insight:"Urgency can increase misfires." },
+      { text:"Ask for clarification with warmth.", v:0.95, insight:"Reality-testing + connection." },
+      { text:"Distract yourself to avoid thinking about it.", v:0.40, insight:"Avoidance can keep uncertainty unresolved." }
+    ]
+  },
+  { cat:'Clinical', d:2, title:"The Inner Narrator",
+    text:"Multiple interpretations compete for your attention. One is harsher than the others.",
+    best:1,
+    explain:"Flexibility widens options. The goal is not forced positivity—just accurate range.",
+    choices:[
+      { text:"The negative one feels most believable.", v:0.25, insight:"Negativity bias under stress is common." },
+      { text:"Several explanations could be true.", v:0.90, insight:"Cognitive flexibility reduces harsh certainty." },
+      { text:"Suspend judgment until more data arrives.", v:0.78, insight:"Distress tolerance: choose 'not yet'." }
+    ]
+  },
+  { cat:'Neuro', d:1, title:"The Body Signal",
+    text:"Your body reacts before your thoughts settle. You feel an energy spike.",
+    best:0,
+    explain:"Somatic regulation uses breath/posture/sensation to signal safety to the nervous system.",
+    choices:[
+      { text:"Notice breath—slow exhale, relax jaw.", v:0.92, insight:"Exhale lengthening can reduce arousal." },
+      { text:"Scan for tension and soften shoulders.", v:0.84, insight:"Body scans increase awareness and reduce autopilot." },
+      { text:"Go numb and push through.", v:0.30, insight:"Shutdown can protect but may disconnect needs." }
+    ]
+  },
+  { cat:'Social', d:2, title:"Distance & Closeness",
+    text:"You sense a choice between space and connection with someone important.",
+    best:2,
+    explain:"Secure patterns often include pausing, naming needs, and choosing intention over impulse.",
+    choices:[
+      { text:"Move closer quickly to feel safe.", v:0.45, insight:"Approach can be healthy unless driven by panic." },
+      { text:"Create distance to avoid discomfort.", v:0.40, insight:"Distance is okay—if chosen intentionally." },
+      { text:"Pause and choose one small, clear step.", v:0.88, insight:"Reflection turns reaction into response." }
+    ]
+  },
+  { cat:'Clinical', d:2, title:"The Loop",
+    text:"A thought repeats itself. Each time, it feels more convincing.",
+    best:1,
+    explain:"Interrupting rumination gently preserves dignity and restores choice.",
+    choices:[
+      { text:"Engage it and debate it for answers.", v:0.35, insight:"Debating can entrench the loop." },
+      { text:"Interrupt gently and redirect attention.", v:0.90, insight:"Skill: ‘Thank you mind—later.’" },
+      { text:"Ground physically: feet, hands, environment.", v:0.82, insight:"Somatic anchors reduce cognitive spin." }
+    ]
+  },
+  { cat:'Research Methods', d:2, title:"The Assumption Test",
+    text:"You notice a strong belief forming. You want to be accurate, not just certain.",
+    best:1,
+    explain:"Good reasoning searches for alternatives and disconfirming evidence.",
+    choices:[
+      { text:"Look mainly for confirming evidence.", v:0.30, insight:"Confirmation bias narrows perception." },
+      { text:"Look for alternatives (and what would change your mind).", v:0.92, insight:"This improves calibration." }
+    ]
+  },
+  { cat:'Social', d:2, title:"The Boundary Room",
+    text:"A need arises that involves another person. You feel the weight of asking.",
+    best:0,
+    explain:"Clear, respectful boundaries support relationships more than silent resentment.",
+    choices:[
+      { text:"Express it directly and kindly.", v:0.90, insight:"Assertiveness: clarity + care." },
+      { text:"Say nothing and hope it changes.", v:0.25, insight:"Suppression often leaks later." },
+      { text:"Soften it indirectly until it’s unclear.", v:0.40, insight:"Appeasement obscures needs." }
+    ]
+  },
+  { cat:'Neuro', d:2, title:"Stress Spike",
+    text:"Time pressure increases internal noise. Your body wants to move fast.",
+    best:2,
+    explain:"Pausing briefly can increase speed overall by reducing errors and reactivity.",
+    choices:[
+      { text:"Push through with intensity.", v:0.45, insight:"Can spike errors if arousal is too high." },
+      { text:"Withdraw and avoid the task entirely.", v:0.30, insight:"Flight can reinforce fear." },
+      { text:"Pause: one breath + one next step.", v:0.88, insight:"Micro-regulation improves executive control." }
+    ]
+  },
+  { cat:'Research Methods', d:3, title:"Reframing Window",
+    text:"You’re offered different interpretations of a moment that felt sharp.",
+    best:1,
+    explain:"Reappraisal doesn’t deny pain; it chooses the most useful, evidence-aligned frame.",
+    choices:[
+      { text:"This was a threat to me.", v:0.35, insight:"Threat framing increases vigilance." },
+      { text:"This may be neutral or incomplete information.", v:0.86, insight:"Neutral framing reduces escalation." },
+      { text:"This is information I can learn from.", v:0.82, insight:"Learning orientation keeps agency." }
+    ]
+  },
+  { cat:'Clinical', d:2, title:"Integration",
+    text:"You reflect on your responses overall. You want growth without shame.",
+    best:0,
+    explain:"Self-compassion sustains change. Shame usually shuts learning down.",
+    choices:[
+      { text:"Acknowledge protective strategies with compassion.", v:0.90, insight:"Then choose one tweak." },
+      { text:"Focus on what you did wrong.", v:0.22, insight:"Harsh review reduces flexibility." },
+      { text:"Name one small experiment for next time.", v:0.82, insight:"One actionable experiment is powerful." }
+    ]
+  },
+  { cat:'Neuro', d:2, title:"Tunnel Vision", text:"You notice attention narrowing onto one worry, crowding everything else out.",
+    best:2, explain:"Broadening attention reduces threat dominance and restores flexible thinking.",
+    choices:[
+      {text:"Stay locked on the worry until it resolves.", v:0.32, insight:"Fixation can increase danger-sense."},
+      {text:"Doom-scroll for certainty.", v:0.20, insight:"More input can inflate arousal."},
+      {text:"Name 5 things you see + soften your gaze.", v:0.88, insight:"Orienting + sensory expansion lowers threat."}
+    ]
+  },
+  { cat:'Social', d:3, title:"Repair Moment", text:"A conversation feels off. You want to repair without over-explaining.",
+    best:1, explain:"Repair uses clarity + humility, not self-erasure.",
+    choices:[
+      {text:"Pretend nothing happened.", v:0.35, insight:"Avoidance delays repair."},
+      {text:"Name it simply: ‘I think we missed each other—can we reset?’", v:0.92, insight:"Direct, calm repair is connective."},
+      {text:"Over-apologize until you feel forgiven.", v:0.38, insight:"Can shift into reassurance-seeking."}
+    ]
+  },
+  { cat:'Clinical', d:3, title:"Catastrophe Ladder", text:"Your mind jumps to the worst possible outcome and treats it as certain.",
+    best:1, explain:"Decatastrophizing asks: likely? and if worst, what’s my plan?",
+    choices:[
+      {text:"Treat the worst-case as a fact.", v:0.18, insight:"Certainty spikes fear and narrows options."},
+      {text:"Estimate probability + plan a reasonable next step.", v:0.92, insight:"Restores agency while respecting uncertainty."},
+      {text:"Suppress it and force positivity.", v:0.42, insight:"Forced positivity can backfire."}
+    ]
+  },
+  { cat:'Research Methods', d:2, title:"Signal vs Noise", text:"You receive one data point and feel ready to conclude the whole story.",
+    best:2, explain:"Strong reasoning separates single samples from trends.",
+    choices:[
+      {text:"Decide immediately from one example.", v:0.28, insight:"Small samples create unstable conclusions."},
+      {text:"Assume your first interpretation is accurate.", v:0.30, insight:"First impressions can be sticky."},
+      {text:"Ask: ‘What else would I need to know to be confident?’", v:0.90, insight:"Improves calibration and reduces bias."}
+    ]
+  },
+  { cat:'Neuro', d:1, title:"Micro-Reset", text:"You notice agitation. You have 10 seconds.",
+    best:0, explain:"Short resets can prevent long spirals.",
+    choices:[
+      {text:"Long exhale + unclench hands.", v:0.90, insight:"Fast, effective regulation."},
+      {text:"Ignore it and keep going.", v:0.45, insight:"Agitation can accumulate."},
+      {text:"Add more stimulation to drown it out.", v:0.25, insight:"Can increase arousal."}
+    ]
+  },
+  { cat:'Social', d:2, title:"Mind Reading Check", text:"You’re tempted to guess what someone meant without asking.",
+    best:1, explain:"Reality-testing strengthens trust and reduces unnecessary threat.",
+    choices:[
+      {text:"Assume they meant the worst.", v:0.20, insight:"Can create conflict where there was none."},
+      {text:"Ask a neutral question to clarify.", v:0.92, insight:"Calm clarification changes everything."},
+      {text:"Withdraw to avoid being hurt.", v:0.36, insight:"Prevents connection and learning."}
+    ]
+  },
+  { cat:'Clinical', d:2, title:"All-or-Nothing", text:"A task feels either ‘perfect’ or ‘worthless.’",
+    best:2, explain:"Flexible thinking allows ‘good enough’ progress and reduces avoidance.",
+    choices:[
+      {text:"If it can’t be perfect, don’t start.", v:0.22, insight:"Perfectionism fuels procrastination."},
+      {text:"Criticize yourself into action.", v:0.20, insight:"Harshness raises burnout."},
+      {text:"Choose a minimum viable step (10%).", v:0.90, insight:"Small steps are powerful."}
+    ]
+  },
+  { cat:'Research Methods', d:3, title:"Disconfirming Evidence", text:"You hold a strong belief. What do you do with evidence that conflicts?",
+    best:1, explain:"Integrity is updating beliefs when warranted.",
+    choices:[
+      {text:"Dismiss it because it’s uncomfortable.", v:0.25, insight:"Preserves certainty at cost of accuracy."},
+      {text:"Consider it seriously and update confidence.", v:0.92, insight:"Evidence-based reasoning in action."},
+      {text:"Only accept it if others agree.", v:0.40, insight:"Consensus can help but isn’t everything."}
+    ]
+  }
+];
+
+// expand pool gently
+while(SCENES.length < 28){
+  const base = SCENES[(SCENES.length % 12)];
+  const copy = JSON.parse(JSON.stringify(base));
+  copy.title = copy.title + " (Variant)";
+  copy.text = copy.text.replace(/\.$/, '') + " (another day, same pattern).";
+  SCENES.push(copy);
+}
+
+/* =========================
+   UI DOM
+========================= */
+const homePanel = document.getElementById('homePanel');
+const playPanel = document.getElementById('playPanel');
+const resultPanel = document.getElementById('resultPanel');
+const reviewPanel = document.getElementById('reviewPanel');
+
+const statLine = document.getElementById('statLine');
+const streakLine = document.getElementById('streakLine');
+const skillLine = document.getElementById('skillLine');
+const engineLine = document.getElementById('engineLine');
+const cloudLine = document.getElementById('cloudLine');
+
+const dailyBtn = document.getElementById('dailyBtn');
+const resumeBtn = document.getElementById('resumeBtn');
+const resetBtn = document.getElementById('resetBtn');
+const startBtn = document.getElementById('startBtn');
+
+const countSel = document.getElementById('countSel');
+const modeSel = document.getElementById('modeSel');
+const startDiffSel = document.getElementById('startDiffSel');
+const adaptiveChk = document.getElementById('adaptiveChk');
+const mcChk = document.getElementById('mcChk');
+const mcRolloutsSel = document.getElementById('mcRolloutsSel');
+const mcHorizonSel = document.getElementById('mcHorizonSel');
+const mcGoalSel = document.getElementById('mcGoalSel');
+const mcExploreSel = document.getElementById('mcExploreSel');
+const catChips = document.getElementById('catChips');
+
+const progressPill = document.getElementById('progressPill');
+const sceneMeta = document.getElementById('sceneMeta');
+const adaptMeta = document.getElementById('adaptMeta');
+const mcMeta = document.getElementById('mcMeta');
+
+const bar = document.getElementById('bar');
+const sceneTitle = document.getElementById('sceneTitle');
+const scenarioEl = document.getElementById('scenario');
+const choicesEl = document.getElementById('choices');
+const feedbackEl = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+
+const homeBtn = document.getElementById('homeBtn');
+const groundBtn = document.getElementById('groundBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const modeHint = document.getElementById('modeHint');
+
+const resultMeta = document.getElementById('resultMeta');
+const scoreText = document.getElementById('scoreText');
+const reviewBtn = document.getElementById('reviewBtn');
+const retryBtn = document.getElementById('retryBtn');
+const newBtn = document.getElementById('newBtn');
+const homeBtn2 = document.getElementById('homeBtn2');
+
+const reviewHomeBtn = document.getElementById('reviewHomeBtn');
+const reviewNewBtn = document.getElementById('reviewNewBtn');
+const reviewList = document.getElementById('reviewList');
+
+const calTitle = document.getElementById('calTitle');
+const calDow = document.getElementById('calDow');
+const calGrid = document.getElementById('calGrid');
+const calInfo = document.getElementById('calInfo');
+const prevMonthBtn = document.getElementById('prevMonthBtn');
+const nextMonthBtn = document.getElementById('nextMonthBtn');
+const todayBtn = document.getElementById('todayBtn');
+
+/* =========================
+   SETTINGS + STATE
+========================= */
+let selectedCats = new Set(CATS);
+let active = null;
+let locked = false;
+let paused = false;
+let viewYear = (new Date()).getFullYear();
+let viewMonth = (new Date()).getMonth();
+
+function loadSettings(){
+  const s = Cloud.load(K.SETTINGS, null);
+  if(!s) return;
+  if(s.count) countSel.value = s.count;
+  if(s.mode) modeSel.value = s.mode;
+  if(s.startDiff) startDiffSel.value = s.startDiff;
+  if(typeof s.adaptive === 'boolean') adaptiveChk.checked = s.adaptive;
+  if(typeof s.mc === 'boolean') mcChk.checked = s.mc;
+  if(s.rollouts) mcRolloutsSel.value = s.rollouts;
+  if(s.horizon) mcHorizonSel.value = s.horizon;
+  if(s.goal) mcGoalSel.value = s.goal;
+  if(s.explore) mcExploreSel.value = s.explore;
+  if(Array.isArray(s.cats) && s.cats.length){
+    selectedCats = new Set(s.cats.filter(c=>CATS.includes(c)));
+    if(selectedCats.size === 0) selectedCats = new Set(CATS);
+  }
+}
+function saveSettings(){
+  Cloud.save(K.SETTINGS, {
+    count: countSel.value,
+    mode: modeSel.value,
+    startDiff: startDiffSel.value,
+    adaptive: adaptiveChk.checked,
+    mc: mcChk.checked,
+    rollouts: mcRolloutsSel.value,
+    horizon: mcHorizonSel.value,
+    goal: mcGoalSel.value,
+    explore: mcExploreSel.value,
+    cats: [...selectedCats]
+  });
+}
+function updateCloudView(){
+  const keys = Cloud.listKeys();
+  cloudLine.textContent = `Internal Cloud · Directory: ${Cloud.dir} · Keys: ${keys.length ? keys.join(', ') : '(none)'}`;
+}
+
+/* =========================
+   STREAK + STATS
+========================= */
+function computeStreak(workouts){
+  let streak = 0;
+  let d = new Date();
+  while(true){
+    const k = ymd(d);
+    const rec = workouts[k];
+    if(rec && rec.dailyDone) { streak++; d = addDays(d, -1); }
+    else break;
+  }
+  return streak;
+}
+function computeLongestStreak(workouts){
+  const keys = Object.keys(workouts).filter(k=>workouts[k]?.dailyDone).sort();
+  if(!keys.length) return 0;
+  let best = 1, run = 1;
+  for(let i=1;i<keys.length;i++){
+    const prev = new Date(keys[i-1] + 'T00:00:00');
+    const cur  = new Date(keys[i]   + 'T00:00:00');
+    const diff = Math.round((cur - prev) / (24*60*60*1000));
+    if(diff === 1) run++;
+    else run = 1;
+    best = Math.max(best, run);
+  }
+  return best;
+}
+
+function renderTopLines(){
+  const s = getStats();
+  const last = Cloud.load(K.LAST, null);
+  const avg = s.totalScenes ? Math.round((s.scoreSum / s.totalScenes)*100) : 0;
+  statLine.textContent = `Best: ${s.best}% · Last: ${last ?? '—'}% · Sessions: ${s.sessions} · Avg Flex: ${avg}%`;
+
+  const workouts = loadWorkouts();
+  const streak = computeStreak(workouts);
+  const longest = computeLongestStreak(workouts);
+  streakLine.textContent = `Daily Streak: ${streak} · Longest: ${longest}`;
+
+  const m = getBeliefModel();
+  const oSig = sigmaFromVar(m.overall.var);
+  skillLine.textContent = `Belief μ±σ: ${fmt(m.overall.mu,2)}±${fmt(oSig,2)} · Neuro ${fmt(m.cats.Neuro.mu,2)}±${fmt(sigmaFromVar(m.cats.Neuro.var),2)}`;
+
+  const mcOn = (mcChk.checked && adaptiveChk.checked);
+  engineLine.textContent = mcOn
+    ? `Engine: Monte Carlo · ${mcRolloutsSel.value}×${mcHorizonSel.value} · ${mcGoalSel.value}`
+    : `Engine: ${adaptiveChk.checked ? 'Adaptive (Heuristic)' : 'Fixed'}`;
+}
+
+/* =========================
+   CATEGORY CHIPS
+========================= */
+function renderCatChips(){
+  catChips.innerHTML = '';
+  CATS.forEach(cat=>{
+    const label = document.createElement('label');
+    const on = selectedCats.has(cat);
+    label.className = 'chip ' + (on ? '' : 'off');
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = on;
+
+    cb.addEventListener('change', ()=>{
+      if(cb.checked) selectedCats.add(cat);
+      else selectedCats.delete(cat);
+      if(selectedCats.size === 0){
+        CATS.forEach(c=>selectedCats.add(c));
+      }
+      renderCatChips();
+      saveSettings();
+    });
+
+    const span = document.createElement('span');
+    span.textContent = cat;
+
+    label.appendChild(cb);
+    label.appendChild(span);
+    catChips.appendChild(label);
+  });
+}
+
+/* =========================
+   NAV
+========================= */
+function showHome(){
+  homePanel.classList.remove('hidden');
+  playPanel.classList.add('hidden');
+  resultPanel.classList.add('hidden');
+  reviewPanel.classList.add('hidden');
+
+  updateCloudView();
+  renderTopLines();
+  renderCalendar();
+
+  const saved = Cloud.load(K.ACTIVE, null);
+  if(saved && typeof saved.idx === 'number' && saved.idx < (saved.count ?? 10)){
+    resumeBtn.classList.remove('hidden');
+  } else {
+    resumeBtn.classList.add('hidden');
+  }
+
+  const workouts = loadWorkouts();
+  const t = todayKey();
+  dailyBtn.textContent = workouts[t]?.dailyDone ? 'Daily Workout Done · Practice Again' : 'Start Today’s Workout';
+}
+function showPlay(){
+  homePanel.classList.add('hidden');
+  playPanel.classList.remove('hidden');
+  resultPanel.classList.add('hidden');
+  reviewPanel.classList.add('hidden');
+}
+function showResults(){
+  homePanel.classList.add('hidden');
+  playPanel.classList.add('hidden');
+  resultPanel.classList.remove('hidden');
+  reviewPanel.classList.add('hidden');
+}
+function showReview(){
+  homePanel.classList.add('hidden');
+  playPanel.classList.add('hidden');
+  resultPanel.classList.add('hidden');
+  reviewPanel.classList.remove('hidden');
+}
+
+/* =========================
+   SESSION MODEL
+========================= */
+function currentMcConfig(forceOn=false){
+  const adaptiveOn = adaptiveChk.checked;
+  const mcOn = forceOn ? true : (mcChk.checked && adaptiveOn);
+  return {
+    enabled: mcOn,
+    rollouts: clamp(parseInt(mcRolloutsSel.value,10), 10, 200),
+    horizon: clamp(parseInt(mcHorizonSel.value,10), 2, 8),
+    goal: mcGoalSel.value,
+    explore: clamp(parseFloat(mcExploreSel.value), 0, 0.25)
+  };
+}
+
+function cloneBeliefModel(m){
+  const out = {
+    overall: {mu:m.overall.mu, var:m.overall.var},
+    cats: {}
+  };
+  CATS.forEach(c=>{
+    out.cats[c] = {mu:m.cats[c].mu, var:m.cats[c].var};
+  });
+  return out;
+}
+
+function createSession({count, mode, categories, adaptive, startDifficulty, isDaily, mc}){
+  const base = getBeliefModel();
+  const belief = cloneBeliefModel(base);
+
+  // if startDifficulty set, nudge initial mu (keep uncertainty)
+  if(adaptive){
+    const target = clamp(parseFloat(startDifficulty ?? belief.overall.mu), 1, 3);
+    belief.overall.mu = 0.65*belief.overall.mu + 0.35*target;
+    CATS.forEach(c=>{
+      belief.cats[c].mu = 0.65*belief.cats[c].mu + 0.35*target;
+    });
+  }
+
+  active = {
+    mode,
+    count: Math.min(count, SCENES.length),
+    categories: (categories && categories.length) ? categories : [...CATS],
+    adaptive: !!adaptive,
+    mc: {
+      enabled: !!(adaptive && mc && mc.enabled),
+      rollouts: mc?.rollouts ?? 60,
+      horizon: mc?.horizon ?? 5,
+      goal: mc?.goal ?? 'mastery',
+      explore: mc?.explore ?? 0.05
+    },
+    belief,
+    used: [],
+    picks: [],
+    idx: 0,
+    pointsSum: 0,
+    scoreSkillful: 0,
+    igSum: 0,
+    startedAt: nowISO(),
+    isDaily: !!isDaily,
+    day: todayKey()
+  };
+
+  paused = false;
+  locked = false;
+
+  Cloud.save(K.ACTIVE, active);
+  showPlay();
+  renderScene();
+}
+
+function saveActive(){ if(active) Cloud.save(K.ACTIVE, active); }
+function clearActive(){ Cloud.del(K.ACTIVE); }
+
+/* =========================
+   POOLS
+========================= */
+function poolCandidates(categories, usedSet){
+  const cats = new Set(categories);
+  const pool = [];
+  for(let i=0;i<SCENES.length;i++){
+    const s = SCENES[i];
+    if(!cats.has(s.cat)) continue;
+    if(usedSet && usedSet.has(i)) continue;
+    pool.push(i);
+  }
+  return pool;
+}
+function randomSample(arr, k){
+  if(arr.length <= k) return arr.slice();
+  const copy = arr.slice();
+  shuffle(copy);
+  return copy.slice(0,k);
+}
+
+/* Heuristic picker */
+function heuristicPick(simBelief, categories, usedSet){
+  const pool = poolCandidates(categories, usedSet);
+  if(!pool.length) return null;
+
+  // choose a weaker + more uncertain category more often
+  const weights = categories.map(cat=>{
+    const st = simBelief.cats[cat] || simBelief.overall;
+    const need = clamp(3.1 - st.mu, 0.2, 2.6);
+    const unc  = clamp(sigmaFromVar(st.var), 0.10, 0.80);
+    return {cat, w: need * (0.75 + unc)};
+  });
+  let total = weights.reduce((a,x)=>a+x.w,0);
+  let r = Math.random()*total;
+  let chosenCat = weights[0].cat;
+  for(const w of weights){ r -= w.w; if(r<=0){ chosenCat = w.cat; break; } }
+
+  let catPool = pool.filter(i=>SCENES[i].cat === chosenCat);
+  if(!catPool.length) catPool = pool;
+
+  const target = simBelief.overall.mu ?? 2.0;
+  catPool.sort((a,b)=>Math.abs(SCENES[a].d - target) - Math.abs(SCENES[b].d - target));
+  const top = catPool.slice(0, Math.min(8, catPool.length));
+  return top[Math.floor(Math.random()*top.length)];
+}
+
+/* =========================
+   MONTE CARLO (with Info Gain)
+========================= */
+function mcChooseNext(){
+  const usedSet = new Set(active.used.filter(x=>x!=null));
+  const pool = poolCandidates(active.categories, usedSet);
+  const basePool = pool.length ? pool : poolCandidates(active.categories, null);
+  if(!basePool.length) return null;
+
+  const candidates = randomSample(basePool, Math.min(12, basePool.length));
+  const R = clamp(parseInt(active.mc.rollouts,10), 10, 200);
+  const H = Math.min(clamp(parseInt(active.mc.horizon,10), 2, 8), active.count - active.idx);
+  const goal = active.mc.goal;
+
+  function rewardForStep(simBelief, scene){
+    const stO = simBelief.overall;
+    const stC = simBelief.cats[scene.cat] || simBelief.overall;
+
+    // Effective p uses a blend of overall + category means
+    const muEff = 0.65*stO.mu + 0.35*stC.mu;
+    const p = pFromMu(muEff, scene.d);
+
+    const igO = expectedIG(stO, scene.d);
+    const igC = expectedIG(stC, scene.d);
+    const ig = 0.55*igO + 0.45*igC; // nats
+
+    const flow = 1 - Math.abs(p - 0.70);
+    const learnZone = 1 - Math.abs(p - 0.62);
+
+    // normalize IG to roughly 0..1 range (typical ig ~ 0..0.35)
+    const igN = clamp(ig / 0.35, 0, 1);
+
+    if(goal === 'infogain'){
+      return 0.80*igN + 0.20*learnZone;
+    }
+    if(goal === 'flow'){
+      return 0.65*flow + 0.35*igN;
+    }
+    if(goal === 'stability'){
+      // prefer higher p and moderate IG (avoid huge swings)
+      return 0.70*p + 0.30*(1 - Math.abs(p - 0.78)) - 0.10*igN;
+    }
+    // mastery (default): success + learning zone + IG
+    return 0.35*p + 0.35*learnZone + 0.30*igN;
+  }
+
+  function simUpdate(simBelief, scene, y){
+    // update both overall and category with different gains
+    ekfUpdate(simBelief.overall, scene.d, y, 0.75);
+    if(!simBelief.cats[scene.cat]) simBelief.cats[scene.cat] = {mu:simBelief.overall.mu, var:simBelief.overall.var};
+    ekfUpdate(simBelief.cats[scene.cat], scene.d, y, 1.00);
+  }
+
+  function rolloutScore(firstIndex){
+    let total = 0;
+
+    for(let r=0;r<R;r++){
+      const simBelief = {
+        overall: {mu: active.belief.overall.mu, var: active.belief.overall.var},
+        cats: {}
+      };
+      CATS.forEach(c=>{
+        simBelief.cats[c] = {mu: active.belief.cats[c].mu, var: active.belief.cats[c].var};
+      });
+
+      const simUsed = new Set(usedSet);
+
+      for(let step=0; step<H; step++){
+        const idx = (step===0) ? firstIndex : heuristicPick(simBelief, active.categories, simUsed);
+        if(idx == null) break;
+        simUsed.add(idx);
+
+        const s = SCENES[idx];
+
+        // reward is expected (before outcome)
+        total += rewardForStep(simBelief, s);
+
+        // simulate outcome y ~ Bernoulli(p) (correct=1/0)
+        const muEff = 0.65*simBelief.overall.mu + 0.35*(simBelief.cats[s.cat]?.mu ?? simBelief.overall.mu);
+        const p = pFromMu(muEff, s.d);
+        const y = (Math.random() < p) ? 1 : 0;
+
+        simUpdate(simBelief, s, y);
+      }
+    }
+
+    return total / R;
+  }
+
+  const scored = candidates.map(i=>({i, s: rolloutScore(i)}));
+  scored.sort((a,b)=>b.s-a.s);
+
+  const eps = active.mc.explore ?? 0.05;
+  if(Math.random() < eps && scored.length > 1){
+    const top = scored.slice(0, Math.min(4, scored.length));
+    const minS = Math.min(...top.map(x=>x.s));
+    const w = top.map(x=>({i:x.i, w:(x.s-minS)+0.0001}));
+    const sum = w.reduce((a,x)=>a+x.w,0);
+    let rr = Math.random()*sum;
+    for(const x of w){ rr -= x.w; if(rr<=0) return x.i; }
+    return top[0].i;
+  }
+
+  return scored[0].i;
+}
+
+/* Choose/ensure current scene */
+function ensureSceneChosen(){
+  if(active.used[active.idx] != null) return;
+
+  const usedSet = new Set(active.used.filter(x=>x!=null));
+  let idx = null;
+
+  if(!active.adaptive){
+    idx = heuristicPick(active.belief, active.categories, usedSet);
+  } else if(active.mc.enabled){
+    idx = mcChooseNext();
+  } else {
+    idx = heuristicPick(active.belief, active.categories, usedSet);
+  }
+
+  if(idx == null){
+    const pool = poolCandidates(active.categories, usedSet);
+    idx = pool.length ? pool[Math.floor(Math.random()*pool.length)] : 0;
+  }
+
+  active.used[active.idx] = idx;
+  active.picks[active.idx] = null;
+  saveActive();
+}
+
+/* =========================
+   LEARNING UPDATES (belief + stored model)
+========================= */
+function updateBeliefAndStore(scene, y){
+  // session belief: bigger gains
+  ekfUpdate(active.belief.overall, scene.d, y, 0.85);
+  ekfUpdate(active.belief.cats[scene.cat], scene.d, y, 1.00);
+
+  // store belief model: smaller gains (long-term)
+  const m = getBeliefModel();
+  ekfUpdate(m.overall, scene.d, y, 0.35);
+  ekfUpdate(m.cats[scene.cat], scene.d, y, 0.45);
+  m.updatedAt = nowISO();
+  setBeliefModel(m);
+}
+
+/* =========================
+   RENDER
+========================= */
+function renderScene(){
+  if(!active) return;
+
+  locked = false;
+  paused = false;
+  pauseBtn.textContent = 'Pause';
+  nextBtn.classList.add('hidden');
+  feedbackEl.classList.add('hidden');
+  feedbackEl.textContent = '';
+
+  ensureSceneChosen();
+
+  const total = active.count;
+  const i = active.idx;
+  const s = SCENES[active.used[i]];
+
+  progressPill.textContent = `Scene ${i+1} / ${total} · ${active.isDaily ? 'Daily' : 'Custom'} · Mode: ${active.mode}`;
+  bar.style.width = `${Math.round((i/total)*100)}%`;
+
+  sceneMeta.textContent = `${s.cat} · ${diffLabel(s.d)}`;
+
+  // Effective p uses blend of mu
+  const stO = active.belief.overall;
+  const stC = active.belief.cats[s.cat];
+  const muEff = 0.65*stO.mu + 0.35*stC.mu;
+  const p = pFromMu(muEff, s.d);
+
+  const sigO = sigmaFromVar(stO.var);
+  const sigC = sigmaFromVar(stC.var);
+
+  const igO = expectedIG(stO, s.d);
+  const igC = expectedIG(stC, s.d);
+
+  adaptMeta.textContent =
+    `μ±σ O:${fmt(stO.mu,2)}±${fmt(sigO,2)} · ${s.cat}:${fmt(stC.mu,2)}±${fmt(sigC,2)} · P≈${Math.round(p*100)}%`;
+
+  if(active.adaptive && active.mc.enabled){
+    mcMeta.textContent = `MC ${active.mc.rollouts}×${Math.min(active.mc.horizon, active.count-active.idx)} · ${active.mc.goal} · IG≈${fmt(0.55*igO+0.45*igC,2)}`;
+  } else if(active.adaptive){
+    mcMeta.textContent = `Heuristic · IG≈${fmt(0.55*igO+0.45*igC,2)}`;
+  } else {
+    mcMeta.textContent = `Fixed`;
+  }
+
+  modeHint.textContent =
+    (active.mode === 'guided')
+      ? 'Guided mode shows insights after each choice.'
+      : 'Challenge mode reveals insights in Review.';
+
+  sceneTitle.textContent = s.title;
+  scenarioEl.textContent = s.text;
+
+  choicesEl.innerHTML = '';
+  s.choices.forEach((c, ci)=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = `${ci+1}. ${c.text}`;
+    btn.addEventListener('click', ()=>choose(ci));
+    choicesEl.appendChild(btn);
+  });
+
+  const prevPick = active.picks[i];
+  if(prevPick !== null && prevPick !== undefined){
+    locked = true;
+    paintChoice(prevPick);
+    nextBtn.classList.remove('hidden');
+    if(active.mode === 'guided') showInsightFor(prevPick);
+  }
+
+  saveActive();
+}
+
+function paintChoice(pickIdx){
+  const i = active.idx;
+  const s = SCENES[active.used[i]];
+  const btns = [...choicesEl.querySelectorAll('button')];
+  if(btns[s.best]) btns[s.best].classList.add('good');
+  if(pickIdx !== s.best && btns[pickIdx]) btns[pickIdx].classList.add('bad');
+}
+
+function showInsightFor(pickIdx){
+  const i = active.idx;
+  const s = SCENES[active.used[i]];
+  const choice = s.choices[pickIdx];
+
+  const v = clamp(choice?.v ?? 0.5, 0, 1);
+  const skillful = v >= 0.75;
+
+  const pre = skillful
+    ? "Noted. That choice increases flexibility and reduces unnecessary threat."
+    : "Noted. That choice makes sense as protection—here’s a skillful alternative you can try next time.";
+
+  const bestChoice = s.choices[s.best];
+  const extra =
+    `\n\nYour insight: ${choice?.insight || ''}` +
+    `\nSkill (scene): ${s.explain || ''}` +
+    `\nMost flexible option: ${bestChoice?.text || ''}` +
+    `\nWhy: ${bestChoice?.insight || ''}`;
+
+  feedbackEl.textContent = pre + extra;
+  feedbackEl.classList.remove('hidden');
+}
+
+function choose(pickIdx){
+  if(!active || locked || paused) return;
+  locked = true;
+
+  const i = active.idx;
+  const s = SCENES[active.used[i]];
+  const choice = s.choices[pickIdx];
+  const v = clamp(choice?.v ?? 0.5, 0, 1);
+
+  // treat v as probabilistic "correctness" signal y in [0..1]
+  const y = v;
+
+  // expected IG BEFORE update (for session summary)
+  const ig = 0.55*expectedIG(active.belief.overall, s.d) + 0.45*expectedIG(active.belief.cats[s.cat], s.d);
+  active.igSum += ig;
+
+  active.picks[i] = pickIdx;
+  active.pointsSum += v;
+  if(v >= 0.75) active.scoreSkillful += 1;
+
+  paintChoice(pickIdx);
+
+  if(active.adaptive){
+    updateBeliefAndStore(s, y);
+  }
+
+  if(active.mode === 'guided'){
+    showInsightFor(pickIdx);
+  } else {
+    feedbackEl.textContent = "Noted. (Insights will be available in Review.)";
+    feedbackEl.classList.remove('hidden');
+  }
+
+  choicesEl.querySelectorAll('button').forEach(b=>b.disabled = true);
+  nextBtn.classList.remove('hidden');
+  saveActive();
+}
+
+function nextStep(){
+  if(!active) return;
+  active.idx++;
+  if(active.idx < active.count){
+    saveActive();
+    renderScene();
+  } else {
+    endSession();
+  }
+}
+
+function endSession(){
+  if(!active) return;
+  active.finishedAt = nowISO();
+
+  const flexPct = Math.round((active.pointsSum / active.count) * 100);
+  const igAvg = active.count ? (active.igSum / active.count) : 0;
+
+  // stats
+  const s = getStats();
+  s.sessions += 1;
+  s.best = Math.max(s.best, flexPct);
+  s.scoreSum += active.pointsSum;
+  s.totalScenes += active.count;
+  s.lastAt = active.finishedAt;
+  setStats(s);
+  Cloud.save(K.LAST, flexPct);
+
+  // history
+  const hist = Cloud.load(K.HISTORY, []);
+  hist.unshift({
+    at: active.finishedAt,
+    mode: active.mode,
+    flexPct,
+    igAvg,
+    skillful: active.scoreSkillful,
+    count: active.count,
+    used: active.used,
+    picks: active.picks,
+    categories: active.categories,
+    adaptive: active.adaptive,
+    mc: active.mc,
+    isDaily: active.isDaily
+  });
+  Cloud.save(K.HISTORY, hist.slice(0,25));
+
+  // daily workout record
+  const workouts = loadWorkouts();
+  const k = active.day || todayKey();
+  const rec = workouts[k] || {dailyDone:false, sessions:0, best:0, last:0, total:0, updatedAt:null};
+  rec.sessions += 1;
+  rec.best = Math.max(rec.best || 0, flexPct);
+  rec.last = flexPct;
+  rec.total = active.count;
+  rec.updatedAt = active.finishedAt;
+  if(active.isDaily) rec.dailyDone = true;
+  workouts[k] = rec;
+  Cloud.save(K.WORKOUTS, workouts);
+
+  const eng = active.adaptive ? (active.mc.enabled ? `Monte Carlo · ${active.mc.goal}` : 'Adaptive (Heuristic)') : 'Fixed';
+  resultMeta.textContent = `Flex: ${flexPct}% · Skillful: ${active.scoreSkillful}/${active.count} · IG(avg): ${fmt(igAvg,2)} · ${eng} · ${active.isDaily ? 'Daily' : 'Custom'}`;
+
+  scoreText.textContent =
+    `Your flex score is ${flexPct}%. “Skillful” picks (v≥0.75): ${active.scoreSkillful}/${active.count}.\n` +
+    `Average information gain per scene ≈ ${fmt(igAvg,2)} (uncertainty reduced as you practice).\n` +
+    `Review shows alternatives and the skill behind each scene.`;
+
+  clearActive();
+  showResults();
+}
+
+/* =========================
+   REVIEW + RETRY MISSED
+========================= */
+function loadLast(){
+  const hist = Cloud.load(K.HISTORY, []);
+  return (hist && hist.length) ? hist[0] : null;
+}
+function buildReview(){
+  const last = loadLast();
+  reviewList.innerHTML = '';
+  if(!last){
+    reviewList.innerHTML = `<div class="smallNote">No completed session yet. Start a session first.</div>`;
+    return;
+  }
+
+  for(let i=0;i<last.count;i++){
+    const si = last.used[i];
+    const s = SCENES[si];
+    const pick = last.picks[i];
+    const choice = (pick!=null) ? s.choices[pick] : null;
+
+    const v = clamp(choice?.v ?? 0.0, 0, 1);
+    const skillful = v >= 0.75;
+    const bestChoice = s.choices[s.best];
+
+    const wrap = document.createElement('div');
+    wrap.className = 'reviewItem';
+
+    const qDiv = document.createElement('div');
+    qDiv.className = 'reviewQ';
+    qDiv.textContent = s.title;
+
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.textContent = skillful ? 'Skillful' : 'Practice';
+    qDiv.appendChild(tag);
+
+    const meta = document.createElement('div');
+    meta.className = 'ansLine';
+    meta.innerHTML = `<b>${s.cat}</b> · ${diffLabel(s.d)} · Flex ${Math.round(v*100)}%`;
+
+    const your = document.createElement('div');
+    your.className = 'ansLine';
+    your.innerHTML = `Your choice: <b class="${skillful?'ok':'no'}">${pick==null?'(none)':(s.choices[pick].text)}</b>`;
+
+    const best = document.createElement('div');
+    best.className = 'ansLine';
+    best.innerHTML = `Most flexible option: <b>${bestChoice.text}</b>`;
+
+    const exp = document.createElement('div');
+    exp.className = 'ansLine';
+    exp.style.marginTop = '8px';
+    exp.textContent = `Skill: ${s.explain || ''}  •  Why: ${bestChoice.insight || ''}`;
+
+    wrap.appendChild(qDiv);
+    wrap.appendChild(meta);
+    wrap.appendChild(your);
+    wrap.appendChild(best);
+    wrap.appendChild(exp);
+    reviewList.appendChild(wrap);
+  }
+}
+
+function retryMissed(){
+  const last = loadLast();
+  if(!last){ startCustom(); return; }
+
+  const missed = [];
+  for(let i=0;i<last.count;i++){
+    const si = last.used[i];
+    const s = SCENES[si];
+    const pick = last.picks[i];
+    const v = clamp((pick!=null ? s.choices[pick]?.v : 0), 0, 1);
+    if(v < 0.75) missed.push(si);
+  }
+  if(!missed.length){ startCustom(); return; }
+
+  createSession({
+    count: Math.min(parseInt(countSel.value,10), missed.length),
+    mode: modeSel.value,
+    categories: [...selectedCats],
+    adaptive: adaptiveChk.checked,
+    startDifficulty: parseFloat(startDiffSel.value),
+    isDaily: false,
+    mc: currentMcConfig()
+  });
+
+  active.used = shuffle(missed.slice()).slice(0, active.count);
+  active.picks = Array(active.count).fill(null);
+  active.idx = 0;
+  active.pointsSum = 0;
+  active.scoreSkillful = 0;
+  active.igSum = 0;
+  saveActive();
+  renderScene();
+}
+
+/* =========================
+   DAILY + CUSTOM START
+========================= */
+function startDaily(){
+  createSession({
+    count: 10,
+    mode: modeSel.value,
+    categories: [...selectedCats],
+    adaptive: true,
+    startDifficulty: parseFloat(startDiffSel.value),
+    isDaily: true,
+    mc: currentMcConfig(true)
+  });
+}
+function startCustom(){
+  createSession({
+    count: parseInt(countSel.value,10),
+    mode: modeSel.value,
+    categories: [...selectedCats],
+    adaptive: adaptiveChk.checked,
+    startDifficulty: parseFloat(startDiffSel.value),
+    isDaily: false,
+    mc: currentMcConfig()
+  });
+}
+
+/* =========================
+   SAFETY CONTROLS
+========================= */
+function ground(){
+  feedbackEl.textContent =
+    "Grounding: feel your feet, soften your gaze, name 3 things you see, and take one slow exhale.";
+  feedbackEl.classList.remove('hidden');
+}
+function togglePause(){
+  paused = !paused;
+  pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+  if(paused){
+    feedbackEl.textContent = "Paused. Take your time. You can resume whenever you’re ready.";
+    feedbackEl.classList.remove('hidden');
+    choicesEl.querySelectorAll('button').forEach(b=>b.disabled = true);
+  } else {
+    feedbackEl.textContent = "Resumed. Choose the response that feels most workable right now.";
+    feedbackEl.classList.remove('hidden');
+    if(!locked) choicesEl.querySelectorAll('button').forEach(b=>b.disabled = false);
+  }
+}
+
+/* =========================
+   CALENDAR
+========================= */
+function renderCalendar(){
+  const workouts = loadWorkouts();
+  calTitle.textContent = `${monthName(viewMonth)} ${viewYear}`;
+
+  calDow.innerHTML = '';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{
+    const el = document.createElement('div');
+    el.className = 'dow';
+    el.textContent = d;
+    calDow.appendChild(el);
+  });
+
+  calGrid.innerHTML = '';
+  const first = new Date(viewYear, viewMonth, 1);
+  const startDow = first.getDay();
+  const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
+
+  for(let i=0;i<startDow;i++){
+    const cell = document.createElement('div');
+    cell.className = 'day muted';
+    cell.innerHTML = `<div class="dayNum"> </div>`;
+    calGrid.appendChild(cell);
+  }
+
+  const today = todayKey();
+  for(let day=1; day<=daysInMonth; day++){
+    const dateObj = new Date(viewYear, viewMonth, day);
+    const key = ymd(dateObj);
+    const rec = workouts[key];
+
+    const cell = document.createElement('div');
+    cell.className = 'day';
+    if(key === today) cell.classList.add('today');
+    if(rec && rec.dailyDone) cell.classList.add('done');
+
+    cell.innerHTML = `
+      <div class="dayNum">${day}</div>
+      <div class="dot" aria-hidden="true"></div>
+      <div class="miniScore">${rec ? (rec.dailyDone ? `Daily ✓ · Best ${rec.best}%` : `Practice · Best ${rec.best}%`) : ''}</div>
+    `;
+
+    cell.addEventListener('click', ()=>{
+      const r = workouts[key];
+      if(!r){
+        calInfo.textContent = `${key}: No workouts logged.`;
+      } else {
+        calInfo.textContent =
+          `${key}: ${r.dailyDone ? 'Daily workout completed ✅' : 'No daily workout'} · ` +
+          `Sessions: ${r.sessions} · Best: ${r.best}% · Last: ${r.last}%`;
+      }
+    });
+
+    calGrid.appendChild(cell);
+  }
+}
+
+/* =========================
+   EVENTS
+========================= */
+dailyBtn.addEventListener('click', ()=>{ saveSettings(); startDaily(); });
+startBtn.addEventListener('click', ()=>{ saveSettings(); startCustom(); });
+
+resumeBtn.addEventListener('click', ()=>{
+  const saved = Cloud.load(K.ACTIVE, null);
+  if(saved && typeof saved.idx === 'number'){
+    active = saved;
+
+    // Defensive hydration
+    active.categories = active.categories && active.categories.length ? active.categories : [...CATS];
+    if(!active.belief) active.belief = cloneBeliefModel(getBeliefModel());
+    if(!active.belief.overall) active.belief.overall = {mu:2.0, var:0.16};
+    if(!active.belief.cats) active.belief.cats = {};
+    CATS.forEach(c=>{
+      if(!active.belief.cats[c]) active.belief.cats[c] = {mu:2.0, var:0.16};
+    });
+
+    active.count = active.count || (active.used ? active.used.length : 10);
+    active.mc = active.mc || {enabled:false, rollouts:60, horizon:5, goal:'mastery', explore:0.05};
+    active.used = active.used || [];
+    active.picks = active.picks || [];
+    active.pointsSum = active.pointsSum || 0;
+    active.scoreSkillful = active.scoreSkillful || 0;
+    active.igSum = active.igSum || 0;
+
+    paused = false;
+    locked = false;
+
+    showPlay();
+    renderScene();
+  }
+});
+
+resetBtn.addEventListener('click', ()=>{
+  if(confirm('Reset Mindscape local data (stats, streak, calendar, history, belief model, active session)?')){
+    Cloud.nuke();
+    active = null;
+    selectedCats = new Set(CATS);
+    renderCatChips();
+    const d = new Date();
+    viewYear = d.getFullYear();
+    viewMonth = d.getMonth();
+    showHome();
+  }
+});
+
+homeBtn.addEventListener('click', ()=> showHome());
+homeBtn2.addEventListener('click', ()=> showHome());
+groundBtn.addEventListener('click', ()=> ground());
+pauseBtn.addEventListener('click', ()=> togglePause());
+nextBtn.addEventListener('click', ()=> nextStep());
+
+newBtn.addEventListener('click', ()=>{ saveSettings(); startCustom(); });
+reviewBtn.addEventListener('click', ()=>{ buildReview(); showReview(); });
+retryBtn.addEventListener('click', ()=> retryMissed());
+reviewHomeBtn.addEventListener('click', ()=> showHome());
+reviewNewBtn.addEventListener('click', ()=>{ saveSettings(); startCustom(); });
+
+prevMonthBtn.addEventListener('click', ()=>{
+  viewMonth--;
+  if(viewMonth < 0){ viewMonth = 11; viewYear--; }
+  renderCalendar();
+});
+nextMonthBtn.addEventListener('click', ()=>{
+  viewMonth++;
+  if(viewMonth > 11){ viewMonth = 0; viewYear++; }
+  renderCalendar();
+});
+todayBtn.addEventListener('click', ()=>{
+  const d = new Date();
+  viewYear = d.getFullYear();
+  viewMonth = d.getMonth();
+  renderCalendar();
+  calInfo.textContent = 'Click a day to view workout details.';
+});
+
+[countSel, modeSel, startDiffSel, adaptiveChk, mcChk, mcRolloutsSel, mcHorizonSel, mcGoalSel, mcExploreSel].forEach(el=>{
+  el.addEventListener('change', ()=>{
+    if(!adaptiveChk.checked) mcChk.checked = false;
+    saveSettings();
+    renderTopLines();
+  });
+});
+
+document.addEventListener('keydown', (e)=>{
+  const key = e.key.toLowerCase();
+  if(key === 'escape'){ showHome(); return; }
+
+  if(!playPanel.classList.contains('hidden')){
+    if(['1','2','3','4'].includes(e.key)){
+      const idx = parseInt(e.key,10) - 1;
+      const btns = [...choicesEl.querySelectorAll('button')];
+      if(btns[idx] && !btns[idx].disabled) btns[idx].click();
+    }
+    if(key === 'n'){
+      if(!nextBtn.classList.contains('hidden')) nextBtn.click();
+    }
+  }
+});
+
+/* =========================
+   INIT
+========================= */
+(function init(){
+  loadSettings();
+  renderCatChips();
+  updateCloudView();
+  renderTopLines();
+  renderCalendar();
+
+  const workouts = loadWorkouts();
+  dailyBtn.textContent = workouts[todayKey()]?.dailyDone ? 'Daily Workout Done · Practice Again' : 'Start Today’s Workout';
+
+  showHome();
+})();
+</script>
+</body>
+</html>
