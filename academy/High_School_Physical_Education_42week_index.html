@@ -1,0 +1,2454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>High School Physical Education — 42 Week Portal (Self-Paced)</title>
+
+  <!-- Optional font (Wix-friendly) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Sovereign palette */
+      --bg:#07101e;
+      --panel:#0b172b;
+      --card:#0f2142;
+      --ink:#f5f7ff;
+      --muted:#c7d2fe;
+
+      --soft:rgba(255,255,255,.08);
+      --soft2:rgba(255,255,255,.12);
+
+      --accent:#6ee7ff;
+      --accent2:#a7f3d0;
+      --warn:#ffcc7a;
+
+      /* PLERA sacred numbers */
+      --r11:11px;
+      --r21:21px;
+      --g11:11px;
+      --p21:21px;
+
+      /* Readability */
+      --minFont: 22px;
+      --h2: 30px;
+      --h3: 26px;
+      --h4: 22px;
+
+      /* Layout */
+      --max: 1060px;
+      --navW: 360px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(110,231,255,.14), transparent 60%),
+        radial-gradient(1200px 800px at 90% 10%, rgba(167,243,208,.12), transparent 65%),
+        linear-gradient(180deg, #050b16 0%, var(--bg) 65%, #050b16 100%);
+      color:var(--ink);
+      font-size: var(--minFont);
+      line-height: 1.35;
+      display:flex;
+      justify-content:center;
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Centered shell */
+    .shell{
+      width: min(var(--max), 98vw);
+      padding: 18px 12px 80px;
+    }
+
+    header{
+      text-align:center;
+      padding: 18px 12px 10px;
+    }
+    .title{
+      font-weight:800;
+      letter-spacing:.4px;
+      font-size: clamp(30px, 4.4vw, 48px);
+      margin:0 0 8px;
+    }
+    .subtitle{
+      margin:0 auto;
+      max-width: 62ch;
+      color: var(--muted);
+      opacity:.95;
+      font-size: clamp(20px, 2.5vw, 24px);
+    }
+
+    /* Top controls (always fit container) */
+    .topbar{
+      margin: 14px auto 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: var(--g11);
+      align-items:center;
+      justify-content:center;
+      max-width: 100%;
+    }
+    .pill{
+      max-width:100%;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r21);
+      padding: 10px 12px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 34px rgba(0,0,0,.22);
+      flex-wrap:wrap;
+    }
+    .pill strong{font-weight:800}
+
+    .progressWrap{
+      width: min(760px, 96vw);
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .row.space{justify-content:space-between}
+    .tiny{font-size:18px; color:rgba(245,247,255,.9)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 18px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.28);
+    }
+    .bar{
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(110,231,255,.95), rgba(167,243,208,.95));
+    }
+
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.07);
+      color:var(--ink);
+      border-radius: var(--r21);
+      padding: 10px 14px;
+      font-size: 20px;
+      cursor:pointer;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+      max-width: 100%;
+    }
+    .btn:hover{background: rgba(255,255,255,.10)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      border-color: rgba(110,231,255,.35);
+      background: rgba(110,231,255,.12);
+    }
+    .btn.good{
+      border-color: rgba(167,243,208,.35);
+      background: rgba(167,243,208,.10);
+    }
+
+    select, input[type="text"], input[type="password"], textarea{
+      width:auto;
+      max-width: 100%;
+      padding:10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.20);
+      color: var(--ink);
+      font-size: 20px;
+      outline:none;
+    }
+    textarea{width:100%; min-height: 130px; resize:vertical; line-height:1.25}
+
+    /* Main grid */
+    .grid{
+      display:grid;
+      grid-template-columns: minmax(280px, var(--navW)) 1fr;
+      gap: 14px;
+      align-items:start;
+      max-width: 100%;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .panel{
+      max-width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--r11);
+      padding: 14px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.24);
+      overflow:hidden; /* keeps content inside */
+    }
+
+    .panel h2{
+      margin: 0 0 10px;
+      font-size: var(--h2);
+      letter-spacing:.2px;
+    }
+    .panel h3{
+      margin: 14px 0 8px;
+      font-size: var(--h3);
+      letter-spacing:.2px;
+    }
+    .panel h4{
+      margin: 12px 0 6px;
+      font-size: var(--h4);
+      letter-spacing:.2px;
+    }
+    .muted{color:var(--muted)}
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.12);
+      margin: 14px 0;
+    }
+
+    /* Unit nav */
+    .navWeeks{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .unitCard{
+      border-radius: var(--r11);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.12);
+      padding: 12px;
+      max-width:100%;
+    }
+    .unitHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .unitHead .uTitle{font-weight:800}
+    .unitHead .uRange{font-size:18px; color:rgba(245,247,255,.85)}
+    .unitHead .uLock{font-size:18px; color: rgba(255,255,255,.85)}
+    .weekBtns{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      max-width:100%;
+    }
+    .wbtn{
+      width: 54px;
+      padding: 10px 0;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      font-size: 20px;
+      user-select:none;
+      color: var(--ink);
+    }
+    .wbtn:hover{background: rgba(255,255,255,.10)}
+    .wbtn.active{
+      border-color: rgba(110,231,255,.45);
+      background: rgba(110,231,255,.14);
+      box-shadow: 0 0 0 2px rgba(110,231,255,.15) inset;
+    }
+    .wbtn.done{
+      border-color: rgba(167,243,208,.45);
+      background: rgba(167,243,208,.12);
+    }
+    .wbtn.locked{
+      opacity:.45;
+      cursor:not-allowed;
+      filter: grayscale(20%);
+    }
+
+    /* Content cards */
+    .card{
+      background: rgba(0,0,0,.12);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r11);
+      padding: 14px;
+      margin: 12px 0;
+      max-width:100%;
+      overflow:hidden;
+    }
+
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 0}
+    .chip{
+      font-size: 18px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(245,247,255,.92);
+    }
+    .chip.accent{
+      border-color: rgba(110,231,255,.35);
+      background: rgba(110,231,255,.10);
+    }
+    .chip.good{
+      border-color: rgba(167,243,208,.35);
+      background: rgba(167,243,208,.10);
+    }
+    .chip.warn{
+      border-color: rgba(255,204,122,.40);
+      background: rgba(255,204,122,.10);
+      color: rgba(255,245,230,.95);
+    }
+
+    ul{margin: 8px 0 0 22px}
+    li{margin: 6px 0}
+
+    /* Quiz */
+    .q{
+      border-radius: var(--r11);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      padding: 12px;
+      margin: 10px 0;
+      max-width:100%;
+    }
+    .q .qType{font-size:18px; color: rgba(245,247,255,.85)}
+    .choices{display:flex; flex-direction:column; gap:8px; margin-top:8px}
+    label.choice{
+      display:flex; gap:10px; align-items:flex-start;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.12);
+      cursor:pointer;
+    }
+    label.choice:hover{background: rgba(255,255,255,.07)}
+    input[type="radio"], input[type="checkbox"]{
+      transform: scale(1.2);
+      margin-top: 3px;
+    }
+
+    .callout{
+      border: 1px solid rgba(110,231,255,.28);
+      background: rgba(110,231,255,.09);
+      border-radius: var(--r11);
+      padding: 12px;
+    }
+    .warnBox{
+      border: 1px solid rgba(255,204,122,.30);
+      background: rgba(255,204,122,.08);
+      border-radius: var(--r11);
+      padding: 12px;
+    }
+
+    .footerNote{
+      margin-top: 16px;
+      font-size: 18px;
+      color: rgba(245,247,255,.86);
+      text-align:center;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      width: min(760px, 92vw);
+      background: rgba(10,18,34,.92);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--r21);
+      padding: 12px 14px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+      z-index: 9999;
+      display:none;
+    }
+    .toast.show{display:block}
+    .toast .tTitle{font-weight:800}
+    .toast .tText{color: rgba(245,247,255,.9); font-size: 20px; margin-top:4px}
+
+    /* Modal */
+    .modalBack{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      z-index: 9998;
+    }
+    .modalBack.show{display:flex}
+    .modal{
+      width: min(720px, 96vw);
+      background: rgba(10,18,34,.96);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--r21);
+      padding: 14px;
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+    }
+
+    /* Print optimization */
+    @media print{
+      body{background:#fff; color:#000; font-size: 14pt}
+      .topbar, aside.panel, .footerNote, .toast, .modalBack{display:none !important}
+      .shell{width:100%; padding:0}
+      .panel{border:none; box-shadow:none; background:transparent; color:#000}
+      .card, .q{border:1px solid #bbb; background:transparent}
+      a{color:#000; text-decoration:underline}
+      .chip{border:1px solid #bbb; background:transparent; color:#000}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <header>
+      <h1 class="title">High School Physical Education — 42 Week Portal</h1>
+      <p class="subtitle">
+        Self-paced weekly lessons + quizzes + final exam + certificate. Local-only progress storage (sovereign) with export/import backups.
+      </p>
+    </header>
+
+    <div class="topbar">
+      <div class="pill progressWrap">
+        <div class="row space">
+          <div class="tiny"><strong>Progress:</strong> <span id="progressText">0/42</span> • <strong>Stars:</strong> <span id="starText">0</span> ⭐</div>
+          <div class="tiny"><span class="kbd" id="userLabel">ID</span></div>
+        </div>
+        <div class="bar" aria-label="Course Progress">
+          <div id="progressBar"></div>
+        </div>
+        <div class="row" style="justify-content:center">
+          <button class="btn" id="profileBtn">👤 Profile</button>
+          <button class="btn primary" id="homeBtn">🏁 Home</button>
+          <button class="btn" id="finalBtn">🧾 Final Exam</button>
+          <button class="btn" id="printBtn">🖨️ Print</button>
+          <button class="btn" id="exportBtn">⬇️ Export</button>
+          <button class="btn" id="importBtn">⬆️ Import</button>
+          <button class="btn" id="adminBtn">🔒 Admin</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: NAV -->
+      <aside class="panel" aria-label="Week Navigation">
+        <h2>Weeks</h2>
+        <div class="muted" style="font-size:20px">
+          Units unlock in order. Finish a unit to unlock the next.
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row space">
+          <div class="row">
+            <span class="chip accent">Active</span>
+            <span class="chip good">Completed</span>
+            <span class="chip warn">Locked</span>
+          </div>
+          <div class="row">
+            <select id="jumpSelect" aria-label="Jump to week">
+              <option value="">Jump…</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="navWeeks" class="navWeeks"></div>
+      </aside>
+
+      <!-- RIGHT: CONTENT -->
+      <main class="panel" id="content" aria-label="Course Content">
+        <!-- injected -->
+      </main>
+    </div>
+
+    <div class="footerNote">
+      Safety note: Always modify activities for your space, injuries, disabilities, and medical conditions. Choose lower-impact options when needed.
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div class="tTitle" id="toastTitle">Notice</div>
+    <div class="tText" id="toastText"></div>
+  </div>
+
+  <!-- Profile / Admin Modal -->
+  <div class="modalBack" id="modalBack" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Modal">
+      <div class="row space">
+        <div style="font-weight:800; font-size:26px" id="modalTitle">Profile</div>
+        <button class="btn" id="closeModalBtn">✖ Close</button>
+      </div>
+      <div class="divider"></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+<script>
+/* =========================================================
+   High School PE — 42 Week Portal (Single-file, Sovereign)
+   - LocalStorage progress + profile
+   - Unit unlocking (Unit N unlocks after Unit N-1 complete)
+   - Weekly quizzes (deterministic per device/user)
+   - Export/Import
+   - Final exam + certificate
+   - Admin Mode (hidden passcode; UI never displays it)
+========================================================= */
+
+const STORAGE_KEY = "kha_hs_pe42_progress_v2";
+const PROFILE_KEY = "kha_hs_pe42_profile_v2";
+const SEED_KEY    = "kha_hs_pe42_seed_v2";
+const ADMIN_KEY   = "kha_hs_pe42_admin_v2";
+
+/* Admin passcode: only you know it (not shown anywhere in UI) */
+const ADMIN_PASSCODE = "3112";
+
+/* Standards labels (compact) */
+const SHAPE_STANDARDS = [
+  "S1: Motor skills & movement patterns",
+  "S2: Knowledge of concepts, strategies & tactics",
+  "S3: Health-enhancing physical activity & fitness",
+  "S4: Responsible personal & social behavior",
+  "S5: Values physical activity for health/enjoyment"
+];
+
+/* Helpful links (optional) */
+const COURSE_RESOURCES = [
+  {label:"SHAPE America — National PE Standards", url:"https://www.shapeamerica.org/MemberPortal/standards/pe/default.aspx"},
+  {label:"CDC — Youth Physical Activity Guidelines (60 min/day)", url:"https://www.cdc.gov/physical-activity-education/guidelines/index.html"}
+];
+
+/* ---------- 42-week curriculum spine (theme/skill/wellness/activities/assessments/reflections) ---------- */
+const WEEKS = [
+  /* Unit 1 — Foundations & Safety (Weeks 1–7) */
+  {week:1, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"Orientation + Baseline Fitness",
+    theme:"Start strong: safety, belonging, baseline.",
+    standards:["S3","S4","S5"],
+    skill:"Course norms, safe participation, baseline testing",
+    wellness:"Goal-setting + safety mindset",
+    warmup:"3-min brisk walk + dynamic joints (ankles/hips/shoulders) + 10 air squats",
+    activities:[
+      "Course expectations + safety scan (5 min)",
+      "Baseline circuit: 1-min step test / push-ups / plank / sit-to-stand (20 min)",
+      "Cool-down + reflection (5 min)"
+    ],
+    assessments:[
+      "Record baseline metrics (cardio, strength, core).",
+      "Write one SMART goal for the next 2 weeks."
+    ],
+    reflections:[
+      "What felt strong today? What felt challenging?",
+      "What’s one safe habit you’ll repeat this week?"
+    ],
+    tags:["baseline","goals","safety","fitness"]
+  },
+  {week:2, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"Warm-Up / Cool-Down + Injury Prevention",
+    theme:"Prepare your body; reduce injury risk.",
+    standards:["S2","S3","S4"],
+    skill:"Dynamic vs static stretching; movement prep",
+    wellness:"Listening to your body (signals, pain vs effort)",
+    warmup:"Dynamic ladder: march → skip → high knees → arm circles",
+    activities:[
+      "Warm-up science: why it works (5 min)",
+      "Technique stations: hinge, lunge, landing mechanics (20 min)",
+      "Cool-down: breathing + gentle static stretch (5 min)"
+    ],
+    assessments:[
+      "Demonstrate 3 warm-up moves with correct cues.",
+      "Name 2 reasons warm-ups reduce injury risk."
+    ],
+    reflections:[
+      "When did your body feel “ready” today?",
+      "What cue helps you move safely?"
+    ],
+    tags:["warmup","cooldown","injury","safety"]
+  },
+  {week:3, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"SMART Goals + Training Log",
+    theme:"A plan you can actually follow.",
+    standards:["S2","S3","S5"],
+    skill:"SMART goals; tracking training",
+    wellness:"Motivation + habit building",
+    warmup:"5-min easy movement + mobility flow",
+    activities:[
+      "SMART goals mini-lesson (5 min)",
+      "Build a weekly plan: 3 short sessions + 2 walks (20 min)",
+      "Log practice + habit design (5 min)"
+    ],
+    assessments:[
+      "Create a 7-day plan with 2 measurable targets.",
+      "Start a simple movement log."
+    ],
+    reflections:[
+      "What makes your plan realistic?",
+      "What might get in the way—and what’s your backup plan?"
+    ],
+    tags:["goals","planning","habits","fitness"]
+  },
+  {week:4, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"Hydration, Heat, and Recovery Basics",
+    theme:"Fuel + safety in real conditions.",
+    standards:["S2","S3","S4"],
+    skill:"Hydration signals; heat safety",
+    wellness:"Sleep + stress basics",
+    warmup:"3-min easy cardio + dynamic stretch",
+    activities:[
+      "Heat safety + warning signs (6 min)",
+      "Partner pacing walk/jog with RPE check-ins (18 min)",
+      "Cool-down + recovery plan (6 min)"
+    ],
+    assessments:[
+      "Identify 3 heat illness warning signs.",
+      "List 3 recovery strategies that work for you."
+    ],
+    reflections:[
+      "What’s one hydration habit you can keep daily?",
+      "How does sleep affect your mood or energy?"
+    ],
+    tags:["hydration","heat","recovery","safety"]
+  },
+  {week:5, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"FITT Principle + Progressive Overload",
+    theme:"Improve without overdoing it.",
+    standards:["S2","S3"],
+    skill:"FITT; overload; rest/deload concepts",
+    wellness:"Patience + sustainability",
+    warmup:"Dynamic warm-up + RPE intro",
+    activities:[
+      "FITT breakdown (5 min)",
+      "Design a 20-min workout using FITT (20 min)",
+      "Share + revise plan (5 min)"
+    ],
+    assessments:[
+      "Create one FITT-based plan for 1 week.",
+      "Explain how you’ll increase difficulty safely."
+    ],
+    reflections:[
+      "What intensity feels ‘challenging but safe’ for you?",
+      "How will you know you need rest?"
+    ],
+    tags:["fitt","planning","overload","fitness"]
+  },
+  {week:6, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"Strength Foundations (Bodyweight)",
+    theme:"Form first: strong and safe.",
+    standards:["S1","S2","S3","S4"],
+    skill:"Squat/hinge/push/pull/core basics",
+    wellness:"Confidence through good form",
+    warmup:"Joint prep + 2 rounds: 10 squats, 10 wall push-ups, 20s plank",
+    activities:[
+      "Form cues & safety (6 min)",
+      "Strength circuit (18 min)",
+      "Cool-down + form reflection (6 min)"
+    ],
+    assessments:[
+      "Demonstrate 2 form cues for squat + push + hinge.",
+      "Complete circuit with control (not speed)."
+    ],
+    reflections:[
+      "Which movement felt best today—and why?",
+      "What cue will you remember next time?"
+    ],
+    tags:["strength","form","safety","core"]
+  },
+  {week:7, unitIndex:1, unit:"Unit 1 — Foundations & Safety", title:"Cardio Foundations + Pacing",
+    theme:"Train your heart wisely.",
+    standards:["S2","S3","S5"],
+    skill:"Pacing; talk test; basic zones",
+    wellness:"Enjoyment + consistency",
+    warmup:"5-min easy walk + dynamic legs",
+    activities:[
+      "Talk test + pacing lesson (5 min)",
+      "Intervals: 1-min easy / 1-min moderate × 8 (20 min)",
+      "Cool-down + journal (5 min)"
+    ],
+    assessments:[
+      "Explain the talk test in your own words.",
+      "Record interval RPE (effort) ratings."
+    ],
+    reflections:[
+      "What pace could you maintain comfortably?",
+      "What kind of cardio do you actually enjoy?"
+    ],
+    tags:["cardio","pacing","fitness","recovery"]
+  },
+
+  /* Unit 2 — Skills & Conditioning (Weeks 8–14) */
+  {week:8, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Agility + Coordination",
+    theme:"Move efficiently; change direction safely.",
+    standards:["S1","S3","S4"],
+    skill:"Agility footwork; deceleration",
+    wellness:"Focus + body control",
+    warmup:"Dynamic warm-up + ankle/hip mobility",
+    activities:[
+      "Deceleration cues (5 min)",
+      "Line/cone drills + mirror shuffle (20 min)",
+      "Cool-down + mobility (5 min)"
+    ],
+    assessments:[
+      "Show safe deceleration posture.",
+      "Complete a short agility pattern with control."
+    ],
+    reflections:[
+      "When did you lose balance—and how did you recover?",
+      "What technique helped the most?"
+    ],
+    tags:["agility","coordination","safety","conditioning"]
+  },
+  {week:9, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Speed + Reaction Time",
+    theme:"Quickness with control.",
+    standards:["S1","S3"],
+    skill:"Starts + acceleration mechanics",
+    wellness:"Confidence under pressure",
+    warmup:"A-skips + high knees + short strides",
+    activities:[
+      "Acceleration posture (5 min)",
+      "Reaction sprints (visual cue) (18 min)",
+      "Cool-down + breathing reset (7 min)"
+    ],
+    assessments:[
+      "Describe 2 safe acceleration cues.",
+      "Complete 6 short accelerations with full recovery."
+    ],
+    reflections:[
+      "What helped you react faster?",
+      "How did rest affect your speed?"
+    ],
+    tags:["speed","reaction","safety","conditioning"]
+  },
+  {week:10, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Jumping + Landing Mechanics",
+    theme:"Protect knees and ankles.",
+    standards:["S1","S4"],
+    skill:"Soft landings; knee tracking; balance",
+    wellness:"Injury-prevention mindset",
+    warmup:"Leg swings + mini hops + balance holds",
+    activities:[
+      "Landing checklist (5 min)",
+      "Jump/land stations (18 min)",
+      "Cool-down + mobility (7 min)"
+    ],
+    assessments:[
+      "Demonstrate quiet landing with aligned knees.",
+      "Complete 3 landings with stable balance hold."
+    ],
+    reflections:[
+      "What cue made landings quieter?",
+      "Where did you feel impact—and how can you reduce it?"
+    ],
+    tags:["landing","injury","safety","power"]
+  },
+  {week:11, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Core Stability + Posture",
+    theme:"Stable core = safer movement.",
+    standards:["S1","S3"],
+    skill:"Bracing; anti-rotation; posture",
+    wellness:"Body awareness",
+    warmup:"Cat-cow + dead bug patterning",
+    activities:[
+      "Core myth vs fact (5 min)",
+      "Core circuit: plank/side plank/dead bug/bird dog (20 min)",
+      "Cool-down + posture check (5 min)"
+    ],
+    assessments:[
+      "Explain bracing vs ‘sucking in’.",
+      "Hold quality plank (time varies by level)."
+    ],
+    reflections:[
+      "Where did you feel the core working?",
+      "How does posture change your confidence?"
+    ],
+    tags:["core","posture","fitness","form"]
+  },
+  {week:12, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Mobility + Flexibility (Science & Practice)",
+    theme:"Move better; recover better.",
+    standards:["S2","S3"],
+    skill:"Dynamic vs static; mobility routines",
+    wellness:"Stress relief through recovery",
+    warmup:"Dynamic mobility flow",
+    activities:[
+      "Stretching types explained (6 min)",
+      "Mobility circuit (18 min)",
+      "Cool-down: static stretch + breathing (6 min)"
+    ],
+    assessments:[
+      "Choose correct stretch type for 2 scenarios.",
+      "Complete mobility routine with controlled range."
+    ],
+    reflections:[
+      "Which mobility move helped most?",
+      "What does ‘comfortable stretch’ feel like?"
+    ],
+    tags:["mobility","flexibility","recovery","warmup"]
+  },
+  {week:13, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Circuit Training Design",
+    theme:"Build a balanced workout.",
+    standards:["S2","S3","S5"],
+    skill:"Work/rest; movement balance",
+    wellness:"Ownership + self-coaching",
+    warmup:"5-min easy cardio + dynamic joints",
+    activities:[
+      "Circuit principles (5 min)",
+      "Build + test a 5-station circuit (20 min)",
+      "Revise + reflect (5 min)"
+    ],
+    assessments:[
+      "Create a circuit with legs + push + pull + core + cardio.",
+      "Adjust one variable (time, intensity, rest) based on feedback."
+    ],
+    reflections:[
+      "What station was hardest—and why?",
+      "What would make this circuit more sustainable?"
+    ],
+    tags:["planning","conditioning","strength","cardio"]
+  },
+  {week:14, unitIndex:2, unit:"Unit 2 — Skills & Conditioning", title:"Check-In + Recovery Strategies",
+    theme:"Measure growth; protect recovery.",
+    standards:["S3","S4","S5"],
+    skill:"Self-assessment; recovery tools",
+    wellness:"Stress management + self-care",
+    warmup:"Student-led warm-up",
+    activities:[
+      "Mini re-test (15 min)",
+      "Recovery lab: breathing + gentle mobility (12 min)",
+      "Goal update (3 min)"
+    ],
+    assessments:[
+      "Compare 1 metric to baseline.",
+      "Update your goal for the next unit."
+    ],
+    reflections:[
+      "What improved since Week 1?",
+      "What recovery habit will you keep?"
+    ],
+    tags:["baseline","recovery","goals","fitness"]
+  },
+
+  /* Unit 3 — Team Sports & Tactics (Weeks 15–21) */
+  {week:15, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Invasion Games Principles",
+    theme:"Space, support, transition.",
+    standards:["S2","S4","S5"],
+    skill:"Create space; support; transition",
+    wellness:"Team mindset + belonging",
+    warmup:"Dynamic warm-up + passing pairs",
+    activities:[
+      "3 principles mini-lesson (5 min)",
+      "Small-sided game: keep-away (20 min)",
+      "Cool-down + sportsmanship (5 min)"
+    ],
+    assessments:[
+      "Name 1 tactic to create space.",
+      "Demonstrate ‘support’ positioning during play."
+    ],
+    reflections:[
+      "When did your team communicate well?",
+      "How did you support someone today?"
+    ],
+    tags:["tactics","teamwork","sportsmanship","cardio"]
+  },
+  {week:16, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Passing, Receiving, Communication",
+    theme:"Connect under pressure.",
+    standards:["S1","S2","S4"],
+    skill:"Passing accuracy; receiving; callouts",
+    wellness:"Communication skills",
+    warmup:"Passing ladder + footwork",
+    activities:[
+      "Communication cues (5 min)",
+      "Passing drills + 3v3 (20 min)",
+      "Cool-down + reflection (5 min)"
+    ],
+    assessments:[
+      "Complete a short passing goal (teacher-set).",
+      "Use 2 communication cues during play."
+    ],
+    reflections:[
+      "What cue helped your teammate most?",
+      "How did you respond to mistakes?"
+    ],
+    tags:["skills","teamwork","tactics","communication"]
+  },
+  {week:17, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Defense Concepts + Fair Play",
+    theme:"Defend responsibly.",
+    standards:["S2","S4"],
+    skill:"Defensive stance; positioning; rules",
+    wellness:"Respect + self-control",
+    warmup:"Lateral shuffle warm-up + reaction",
+    activities:[
+      "Defensive positioning (5 min)",
+      "1v1 / 2v2 defense games (20 min)",
+      "Cool-down + fair play check (5 min)"
+    ],
+    assessments:[
+      "Demonstrate safe defensive stance and spacing.",
+      "Explain 1 rule that prevents unsafe contact."
+    ],
+    reflections:[
+      "What does ‘safe intensity’ look like?",
+      "How do rules protect everyone?"
+    ],
+    tags:["defense","rules","sportsmanship","agility"]
+  },
+  {week:18, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Officiating + Rules Literacy",
+    theme:"Integrity in competition.",
+    standards:["S2","S4"],
+    skill:"Basic officiating; conflict resolution",
+    wellness:"Leadership + honesty",
+    warmup:"Dynamic warm-up + quick rule check",
+    activities:[
+      "Officials: roles & consistency (5 min)",
+      "Student-officiated mini games (20 min)",
+      "Debrief: resolve a dispute scenario (5 min)"
+    ],
+    assessments:[
+      "Explain one rule and its purpose.",
+      "Use a calm conflict-resolution script."
+    ],
+    reflections:[
+      "How did you handle disagreement?",
+      "What did fairness look like today?"
+    ],
+    tags:["rules","leadership","sportsmanship","tactics"]
+  },
+  {week:19, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Net/Wall Games Concepts",
+    theme:"Control the rally.",
+    standards:["S1","S2","S5"],
+    skill:"Ready position; placement; teamwork",
+    wellness:"Enjoyment + challenge",
+    warmup:"Footwork + toss/catch coordination",
+    activities:[
+      "Rally concepts (5 min)",
+      "Skill stations + mini-rallies (20 min)",
+      "Cool-down + reflection (5 min)"
+    ],
+    assessments:[
+      "Name 1 strategy to keep a rally going.",
+      "Demonstrate ready stance consistently."
+    ],
+    reflections:[
+      "What helped you stay calm under pressure?",
+      "How did you adjust after an error?"
+    ],
+    tags:["coordination","tactics","skills","teamwork"]
+  },
+  {week:20, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Striking/Fielding Game Decisions",
+    theme:"Fast decisions; team roles.",
+    standards:["S2","S4"],
+    skill:"Throw/catch; decision making",
+    wellness:"Role clarity + teamwork",
+    warmup:"Throw/catch progression (safe distance)",
+    activities:[
+      "Force play vs tag concept (5 min)",
+      "Fielding stations + small game (20 min)",
+      "Cool-down + teamwork (5 min)"
+    ],
+    assessments:[
+      "Explain 1 fielding decision (where to throw).",
+      "Use safe throwing cues."
+    ],
+    reflections:[
+      "What role did you play best today?",
+      "How did you communicate in transition?"
+    ],
+    tags:["skills","decision","teamwork","safety"]
+  },
+  {week:21, unitIndex:3, unit:"Unit 3 — Team Sports & Tactics", title:"Leadership + Sportsmanship Capstone",
+    theme:"Build team culture.",
+    standards:["S4","S5"],
+    skill:"Leadership behaviors; inclusion",
+    wellness:"Belonging + integrity",
+    warmup:"Student-led warm-up",
+    activities:[
+      "Leadership behaviors (5 min)",
+      "Inclusive team challenge (20 min)",
+      "Circle debrief (5 min)"
+    ],
+    assessments:[
+      "Self-rate leadership behaviors.",
+      "Give 1 peer encouragement statement."
+    ],
+    reflections:[
+      "How did you help someone feel included?",
+      "What leadership trait do you want to grow?"
+    ],
+    tags:["leadership","sportsmanship","inclusion","teamwork"]
+  },
+
+  /* Unit 4 — Lifetime Fitness (Weeks 22–28) */
+  {week:22, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Walking/Running Plans",
+    theme:"Cardio you can sustain.",
+    standards:["S2","S3","S5"],
+    skill:"Pacing; progression; run/walk",
+    wellness:"Consistency",
+    warmup:"5-min walk + dynamic legs",
+    activities:[
+      "Progression rules (5 min)",
+      "Run/walk intervals (20 min)",
+      "Cool-down + plan (5 min)"
+    ],
+    assessments:[
+      "Create a 2-week run/walk plan.",
+      "Log RPE + mood after sessions."
+    ],
+    reflections:[
+      "How did pacing affect your energy?",
+      "What routine will make this consistent?"
+    ],
+    tags:["cardio","planning","pacing","fitness"]
+  },
+  {week:23, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Low-Impact Cardio Options",
+    theme:"Heart health with less joint impact.",
+    standards:["S2","S3"],
+    skill:"Low-impact choices; modifications",
+    wellness:"Injury-aware fitness",
+    warmup:"Mobility flow",
+    activities:[
+      "Low-impact menu (5 min)",
+      "Circuit: step-ups, shadow boxing, marching (20 min)",
+      "Cool-down + modify plan (5 min)"
+    ],
+    assessments:[
+      "Pick 2 low-impact alternatives for common moves.",
+      "Complete circuit at moderate intensity."
+    ],
+    reflections:[
+      "How did your joints feel today?",
+      "What modification makes workouts doable?"
+    ],
+    tags:["cardio","injury","recovery","fitness"]
+  },
+  {week:24, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Dance / Rhythmic Movement",
+    theme:"Rhythm, coordination, joy.",
+    standards:["S1","S5"],
+    skill:"Rhythm; patterns; coordination",
+    wellness:"Expression + confidence",
+    warmup:"Dynamic warm-up to music (optional)",
+    activities:[
+      "Learn an 8-count pattern (6 min)",
+      "Group routine + freestyle option (18 min)",
+      "Cool-down + reflection (6 min)"
+    ],
+    assessments:[
+      "Perform sequence with timing and control.",
+      "Create one small variation safely."
+    ],
+    reflections:[
+      "How did movement affect your mood?",
+      "What helped you remember the pattern?"
+    ],
+    tags:["coordination","cardio","enjoyment","skills"]
+  },
+  {week:25, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Yoga + Mindful Movement",
+    theme:"Stress relief through movement.",
+    standards:["S3","S5"],
+    skill:"Breathing; balance; controlled movement",
+    wellness:"Regulation + calm focus",
+    warmup:"Breathing + gentle mobility",
+    activities:[
+      "Breath + posture cues (5 min)",
+      "Flow sequence (20 min)",
+      "Reflection + gratitude (5 min)"
+    ],
+    assessments:[
+      "Identify 2 breathing strategies for stress.",
+      "Hold a balance pose with control."
+    ],
+    reflections:[
+      "What changed in your body after breathing?",
+      "Where do you carry tension—and how can you release it?"
+    ],
+    tags:["mindfulness","flexibility","recovery","wellness"]
+  },
+  {week:26, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Bodyweight Strength Progressions",
+    theme:"Scale exercises to your level.",
+    standards:["S1","S3"],
+    skill:"Progressions/regressions; form checks",
+    wellness:"Self-efficacy",
+    warmup:"Dynamic warm-up + activation",
+    activities:[
+      "Progression ladder (5 min)",
+      "Strength session (20 min)",
+      "Cool-down + plan (5 min)"
+    ],
+    assessments:[
+      "Choose correct regression/progression for 3 moves.",
+      "Demonstrate control before adding difficulty."
+    ],
+    reflections:[
+      "What level is ‘just right’ for you today?",
+      "How do you keep ego out of training?"
+    ],
+    tags:["strength","form","planning","fitness"]
+  },
+  {week:27, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Resistance Bands + Safe Loading",
+    theme:"Add resistance safely.",
+    standards:["S1","S3","S4"],
+    skill:"Band safety; controlled tempo",
+    wellness:"Patience + control",
+    warmup:"Mobility + light band activation",
+    activities:[
+      "Band safety + anchor rules (6 min)",
+      "Full-body band circuit (18 min)",
+      "Cool-down + log (6 min)"
+    ],
+    assessments:[
+      "Demonstrate safe setup and controlled tempo.",
+      "Explain one safety rule for bands."
+    ],
+    reflections:[
+      "What tempo felt most controlled?",
+      "How will you stay safe training at home?"
+    ],
+    tags:["strength","safety","form","planning"]
+  },
+  {week:28, unitIndex:4, unit:"Unit 4 — Lifetime Fitness", title:"Build Your Personal Workout Plan",
+    theme:"Make fitness fit your life.",
+    standards:["S2","S3","S5"],
+    skill:"Program design; balance; rest",
+    wellness:"Ownership",
+    warmup:"Student choice",
+    activities:[
+      "Plan template (5 min)",
+      "Design a 7-day plan (20 min)",
+      "Share + revise (5 min)"
+    ],
+    assessments:[
+      "Submit a balanced week plan (cardio/strength/mobility/rest).",
+      "Include realistic time blocks."
+    ],
+    reflections:[
+      "What part of your plan is most enjoyable?",
+      "What’s your ‘minimum version’ on hard days?"
+    ],
+    tags:["planning","goals","fitness","habits"]
+  },
+
+  /* Unit 5 — Outdoor & Wellness (Weeks 29–35) */
+  {week:29, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Outdoor Safety + Preparedness",
+    theme:"Move outside—smart and safe.",
+    standards:["S2","S4"],
+    skill:"Safety planning; environment awareness",
+    wellness:"Preparedness",
+    warmup:"Easy walk + mobility",
+    activities:[
+      "Weather/terrain risk check (6 min)",
+      "Outdoor circuit or indoor alternative (18 min)",
+      "Safety debrief (6 min)"
+    ],
+    assessments:[
+      "List 5 safety items/choices for outdoor activity.",
+      "Plan a safe route or space check."
+    ],
+    reflections:[
+      "What environment risks did you notice?",
+      "How can you make safety automatic?"
+    ],
+    tags:["safety","outdoor","hydration","planning"]
+  },
+  {week:30, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Cooperative Challenges + Team Building",
+    theme:"Solve problems with respect.",
+    standards:["S4","S5"],
+    skill:"Communication; cooperation; inclusion",
+    wellness:"Belonging",
+    warmup:"Group warm-up",
+    activities:[
+      "Team norms (5 min)",
+      "Co-op stations (20 min)",
+      "Debrief: what worked? (5 min)"
+    ],
+    assessments:[
+      "Give 1 specific example of good teamwork.",
+      "Demonstrate an inclusive team behavior."
+    ],
+    reflections:[
+      "How did you handle frustration today?",
+      "What helped the group succeed?"
+    ],
+    tags:["teamwork","leadership","inclusion","communication"]
+  },
+  {week:31, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Water Safety (Context-Based)",
+    theme:"Risk awareness saves lives.",
+    standards:["S2","S4"],
+    skill:"Water safety awareness",
+    wellness:"Responsible decision-making",
+    warmup:"If no pool: mobility + cardio; if pool: deck warm-up",
+    activities:[
+      "Water safety rules (6 min)",
+      "Skill practice or dryland alternative (18 min)",
+      "Safety reflection (6 min)"
+    ],
+    assessments:[
+      "Explain 3 water safety rules.",
+      "Describe what to do in an emergency (get help)."
+    ],
+    reflections:[
+      "Why is ‘buddy system’ important?",
+      "How do you respond when someone pressures you to take risks?"
+    ],
+    tags:["safety","outdoor","rules","wellness"]
+  },
+  {week:32, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Nutrition Basics for Active Teens",
+    theme:"Fuel performance + recovery.",
+    standards:["S2","S3"],
+    skill:"Macros basics; timing; hydration",
+    wellness:"Healthy choices",
+    warmup:"Light movement",
+    activities:[
+      "Fuel basics (6 min)",
+      "Workout + snack timing discussion (14 min)",
+      "Plan one balanced day (10 min)"
+    ],
+    assessments:[
+      "Build a balanced plate (simple).",
+      "Write a hydration plan for a school day."
+    ],
+    reflections:[
+      "What’s one food upgrade you can keep?",
+      "How does hydration affect your energy?"
+    ],
+    tags:["nutrition","hydration","recovery","wellness"]
+  },
+  {week:33, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Sleep, Stress, and Movement",
+    theme:"Movement supports mental health.",
+    standards:["S3","S5"],
+    skill:"Stress tools; movement for mood",
+    wellness:"Mental health literacy",
+    warmup:"Breathing + mobility",
+    activities:[
+      "Stress cycle + movement (6 min)",
+      "Choose-your-own workout (18 min)",
+      "Sleep plan reflection (6 min)"
+    ],
+    assessments:[
+      "Identify 2 ways movement helps mood/sleep.",
+      "Write a simple sleep support habit."
+    ],
+    reflections:[
+      "What activity improved your mood today?",
+      "What helps you wind down at night?"
+    ],
+    tags:["mindfulness","sleep","wellness","recovery"]
+  },
+  {week:34, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Recovery, Soreness, Overtraining Signals",
+    theme:"Know normal vs warning signs.",
+    standards:["S2","S3","S4"],
+    skill:"DOMS; overtraining signs; rest",
+    wellness:"Body trust",
+    warmup:"Gentle movement",
+    activities:[
+      "DOMS vs injury (6 min)",
+      "Low-intensity recovery session (18 min)",
+      "Plan a deload/rest day (6 min)"
+    ],
+    assessments:[
+      "List 3 warning signs that require rest or help.",
+      "Create a personal recovery checklist."
+    ],
+    reflections:[
+      "How do you know when to stop?",
+      "What’s your healthiest ‘rest day’ activity?"
+    ],
+    tags:["recovery","injury","safety","wellness"]
+  },
+  {week:35, unitIndex:5, unit:"Unit 5 — Outdoor & Wellness", title:"Community Fitness Challenge",
+    theme:"Movement with purpose.",
+    standards:["S4","S5"],
+    skill:"Planning; leadership; service",
+    wellness:"Meaning + purpose",
+    warmup:"Group warm-up",
+    activities:[
+      "Choose a service-friendly challenge (6 min)",
+      "Challenge session (18 min)",
+      "Reflection: impact (6 min)"
+    ],
+    assessments:[
+      "Document your challenge plan + outcome.",
+      "Describe how you encouraged someone else."
+    ],
+    reflections:[
+      "How did it feel to move for a bigger reason?",
+      "What kind of community do you want to build?"
+    ],
+    tags:["leadership","planning","wellness","habits"]
+  },
+
+  /* Unit 6 — Capstone & Assessment (Weeks 36–42) */
+  {week:36, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Student Choice Skill Project (Part 1)",
+    theme:"Deliberate practice.",
+    standards:["S1","S3","S5"],
+    skill:"Choose a skill; plan deliberate practice",
+    wellness:"Ownership",
+    warmup:"Student choice",
+    activities:[
+      "Pick a skill + define success (6 min)",
+      "Practice session (18 min)",
+      "Log + refine (6 min)"
+    ],
+    assessments:[
+      "Write a practice plan with 3 cues and 2 drills.",
+      "Complete one focused practice set."
+    ],
+    reflections:[
+      "What changed after focused practice?",
+      "What will you adjust next time?"
+    ],
+    tags:["skills","planning","goals","habits"]
+  },
+  {week:37, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Skill Project (Part 2) + Peer Coaching",
+    theme:"Feedback accelerates learning.",
+    standards:["S1","S4"],
+    skill:"Coaching language; helpful feedback",
+    wellness:"Respectful critique",
+    warmup:"Partner warm-up",
+    activities:[
+      "Coaching phrases (5 min)",
+      "Practice + peer feedback (20 min)",
+      "Reflection (5 min)"
+    ],
+    assessments:[
+      "Provide 2 specific, kind feedback notes.",
+      "Apply feedback and re-try drill."
+    ],
+    reflections:[
+      "What feedback helped most?",
+      "How did you respond emotionally to coaching?"
+    ],
+    tags:["skills","communication","leadership","sportsmanship"]
+  },
+  {week:38, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Tournament / Event Design",
+    theme:"Fair, inclusive activity design.",
+    standards:["S2","S4"],
+    skill:"Rules, scheduling, fairness",
+    wellness:"Integrity",
+    warmup:"Group warm-up",
+    activities:[
+      "Event roles (6 min)",
+      "Run a mini-event (18 min)",
+      "Debrief (6 min)"
+    ],
+    assessments:[
+      "Write 3 fairness rules.",
+      "Add 1 inclusion plan (mods/roles)."
+    ],
+    reflections:[
+      "What makes an event feel fair?",
+      "How do you include beginners without embarrassment?"
+    ],
+    tags:["rules","leadership","inclusion","teamwork"]
+  },
+  {week:39, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Emergency Response Basics (Awareness)",
+    theme:"Respond responsibly.",
+    standards:["S2","S4"],
+    skill:"When to get help; what to say",
+    wellness:"Safety confidence",
+    warmup:"Light movement",
+    activities:[
+      "Emergency priorities: call/help/stop harm (8 min)",
+      "Scenario role-plays (12 min)",
+      "Reflection (10 min)"
+    ],
+    assessments:[
+      "Describe when to call emergency services.",
+      "Practice a clear ‘what/where/who’ message."
+    ],
+    reflections:[
+      "What would you do first in a real emergency?",
+      "How can preparation reduce panic?"
+    ],
+    tags:["safety","rules","leadership","wellness"]
+  },
+  {week:40, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Fitness Re-Test + Growth Reflection",
+    theme:"Measure progress; plan next steps.",
+    standards:["S3","S5"],
+    skill:"Self-assessment",
+    wellness:"Growth mindset",
+    warmup:"Student-led warm-up",
+    activities:[
+      "Re-test (20 min)",
+      "Compare + interpret results (10 min)",
+      "Set next goal (5 min)"
+    ],
+    assessments:[
+      "Compare results to baseline.",
+      "Write 1 next-month goal."
+    ],
+    reflections:[
+      "What are you proud of?",
+      "What habit matters most going forward?"
+    ],
+    tags:["baseline","goals","fitness","habits"]
+  },
+  {week:41, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Final Review + Practice Quiz",
+    theme:"Lock in the big ideas.",
+    standards:["S2","S3","S4","S5"],
+    skill:"Review",
+    wellness:"Confidence",
+    warmup:"Dynamic warm-up",
+    activities:[
+      "Review game (10 min)",
+      "Mixed workout (15 min)",
+      "Final prep reflection (5 min)"
+    ],
+    assessments:[
+      "Complete practice quiz.",
+      "Identify 2 weak areas to review."
+    ],
+    reflections:[
+      "What concept is most important for life?",
+      "What will you teach someone else?"
+    ],
+    tags:["review","fitt","safety","wellness"]
+  },
+  {week:42, unitIndex:6, unit:"Unit 6 — Capstone & Assessment", title:"Final Exam + Celebration",
+    theme:"Demonstrate physical literacy.",
+    standards:["S2","S3","S4","S5"],
+    skill:"Assessment + lifelong plan",
+    wellness:"Closure",
+    warmup:"Light warm-up",
+    activities:[
+      "Final exam (timed or untimed) (25 min)",
+      "Stretch + gratitude (10 min)",
+      "Next-steps plan (5 min)"
+    ],
+    assessments:[
+      "Submit final exam.",
+      "Write a 1-month fitness plan you can actually keep."
+    ],
+    reflections:[
+      "What changed in you across this course?",
+      "What will you keep forever?"
+    ],
+    tags:["final","review","planning","wellness"]
+  }
+];
+
+/* ---------- Question banks (TF + MC). Essay generated per week. ---------- */
+const TF_BANK = [
+  ["A warm-up should gradually raise heart rate and body temperature before vigorous activity.", true, ["warmup","safety"], "Warm-ups prepare muscles and reduce injury risk."],
+  ["Static stretching is generally best as the only warm-up before sprinting.", false, ["warmup","flexibility"], "Dynamic movement is preferred for pre-activity prep."],
+  ["The 'talk test' can help estimate if cardio intensity is moderate.", true, ["cardio","pacing"], "If you can talk but not sing, it's often moderate."],
+  ["Progressive overload means increasing training load over time to improve.", true, ["overload","fitness"], "Small increases drive adaptation."],
+  ["If pain is sharp or worsening, the safest choice is to push through it.", false, ["injury","safety"], "Stop and assess; pain can signal injury."],
+  ["Hydration needs may increase in hot or humid conditions.", true, ["hydration","heat"], "Sweat losses are higher."],
+  ["Recovery includes sleep, nutrition, and rest—not just 'doing nothing.'", true, ["recovery","wellness"], "Recovery is active and planned."],
+  ["RPE is a way to rate how hard an activity feels.", true, ["fitness","pacing"], "It helps self-regulate intensity."],
+  ["Good landing mechanics include knees collapsing inward.", false, ["landing","injury"], "Knees should track over toes with control."],
+  ["Core stability helps transfer force and protect the spine during movement.", true, ["core","form"], "Stable trunk supports safe movement."],
+  ["Mobility refers to joint range of motion with control.", true, ["mobility","form"], "It's flexibility + control."],
+  ["DOMS soreness is always a sign of injury.", false, ["recovery","injury"], "DOMS can be normal after new effort."],
+  ["Sportsmanship includes respecting opponents and officials.", true, ["sportsmanship","rules"], "Fair play is part of responsible behavior."],
+  ["In invasion games, creating space and supporting teammates helps scoring chances.", true, ["tactics","teamwork"], "Space and support are key tactics."],
+  ["A balanced workout plan should include rest days.", true, ["planning","recovery"], "Rest supports adaptation."],
+  ["Low-impact cardio options can reduce joint stress.", true, ["injury","cardio"], "Cycling, swimming, brisk walking, etc."],
+  ["Breathing strategies can help regulate stress.", true, ["mindfulness","wellness"], "Slow breathing can calm the nervous system."],
+  ["Overtraining signs can include persistent fatigue and worsening performance.", true, ["recovery","safety"], "Listen to warning signs."],
+  ["Inclusion means designing activities so everyone can participate.", true, ["inclusion","teamwork"], "Modify rules/roles to include all."],
+  ["FITT stands for Frequency, Intensity, Time, and Type.", true, ["fitt","planning"], "A core planning framework."],
+];
+
+const MC_BANK = [
+  ["Which is part of the FITT principle?", ["Flexibility","Intensity","Talent","Time travel"], 1, ["fitt","planning"], "FITT includes Intensity."],
+  ["The 'talk test' is most useful for estimating…", ["Flexibility","Cardio intensity","Grip strength","Reaction time"], 1, ["cardio","pacing"], "Talk test estimates aerobic intensity."],
+  ["A safe landing often includes…", ["Knees collapsing inward","Quiet feet and knees tracking over toes","Locked knees","Twisting on impact"], 1, ["landing","injury"], "Control + alignment reduces risk."],
+  ["RPE is best described as…", ["A rulebook","A rating of perceived exertion","A vitamin","A stretch type"], 1, ["pacing","fitness"], "RPE = perceived effort."],
+  ["Which choice best supports recovery?", ["Skipping sleep","Balanced food + rest + hydration","Training harder every day","Only stretching once a month"], 1, ["recovery","wellness"], "Recovery is multi-factor."],
+  ["A SMART goal is…", ["Vague and big","Specific and measurable","Secret","Only for athletes"], 1, ["goals","habits"], "SMART = Specific, Measurable, etc."],
+  ["If you feel sharp pain during exercise, you should…", ["Ignore it","Stop and assess / tell an adult or coach","Go harder","Hide it"], 1, ["injury","safety"], "Stop and seek help if needed."],
+  ["A dynamic warm-up usually includes…", ["Only sitting","Movement-based prep","Only long static holds","No breathing"], 1, ["warmup","safety"], "Dynamic = moving."],
+  ["Which is a low-impact cardio option?", ["Jumping repeatedly","Cycling","Max sprinting only","None"], 1, ["cardio","injury"], "Cycling is often low-impact."],
+  ["A balanced program should include…", ["Only cardio","Only strength","Cardio + strength + mobility + rest","Only games"], 2, ["planning","fitness"], "Balance supports health."],
+  ["Sportsmanship includes…", ["Cheating to win","Respecting rules and others","Taunting opponents","Refusing to participate"], 1, ["sportsmanship","rules"], "Respect matters."],
+  ["Progressive overload means…", ["Never changing anything","Gradually increasing challenge","Only doing easy workouts","Skipping warm-ups"], 1, ["overload","fitness"], "Increase load gradually."],
+  ["Core stability helps most with…", ["Random luck","Controlling trunk and protecting spine","Avoiding all exercise","Only running faster instantly"], 1, ["core","form"], "Stability and control."],
+  ["In invasion games, creating space means…", ["Standing still","Moving to open areas away from defenders","Hiding the ball","Arguing"], 1, ["tactics","teamwork"], "Space helps scoring options."],
+  ["A rest day is…", ["Failure","Part of training","Only for pros","Unnecessary"], 1, ["recovery","planning"], "Rest supports adaptation."],
+];
+
+/* ---------- DOM ---------- */
+const content     = document.getElementById("content");
+const navWeeks    = document.getElementById("navWeeks");
+const jumpSelect  = document.getElementById("jumpSelect");
+const progressText= document.getElementById("progressText");
+const starText    = document.getElementById("starText");
+const progressBar = document.getElementById("progressBar");
+const userLabel   = document.getElementById("userLabel");
+
+const toastEl     = document.getElementById("toast");
+const toastTitle  = document.getElementById("toastTitle");
+const toastText   = document.getElementById("toastText");
+
+const modalBack   = document.getElementById("modalBack");
+const modalTitle  = document.getElementById("modalTitle");
+const modalBody   = document.getElementById("modalBody");
+
+/* ---------- Utils ---------- */
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+/* Deterministic RNG (mulberry32) */
+function mulberry32(seed){
+  let a = seed >>> 0;
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+/* Toast */
+let toastTimer = null;
+function toast(msg, title="Notice"){
+  toastTitle.textContent = title;
+  toastText.textContent = msg;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toastEl.classList.remove("show"), 3200);
+}
+
+/* ---------- Profile / Seed ---------- */
+function getUserSeed(){
+  let s = localStorage.getItem(SEED_KEY);
+  if(!s){
+    s = String(Math.floor(Math.random()*1e9));
+    localStorage.setItem(SEED_KEY, s);
+  }
+  return parseInt(s,10) || 123456789;
+}
+
+function loadProfile(){
+  try{
+    const raw = localStorage.getItem(PROFILE_KEY);
+    if(!raw) return {name:"", cohort:""};
+    const obj = JSON.parse(raw);
+    return {name: obj.name||"", cohort: obj.cohort||""};
+  }catch(e){
+    return {name:"", cohort:""};
+  }
+}
+function saveProfile(p){
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+}
+
+/* ---------- Progress ---------- */
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return {weeks:{}, final:{}, certificate:{}};
+    const obj = JSON.parse(raw);
+    if(!obj.weeks) obj.weeks = {};
+    if(!obj.final) obj.final = {};
+    if(!obj.certificate) obj.certificate = {};
+    return obj;
+  }catch(e){
+    return {weeks:{}, final:{}, certificate:{}};
+  }
+}
+function saveProgress(p){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+}
+function weekKey(n){ return String(n); }
+function isWeekDone(p, n){
+  const w = p.weeks[weekKey(n)];
+  return !!(w && w.submittedAt);
+}
+function completedCount(p){
+  let c=0;
+  for(let i=1;i<=42;i++) if(isWeekDone(p,i)) c++;
+  return c;
+}
+function starCount(p){ return completedCount(p); }
+
+/* ---------- Admin ---------- */
+function isAdmin(){ return localStorage.getItem(ADMIN_KEY)==="1"; }
+function setAdmin(v){ localStorage.setItem(ADMIN_KEY, v ? "1":"0"); }
+
+/* ---------- Unit unlocking ---------- */
+function unitWeeks(unitIndex){
+  return WEEKS.filter(w=>w.unitIndex===unitIndex).map(w=>w.week);
+}
+function isUnitComplete(progress, unitIndex){
+  const weeks = unitWeeks(unitIndex);
+  return weeks.every(n => isWeekDone(progress, n));
+}
+function isUnitUnlocked(progress, unitIndex){
+  if(unitIndex<=1) return true;
+  return isUnitComplete(progress, unitIndex-1);
+}
+function isWeekUnlocked(progress, weekNum){
+  const w = WEEKS.find(x=>x.week===weekNum);
+  if(!w) return false;
+  return isUnitUnlocked(progress, w.unitIndex);
+}
+
+/* ---------- Quiz generation ---------- */
+function pickFromBank(bank, tags, count, rng){
+  const matches = bank.filter(q => (q[2]||[]).some(t => tags.includes(t)));
+  const pool = (matches.length >= count) ? matches : bank.slice();
+  const chosen = [];
+  const usedIdx = new Set();
+  let attempts=0;
+  while(chosen.length < count && attempts < 600){
+    attempts++;
+    const idx = Math.floor(rng()*pool.length);
+    if(usedIdx.has(idx)) continue;
+    usedIdx.add(idx);
+    chosen.push(pool[idx]);
+  }
+  return chosen;
+}
+
+function homeworkQuestionsForWeek(weekObj, userSeed){
+  const rng = mulberry32(userSeed + weekObj.week * 10007);
+  const tags = weekObj.tags || [];
+  const tf = pickFromBank(TF_BANK, tags, 2, rng);
+  const mc = pickFromBank(MC_BANK, tags, 2, rng);
+
+  const questions = [];
+  questions.push({type:"tf", prompt: tf[0][0], answer: tf[0][1], rationale: tf[0][3]});
+  questions.push({type:"mc", prompt: mc[0][0], choices: mc[0][1], answerIndex: mc[0][2], rationale: mc[0][4]});
+  questions.push({type:"mc", prompt: mc[1][0], choices: mc[1][1], answerIndex: mc[1][2], rationale: mc[1][4]});
+  questions.push({type:"tf", prompt: tf[1][0], answer: tf[1][1], rationale: tf[1][3]});
+
+  questions.push({
+    type:"essay",
+    prompt:`Essay (5–8 sentences): Pick ONE reflection question from this week and answer it with detail. Include what you did, what you noticed, and what you will do next.`,
+    suggested:"Look for specific details: what they did, what changed, and a realistic next step."
+  });
+
+  return questions;
+}
+
+function gradeHomework(questions, answers){
+  let total=0, correct=0;
+  questions.forEach((q, i)=>{
+    if(q.type === "tf"){
+      total++;
+      const a = answers[i];
+      if(a === "true" && q.answer === true) correct++;
+      if(a === "false" && q.answer === false) correct++;
+    }else if(q.type === "mc"){
+      total++;
+      const a = answers[i];
+      if(String(q.answerIndex) === String(a)) correct++;
+    }
+  });
+  const pct = total ? Math.round((correct/total)*100) : 0;
+  return {total, correct, pct};
+}
+
+/* ---------- Final exam ---------- */
+function buildFinalExam(userSeed){
+  const rng = mulberry32(userSeed + 424242);
+  const exam = [];
+
+  const tf = pickFromBank(TF_BANK, ["fitness","safety","fitt","recovery","sportsmanship","nutrition"], 10, rng);
+  const mc = pickFromBank(MC_BANK, ["fitness","safety","fitt","recovery","sportsmanship","nutrition"], 10, rng);
+
+  tf.forEach(item => exam.push({type:"tf", prompt:item[0], answer:item[1], rationale:item[3]}));
+  mc.forEach(item => exam.push({type:"mc", prompt:item[0], choices:item[1], answerIndex:item[2], rationale:item[4]}));
+
+  exam.push({
+    type:"essay",
+    prompt:"Essay: Create a 7-day plan using FITT (Frequency, Intensity, Time, Type). Include at least: 2 strength days, 2 cardio days, 2 mobility/recovery sessions, and 1 full rest day. Explain why it is balanced.",
+    suggested:"Balanced plan with FITT details, recovery, realistic intensity, and reasoning."
+  });
+
+  // shuffle deterministically
+  for(let i=exam.length-1;i>0;i--){
+    const j = Math.floor(rng()*(i+1));
+    [exam[i], exam[j]] = [exam[j], exam[i]];
+  }
+  return exam;
+}
+
+function gradeFinal(exam, answers){
+  let total=0, correct=0;
+  exam.forEach((q,i)=>{
+    if(q.type==="tf"){
+      total++;
+      const a = answers[i];
+      if(a==="true" && q.answer===true) correct++;
+      if(a==="false" && q.answer===false) correct++;
+    }else if(q.type==="mc"){
+      total++;
+      const a = answers[i];
+      if(String(a)===String(q.answerIndex)) correct++;
+    }
+  });
+  const pct = total ? Math.round((correct/total)*100) : 0;
+  return {total, correct, pct};
+}
+
+/* ---------- State ---------- */
+let state = {
+  userSeed: getUserSeed(),
+  profile: loadProfile(),
+  progress: loadProgress(),
+  admin: isAdmin(),
+  activeView: "home", // home | week | final | cert
+  activeWeek: 1
+};
+
+/* ---------- UI ---------- */
+function updateHeaderUI(){
+  const done = completedCount(state.progress);
+  progressText.textContent = `${done}/42`;
+  starText.textContent = String(starCount(state.progress));
+  progressBar.style.width = Math.round((done/42)*100) + "%";
+  userLabel.textContent = "ID " + String(state.userSeed).slice(-6);
+}
+
+function buildJump(){
+  jumpSelect.innerHTML = `<option value="">Jump…</option>` + WEEKS.map(w=>{
+    const lock = isWeekUnlocked(state.progress, w.week) ? "" : " 🔒";
+    return `<option value="${w.week}">Week ${w.week}${lock}: ${escapeHtml(w.title)}</option>`;
+  }).join("");
+}
+
+function buildNav(){
+  buildJump();
+  navWeeks.innerHTML = "";
+
+  // units in order
+  const maxUnit = Math.max(...WEEKS.map(w=>w.unitIndex));
+  for(let u=1; u<=maxUnit; u++){
+    const unitItems = WEEKS.filter(w=>w.unitIndex===u);
+    const start = unitItems[0].week, end = unitItems[unitItems.length-1].week;
+
+    const unlocked = isUnitUnlocked(state.progress, u);
+    const unitDone = isUnitComplete(state.progress, u);
+
+    const unitDiv = document.createElement("div");
+    unitDiv.className = "unitCard";
+    unitDiv.innerHTML = `
+      <div class="unitHead">
+        <div class="uTitle">${escapeHtml(unitItems[0].unit)}</div>
+        <div class="uRange">Weeks ${start}–${end}</div>
+      </div>
+      <div class="row" style="justify-content:space-between; margin:6px 0 10px">
+        <div class="muted" style="font-size:18px">
+          ${unlocked ? (unitDone ? "✅ Unit complete" : "Unlocked") : "🔒 Locked (finish previous unit)"}
+        </div>
+        <div class="uLock">${unlocked ? "" : "🔒"}</div>
+      </div>
+      <div class="weekBtns" data-unit="${u}"></div>
+    `;
+    navWeeks.appendChild(unitDiv);
+
+    const btnWrap = unitDiv.querySelector(".weekBtns");
+    unitItems.forEach(w=>{
+      const b = document.createElement("button");
+      b.type = "button";
+      const done = isWeekDone(state.progress, w.week);
+      const active = (state.activeView==="week" && state.activeWeek===w.week);
+      const wkUnlocked = isWeekUnlocked(state.progress, w.week);
+
+      b.className = "wbtn" + (active ? " active":"") + (done ? " done":"") + (!wkUnlocked ? " locked":"");
+      b.textContent = w.week;
+      b.title = `Week ${w.week}: ${w.title}` + (!wkUnlocked ? " (Locked)" : "");
+      b.setAttribute("data-week", String(w.week));
+      if(!wkUnlocked) b.setAttribute("aria-disabled","true");
+      btnWrap.appendChild(b);
+    });
+  }
+}
+
+function renderHome(){
+  state.activeView = "home";
+  buildNav();
+  updateHeaderUI();
+
+  const done = completedCount(state.progress);
+  const next = clamp(done+1, 1, 42);
+  const canFinal = isUnitUnlocked(state.progress, 6) && isUnitComplete(state.progress, 6);
+
+  const nameLine = state.profile.name
+    ? `<div class="muted" style="font-size:20px; margin-top:6px">Welcome, <strong>${escapeHtml(state.profile.name)}</strong>.</div>`
+    : `<div class="muted" style="font-size:20px; margin-top:6px">Set your name in <strong>Profile</strong> (optional) for the certificate.</div>`;
+
+  const unlockedUnits = Math.max(...WEEKS.map(w=>w.unitIndex).filter(u=>isUnitUnlocked(state.progress,u)));
+
+  content.innerHTML = `
+    <h2>Course Home</h2>
+    ${nameLine}
+
+    <div class="card">
+      <h3>How it works</h3>
+      <ul class="muted" style="font-size:20px">
+        <li>Open a <strong>week</strong> from the left.</li>
+        <li>Read the lesson card and do the activities safely.</li>
+        <li>Complete the <strong>weekly quiz</strong> and submit to earn ⭐ stars and mark the week complete.</li>
+        <li><strong>Units unlock in order</strong> when the previous unit is fully completed.</li>
+        <li>Use <strong>Export</strong> to back up progress; <strong>Import</strong> restores it.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Status</h3>
+      <div class="muted" style="font-size:20px">
+        Weeks completed: <strong>${done}/42</strong> • Stars: <strong>${starCount(state.progress)}</strong> ⭐ • Unlocked units: <strong>1–${unlockedUnits}</strong>
+      </div>
+      <div class="row" style="margin-top:12px; justify-content:center">
+        <button class="btn primary" onclick="openWeek(${next})">▶ Continue (Week ${next})</button>
+        <button class="btn" onclick="openWeek(1)">↩ Start at Week 1</button>
+        <button class="btn" onclick="openFinal()">🧾 Final Exam</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Standards alignment (overview)</h3>
+      <ul class="muted" style="font-size:20px">
+        ${SHAPE_STANDARDS.map(s=>`<li>${escapeHtml(s)}</li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Helpful links</h3>
+      <ul class="muted" style="font-size:20px">
+        ${COURSE_RESOURCES.map(r=>`<li><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.label)}</a></li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Certificate</h3>
+      <div class="muted" style="font-size:20px">
+        Certificate becomes available after <strong>all 42 weeks</strong> are complete and the <strong>final exam</strong> is submitted.
+      </div>
+      <div class="row" style="margin-top:12px; justify-content:center">
+        <button class="btn ${canFinal ? "good" : ""}" onclick="openCertificate()">${canFinal ? "🏅 View Certificate" : "🏅 Certificate Locked"}</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderWeek(weekNum){
+  const wk = WEEKS.find(w=>w.week===weekNum);
+  if(!wk) { toast("Week not found."); return; }
+
+  if(!isWeekUnlocked(state.progress, weekNum)){
+    toast("That week is locked. Finish the previous unit to unlock it.", "Locked");
+    return;
+  }
+
+  state.activeView = "week";
+  state.activeWeek = weekNum;
+  buildNav();
+  updateHeaderUI();
+
+  const saved = state.progress.weeks[weekKey(weekNum)] || {};
+  const questions = homeworkQuestionsForWeek(wk, state.userSeed);
+  const storedAnswers = saved.answers || [];
+
+  const submittedChip = saved.submittedAt
+    ? `<span class="chip good">Submitted • ${saved.scorePct||0}%</span>`
+    : `<span class="chip accent">Not submitted</span>`;
+
+  content.innerHTML = `
+    <div class="row space">
+      <div>
+        <h2>Week ${wk.week}: ${escapeHtml(wk.title)}</h2>
+        <div class="muted" style="font-size:20px">${escapeHtml(wk.unit)}</div>
+        <div class="chips">
+          ${wk.standards.map(s=>`<span class="chip accent">${escapeHtml(s)}</span>`).join("")}
+          ${submittedChip}
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" onclick="openWeek(${clamp(weekNum-1,1,42)})">⬅ Prev</button>
+        <button class="btn" onclick="openWeek(${clamp(weekNum+1,1,42)})">Next ➡</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>At a Glance</h3>
+      <ul class="muted" style="font-size:20px">
+        <li><strong>Theme:</strong> ${escapeHtml(wk.theme)}</li>
+        <li><strong>Skill focus:</strong> ${escapeHtml(wk.skill)}</li>
+        <li><strong>Wellness focus:</strong> ${escapeHtml(wk.wellness)}</li>
+        <li><strong>Warm-up:</strong> ${escapeHtml(wk.warmup)}</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Activities</h3>
+      <ul class="muted" style="font-size:20px">
+        ${wk.activities.map(a=>`<li>${escapeHtml(a)}</li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Assessment & Reflection</h3>
+      <div class="muted" style="font-size:20px"><strong>Assessments</strong></div>
+      <ul class="muted" style="font-size:20px">
+        ${wk.assessments.map(a=>`<li>${escapeHtml(a)}</li>`).join("")}
+      </ul>
+      <div class="muted" style="font-size:20px; margin-top:10px"><strong>Reflections</strong></div>
+      <ul class="muted" style="font-size:20px">
+        ${wk.reflections.map(r=>`<li>${escapeHtml(r)}</li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>Weekly Quiz</h3>
+    <div class="muted" style="font-size:20px">Submit to earn ⭐ and unlock your next unit path.</div>
+    <div id="quizWrap"></div>
+
+    <div class="row" style="margin-top:12px; justify-content:center">
+      <button class="btn good" id="saveDraftBtn">💾 Save Draft</button>
+      <button class="btn" id="clearWeekBtn">Clear</button>
+      <button class="btn primary" id="submitWeekBtn">✅ Submit</button>
+    </div>
+
+    <div id="resultWrap" style="margin-top:12px"></div>
+
+    <div class="divider"></div>
+
+    <div class="row" style="justify-content:center">
+      <button class="btn" onclick="renderHome()">↩ Home</button>
+      <button class="btn" onclick="openFinal()">🧾 Final Exam</button>
+    </div>
+  `;
+
+  // Quiz render
+  const quizWrap = document.getElementById("quizWrap");
+  quizWrap.innerHTML = questions.map((q, idx)=>{
+    const savedA = storedAnswers[idx];
+
+    if(q.type==="tf"){
+      const v = (savedA==="true"||savedA==="false") ? savedA : "";
+      return `
+        <div class="q">
+          <div class="qType">Q${idx+1} • True/False</div>
+          <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="q${idx}" value="true" ${v==="true"?"checked":""}/> <span>True</span></label>
+            <label class="choice"><input type="radio" name="q${idx}" value="false" ${v==="false"?"checked":""}/> <span>False</span></label>
+          </div>
+          ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin:</strong> ${q.answer ? "True":"False"} • ${escapeHtml(q.rationale||"")}</div>` : ``}
+        </div>
+      `;
+    }
+
+    if(q.type==="mc"){
+      const v = (savedA!==undefined && savedA!==null) ? String(savedA) : "";
+      return `
+        <div class="q">
+          <div class="qType">Q${idx+1} • Multiple Choice</div>
+          <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+          <div class="choices">
+            ${q.choices.map((c, i)=>`
+              <label class="choice">
+                <input type="radio" name="q${idx}" value="${i}" ${v===String(i)?"checked":""}/>
+                <span>${escapeHtml(c)}</span>
+              </label>
+            `).join("")}
+          </div>
+          ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin:</strong> ${escapeHtml(q.choices[q.answerIndex])} • ${escapeHtml(q.rationale||"")}</div>` : ``}
+        </div>
+      `;
+    }
+
+    // Essay
+    const v = (typeof savedA === "string") ? savedA : "";
+    return `
+      <div class="q">
+        <div class="qType">Q${idx+1} • Essay</div>
+        <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+        <div style="margin-top:10px">
+          <textarea id="essay_${idx}" placeholder="Write your answer here...">${escapeHtml(v)}</textarea>
+        </div>
+        ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin guidance:</strong> ${escapeHtml(q.suggested||"")}</div>` : ``}
+      </div>
+    `;
+  }).join("");
+
+  function collectAnswers(){
+    const answers = [];
+    questions.forEach((q, idx)=>{
+      if(q.type==="essay"){
+        const el = document.getElementById(`essay_${idx}`);
+        answers[idx] = el ? el.value : "";
+      }else{
+        const chosen = document.querySelector(`input[name="q${idx}"]:checked`);
+        answers[idx] = chosen ? chosen.value : "";
+      }
+    });
+    return answers;
+  }
+
+  function showResult(html){ document.getElementById("resultWrap").innerHTML = html; }
+
+  document.getElementById("saveDraftBtn").onclick = () => {
+    const answers = collectAnswers();
+    state.progress.weeks[weekKey(weekNum)] = {...saved, answers, updatedAt:new Date().toISOString()};
+    saveProgress(state.progress);
+    updateHeaderUI();
+    buildNav();
+    toast("Draft saved.");
+    showResult(`<div class="callout"><strong>Draft saved.</strong></div>`);
+  };
+
+  document.getElementById("clearWeekBtn").onclick = () => {
+    if(!confirm("Clear this week’s saved draft/submission?")) return;
+    delete state.progress.weeks[weekKey(weekNum)];
+    saveProgress(state.progress);
+    renderWeek(weekNum);
+  };
+
+  document.getElementById("submitWeekBtn").onclick = () => {
+    const answers = collectAnswers();
+    const g = gradeHomework(questions, answers);
+    state.progress.weeks[weekKey(weekNum)] = {
+      answers,
+      scorePct: g.pct,
+      scoreCorrect: g.correct,
+      scoreTotal: g.total,
+      submittedAt: new Date().toISOString()
+    };
+    saveProgress(state.progress);
+    updateHeaderUI();
+    buildNav();
+    toast("Week submitted. Star earned!");
+    showResult(`
+      <div class="callout">
+        <div style="font-weight:800">Submitted ✅</div>
+        <div class="muted" style="font-size:20px; margin-top:6px">Auto-graded score (TF/MC): <strong>${g.correct}/${g.total}</strong> → <strong>${g.pct}%</strong></div>
+        <div class="muted" style="font-size:18px; margin-top:6px">Essay saved for reflection.</div>
+      </div>
+    `);
+  };
+}
+
+function openFinal(){
+  // Final is only meaningful when Unit 6 is complete, but we allow preview any time.
+  state.activeView = "final";
+  buildNav();
+  updateHeaderUI();
+
+  const exam = buildFinalExam(state.userSeed);
+  const saved = state.progress.final || {};
+  const storedAnswers = saved.answers || [];
+  const doneWeeks = completedCount(state.progress);
+
+  const unlocked = isUnitUnlocked(state.progress, 6);
+  const unit6Done = isUnitComplete(state.progress, 6);
+
+  content.innerHTML = `
+    <h2>Final Exam</h2>
+
+    <div class="${(unlocked && unit6Done) ? "callout" : "warnBox"}">
+      <div style="font-weight:800; font-size:24px">${(unlocked && unit6Done) ? "Ready" : "Not fully unlocked yet"}</div>
+      <div class="muted" style="font-size:20px; margin-top:6px">
+        Completed weeks: <strong>${doneWeeks}/42</strong>. For the certificate, finish all weeks and submit this final.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Instructions</h3>
+      <ul class="muted" style="font-size:20px">
+        <li>True/False + Multiple Choice are auto-graded.</li>
+        <li>Essay saves for reflection.</li>
+      </ul>
+      <div class="row" style="justify-content:center; margin-top:10px">
+        <button class="btn" onclick="renderHome()">↩ Home</button>
+        <button class="btn" onclick="openWeek(${clamp(doneWeeks+1,1,42)})">▶ Continue Weeks</button>
+      </div>
+    </div>
+
+    <div id="finalWrap"></div>
+
+    <div class="row" style="margin-top:12px; justify-content:center">
+      <button class="btn good" id="saveFinalDraftBtn">💾 Save Draft</button>
+      <button class="btn" id="clearFinalBtn">Clear</button>
+      <button class="btn primary" id="submitFinalBtn">✅ Submit Final</button>
+    </div>
+
+    <div id="finalResult" style="margin-top:12px"></div>
+
+    <div class="card">
+      <h3>Certificate</h3>
+      <div class="muted" style="font-size:20px">Available after all weeks are complete and final is submitted.</div>
+      <div class="row" style="justify-content:center; margin-top:10px">
+        <button class="btn" onclick="openCertificate()">🏅 View Certificate</button>
+      </div>
+    </div>
+  `;
+
+  const finalWrap = document.getElementById("finalWrap");
+  finalWrap.innerHTML = exam.map((q, idx)=>{
+    const savedA = storedAnswers[idx];
+
+    if(q.type==="tf"){
+      const v = (savedA==="true"||savedA==="false") ? savedA : "";
+      return `
+        <div class="q">
+          <div class="qType">Q${idx+1} • True/False</div>
+          <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="f${idx}" value="true" ${v==="true"?"checked":""}/> <span>True</span></label>
+            <label class="choice"><input type="radio" name="f${idx}" value="false" ${v==="false"?"checked":""}/> <span>False</span></label>
+          </div>
+          ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin:</strong> ${q.answer ? "True":"False"} • ${escapeHtml(q.rationale||"")}</div>` : ``}
+        </div>
+      `;
+    }
+
+    if(q.type==="mc"){
+      const v = (savedA!==undefined && savedA!==null) ? String(savedA) : "";
+      return `
+        <div class="q">
+          <div class="qType">Q${idx+1} • Multiple Choice</div>
+          <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+          <div class="choices">
+            ${q.choices.map((c, i)=>`
+              <label class="choice">
+                <input type="radio" name="f${idx}" value="${i}" ${v===String(i)?"checked":""}/>
+                <span>${escapeHtml(c)}</span>
+              </label>
+            `).join("")}
+          </div>
+          ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin:</strong> ${escapeHtml(q.choices[q.answerIndex])} • ${escapeHtml(q.rationale||"")}</div>` : ``}
+        </div>
+      `;
+    }
+
+    const v = (typeof savedA === "string") ? savedA : "";
+    return `
+      <div class="q">
+        <div class="qType">Q${idx+1} • Essay</div>
+        <div style="font-weight:800">${escapeHtml(q.prompt)}</div>
+        <div style="margin-top:10px">
+          <textarea id="fessay_${idx}" placeholder="Write your answer here...">${escapeHtml(v)}</textarea>
+        </div>
+        ${state.admin ? `<div class="muted" style="font-size:18px; margin-top:8px"><strong>Admin guidance:</strong> ${escapeHtml(q.suggested||"")}</div>` : ``}
+      </div>
+    `;
+  }).join("");
+
+  function collectFinalAnswers(){
+    const answers = [];
+    exam.forEach((q, idx)=>{
+      if(q.type==="essay"){
+        const el = document.getElementById(`fessay_${idx}`);
+        answers[idx] = el ? el.value : "";
+      }else{
+        const chosen = document.querySelector(`input[name="f${idx}"]:checked`);
+        answers[idx] = chosen ? chosen.value : "";
+      }
+    });
+    return answers;
+  }
+
+  function showFinal(html){ document.getElementById("finalResult").innerHTML = html; }
+
+  document.getElementById("saveFinalDraftBtn").onclick = () => {
+    const answers = collectFinalAnswers();
+    state.progress.final = {...saved, answers, updatedAt:new Date().toISOString()};
+    saveProgress(state.progress);
+    toast("Final draft saved.");
+    showFinal(`<div class="callout"><strong>Final draft saved.</strong></div>`);
+  };
+
+  document.getElementById("clearFinalBtn").onclick = () => {
+    if(!confirm("Clear saved final attempt?")) return;
+    state.progress.final = {};
+    saveProgress(state.progress);
+    openFinal();
+  };
+
+  document.getElementById("submitFinalBtn").onclick = () => {
+    const answers = collectFinalAnswers();
+    const g = gradeFinal(exam, answers);
+    state.progress.final = {
+      answers,
+      scorePct: g.pct,
+      scoreCorrect: g.correct,
+      scoreTotal: g.total,
+      submittedAt: new Date().toISOString()
+    };
+    saveProgress(state.progress);
+
+    toast("Final submitted.");
+    showFinal(`
+      <div class="callout">
+        <div style="font-weight:800">Final Submitted ✅</div>
+        <div class="muted" style="font-size:20px; margin-top:6px">Auto-graded score (TF/MC): <strong>${g.correct}/${g.total}</strong> → <strong>${g.pct}%</strong></div>
+        <div class="muted" style="font-size:18px; margin-top:6px">Essay saved for reflection.</div>
+      </div>
+    `);
+  };
+
+  if(saved && saved.submittedAt){
+    showFinal(`
+      <div class="callout">
+        <div style="font-weight:800">Saved Final</div>
+        <div class="muted" style="font-size:20px; margin-top:6px">Score: <strong>${saved.scoreCorrect||0}/${saved.scoreTotal||0}</strong> → <strong>${saved.scorePct||0}%</strong></div>
+        <div class="muted" style="font-size:18px; margin-top:6px">Submitted: ${escapeHtml(saved.submittedAt)}</div>
+      </div>
+    `);
+  }
+}
+
+function openCertificate(){
+  state.activeView = "cert";
+  buildNav();
+  updateHeaderUI();
+
+  const allDone = completedCount(state.progress) === 42;
+  const finalDone = !!(state.progress.final && state.progress.final.submittedAt);
+  const finalPct = (state.progress.final && typeof state.progress.final.scorePct === "number") ? state.progress.final.scorePct : 0;
+
+  const eligible = allDone && finalDone;
+  const name = state.profile.name || "Student";
+  const today = new Date().toLocaleDateString();
+
+  content.innerHTML = `
+    <h2>Certificate</h2>
+
+    <div class="${eligible ? "callout":"warnBox"}">
+      <div style="font-weight:800; font-size:24px">${eligible ? "Certificate Ready" : "Certificate Locked"}</div>
+      <div class="muted" style="font-size:20px; margin-top:6px">
+        Requirements: <strong>42/42 weeks complete</strong> + <strong>Final submitted</strong>.
+        <br/>Status: Weeks ${allDone ? "✅" : "❌"} • Final ${finalDone ? "✅" : "❌"} • Final Score: <strong>${finalPct}%</strong>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <div style="font-size:34px; font-weight:800; letter-spacing:.3px; margin-bottom:8px">Certificate of Completion</div>
+      <div class="muted" style="font-size:22px">Whole-You High School Physical Education — 42 Week Program</div>
+
+      <div style="height:18px"></div>
+
+      <div style="font-size:24px">Presented to</div>
+      <div style="font-size:38px; font-weight:800; margin: 8px 0">${escapeHtml(name)}</div>
+
+      <div class="muted" style="font-size:20px; max-width: 70ch; margin: 0 auto">
+        For completing the full 42-week self-paced course and demonstrating physical literacy, safety knowledge, and lifelong wellness planning.
+      </div>
+
+      <div style="height:22px"></div>
+      <div class="muted" style="font-size:20px">Date: ${escapeHtml(today)}</div>
+      <div style="height:22px"></div>
+
+      <div class="row" style="justify-content:center">
+        <div style="width:min(420px,92%); border-top: 2px solid rgba(255,255,255,.25); padding-top: 10px" class="muted">
+          Instructor / Program Seal (Khaemenes Academy)
+        </div>
+      </div>
+
+      <div class="row" style="justify-content:center; margin-top:14px">
+        <button class="btn primary" onclick="window.print()">🖨️ Print Certificate</button>
+        <button class="btn" onclick="renderHome()">↩ Home</button>
+      </div>
+    </div>
+  `;
+
+  if(!eligible){
+    toast("Finish all weeks and submit the final to unlock the certificate.", "Locked");
+  }
+}
+
+/* ---------- Export / Import ---------- */
+function exportData(){
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    userSeed: state.userSeed,
+    profile: state.profile,
+    progress: state.progress
+  };
+  const json = JSON.stringify(payload, null, 2);
+  const blob = new Blob([json], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "kha_hs_pe42_backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 600);
+}
+function importData(){
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+  input.onchange = async () => {
+    const file = input.files && input.files[0];
+    if(!file) return;
+    const text = await file.text();
+    try{
+      const obj = JSON.parse(text);
+      if(obj && obj.progress){
+        state.progress = obj.progress;
+        saveProgress(state.progress);
+      }
+      if(obj && obj.profile){
+        state.profile = {name: obj.profile.name||"", cohort: obj.profile.cohort||""};
+        saveProfile(state.profile);
+      }
+      if(obj && obj.userSeed){
+        state.userSeed = parseInt(obj.userSeed,10) || state.userSeed;
+        localStorage.setItem(SEED_KEY, String(state.userSeed));
+      }
+      updateHeaderUI();
+      buildNav();
+      renderHome();
+      toast("Import successful.");
+    }catch(e){
+      alert("Could not import: invalid JSON file.");
+    }
+  };
+  input.click();
+}
+
+/* ---------- Modal helpers ---------- */
+function openModal(title, html){
+  modalTitle.textContent = title;
+  modalBody.innerHTML = html;
+  modalBack.classList.add("show");
+  modalBack.setAttribute("aria-hidden","false");
+}
+function closeModal(){
+  modalBack.classList.remove("show");
+  modalBack.setAttribute("aria-hidden","true");
+}
+document.getElementById("closeModalBtn").onclick = closeModal;
+modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeModal(); });
+
+/* ---------- Profile / Admin ---------- */
+function openProfile(){
+  const p = state.profile;
+  openModal("Profile", `
+    <div class="muted" style="font-size:20px">Your name prints on the certificate (optional).</div>
+    <div class="divider"></div>
+    <div class="row" style="justify-content:center">
+      <div style="width:min(560px, 96%)">
+        <label class="muted" style="font-size:20px">Student Name</label><br/>
+        <input id="profName" type="text" value="${escapeHtml(p.name)}" placeholder="e.g., Jennifer Pearl" style="width:100%; margin-top:8px"/>
+        <div style="height:10px"></div>
+        <label class="muted" style="font-size:20px">Cohort / Class (optional)</label><br/>
+        <input id="profCohort" type="text" value="${escapeHtml(p.cohort)}" placeholder="e.g., Period 2" style="width:100%; margin-top:8px"/>
+      </div>
+    </div>
+    <div class="row" style="justify-content:center; margin-top:14px">
+      <button class="btn good" id="saveProfileBtn">💾 Save Profile</button>
+    </div>
+  `);
+
+  document.getElementById("saveProfileBtn").onclick = () => {
+    const name = (document.getElementById("profName").value || "").trim();
+    const cohort = (document.getElementById("profCohort").value || "").trim();
+    state.profile = {name, cohort};
+    saveProfile(state.profile);
+    closeModal();
+    toast("Profile saved.");
+    rerender();
+  };
+}
+
+function toggleAdmin(){
+  if(state.admin){
+    state.admin = false;
+    setAdmin(false);
+    toast("Admin mode locked.");
+    rerender();
+    return;
+  }
+  openModal("Admin", `
+    <div class="muted" style="font-size:20px">Enter your admin code.</div>
+    <div class="divider"></div>
+    <div class="row" style="justify-content:center">
+      <div style="width:min(520px, 96%)">
+        <input id="adminCode" type="password" placeholder="••••" style="width:100%"/>
+        <div class="row" style="justify-content:center; margin-top:12px">
+          <button class="btn primary" id="adminUnlockBtn">🔓 Unlock</button>
+        </div>
+      </div>
+    </div>
+  `);
+
+  document.getElementById("adminUnlockBtn").onclick = () => {
+    const code = (document.getElementById("adminCode").value || "").trim();
+    if(code === ADMIN_PASSCODE){
+      state.admin = true;
+      setAdmin(true);
+      closeModal();
+      toast("Admin mode unlocked.");
+      rerender();
+    }else{
+      toast("Incorrect code.", "Admin");
+    }
+  };
+}
+
+/* ---------- Navigation ---------- */
+function openWeek(n){ renderWeek(clamp(n,1,42)); }
+function rerender(){
+  if(state.activeView==="home") renderHome();
+  else if(state.activeView==="week") renderWeek(state.activeWeek);
+  else if(state.activeView==="final") openFinal();
+  else openCertificate();
+}
+
+/* Event delegation: week button clicks always work */
+navWeeks.addEventListener("click", (e)=>{
+  const btn = e.target.closest("button[data-week]");
+  if(!btn) return;
+  const w = parseInt(btn.getAttribute("data-week"), 10);
+  if(!(w>=1 && w<=42)) return;
+
+  if(btn.classList.contains("locked")){
+    toast("Locked. Complete the previous unit to unlock this unit.", "Locked");
+    return;
+  }
+  openWeek(w);
+});
+
+jumpSelect.onchange = () => {
+  const v = parseInt(jumpSelect.value,10);
+  if(v>=1 && v<=42){
+    if(!isWeekUnlocked(state.progress, v)){
+      toast("That week is locked. Finish the previous unit first.", "Locked");
+    }else{
+      openWeek(v);
+    }
+  }
+  jumpSelect.value = "";
+};
+
+/* ---------- Top buttons ---------- */
+document.getElementById("homeBtn").onclick = () => renderHome();
+document.getElementById("finalBtn").onclick = () => openFinal();
+document.getElementById("printBtn").onclick = () => window.print();
+document.getElementById("exportBtn").onclick = () => exportData();
+document.getElementById("importBtn").onclick = () => importData();
+document.getElementById("profileBtn").onclick = () => openProfile();
+document.getElementById("adminBtn").onclick = () => toggleAdmin();
+
+/* Make key functions global (helps in some embed contexts) */
+window.openWeek = openWeek;
+window.openFinal = openFinal;
+window.renderHome = renderHome;
+window.openCertificate = openCertificate;
+
+/* ---------- Initialize ---------- */
+(function init(){
+  updateHeaderUI();
+  buildNav();
+  renderHome();
+})();
+</script>
+</body>
+</html>
