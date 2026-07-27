@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PLERA — 10th Grade P.E. — Mini Textbook Reader</title>
+
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:7px; --gap:14px; --maxw:1111px;
+  --content-font:14px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,var(--bg) 0%, #061225 70%); color:var(--ink);
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:24px;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+.wrapper{width:92%; max-width:var(--maxw); display:grid; grid-template-columns:266px 1fr 255px; gap:12px;}
+.sidebar{background:var(--panel); border-radius:7px; padding:16px; box-shadow:0 7px 24px rgba(2,6,23,0.6); height:calc(100vh - 48px); overflow:auto}
+.brand{font-size:14px; font-weight:700; color:var(--accent-strong); margin-bottom:7px}
+.toc-section{margin-top:14px}
+.module-button{display:flex; justify-content:space-between; align-items:center; padding:7px; border-radius:8px; cursor:pointer; margin-bottom:8px; background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--ink)}
+.module-button.locked{opacity:0.5; cursor:not-allowed}
+.chapter-item{padding:7px 7px; border-radius:7px; margin:7px 0; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:transparent; border:1px solid rgba(255,255,255,0.02); outline:none;}
+.chapter-item:focus{box-shadow:0 0 0 3px rgba(107,168,255,0.08); border-color:rgba(107,168,255,0.24)}
+.chapter-item.active{background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03)); box-shadow:0 6px 14px rgba(3,7,18,0.4)}
+.main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:14px; min-height:640px; box-shadow:0 7px 30px rgba(2,6,23,0.6); overflow:auto}
+.header{display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:14px}
+.title{font-weight:700; font-size:20px}
+.kv{color:var(--muted); font-size:12px}
+.reader{background:var(--glass); padding:20px; border-radius:7px; color:var(--ink)}
+.reader h2{margin-top:2px}
+.controls{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.btn{background:var(--accent); color:#04232a; padding:6px 8px; border-radius:7px; border:0; cursor:pointer; font-weight:600}
+.btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
+.sidepanel{background:var(--panel); border-radius:7px; padding:16px; box-shadow:0 8px 30px rgba(2,6,23,0.6); height:calc(100vh - 48px); overflow:auto}
+.note{width:100%; min-height:180px; background:transparent; color:#fffff0; border:1px solid rgba(255,255,255,0.04); padding:8px; border-radius:7px; resize:vertical}
+.info-row{display:flex; justify-content:space-between; gap:3px; align-items:center; margin-top:8px}
+.small{font-size:11px; padding:3px 7px}
+.search{width:100%; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--ink)}
+.progress-bar{height:8px; background:rgba(255,255,255,0.04); border-radius:100px; overflow:hidden; margin-top:8px}
+.progress-bar > i{display:block; height:100%; background:linear-gradient(90deg,var(--accent) 0%, var(--accent-strong) 100%); width:0%}
+.footer-small{font-size:12px; color:var(--muted); margin-top:12px}
+.note-actions{display:flex; gap:6px; margin-top:6px}
+.read-controls{display:flex; gap:6px; align-items:center}
+.tab-switch{display:flex; gap:8px; margin-bottom:10px}
+.tab{padding:6px 8px; border-radius:6px; cursor:pointer; background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted)}
+.tab.active{background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03)); color:var(--ink); font-weight:700}
+@media (max-width:1100px){
+  .wrapper{grid-template-columns:1fr; padding-bottom:140px}
+  .sidepanel{order:3}
+  .sidebar{order:2; height:auto}
+}
+@media print {
+  body{background:transparent}
+  .sidebar,.sidepanel,.controls,.header{display:none}
+  .reader{box-shadow:none; border-radius:0; background:transparent}
+}
+</style>
+</head>
+<body>
+  <div class="wrapper" id="app">
+    <aside class="sidebar">
+      <div class="brand">PLERA — 10th Grade P.E. — Textbook</div>
+      <div class="kv">Standalone reader — separate from the quiz portal</div>
+
+      <div style="margin-top:12px">
+        <input id="sidebarSearch" class="search" placeholder="Search chapters or text..." aria-label="Search table of contents" />
+      </div>
+
+      <div class="toc-section" id="tocList" style="margin-top:12px" role="list"></div>
+
+      <div style="margin-top:12px; display:flex;gap:8px">
+        <button id="exportReaderBtn" class="btn ghost small" title="Download reader state">Export Reader</button>
+        <button id="importReaderBtn" class="btn ghost small" title="Import previously exported reader state">Import Reader</button>
+        <input type="file" id="importReaderFile" accept="application/json" style="display:none"/>
+      </div>
+
+      <div class="footer-small" style="margin-top:12px">Notes & progress are stored locally in this browser only.</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="chapterTitle">Week A1 — Sport Science & Performance Foundations</div>
+          <div class="kv" id="chapterSubtitle">Energy systems, testing, safety</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+          <div class="controls" role="toolbar" aria-label="Reading controls">
+            <button id="decText" class="btn ghost small" aria-label="Decrease text size">A–</button>
+            <button id="incText" class="btn ghost small" aria-label="Increase text size">A+</button>
+            <button id="toggleMark" class="btn small" aria-pressed="false">Mark Read</button>
+
+            <button id="playTTS" class="btn" aria-label="Play text-to-speech">▶ Read Aloud</button>
+            <button id="stopTTS" class="btn ghost" aria-label="Stop text-to-speech">■ Stop</button>
+
+            <button id="printChapter" class="btn ghost" aria-label="Print chapter">Print</button>
+            <button id="downloadChapter" class="btn ghost" aria-label="Download chapter">Download</button>
+          </div>
+          <div class="kv" id="statusBadge">Ready</div>
+        </div>
+      </div>
+
+      <div class="reader" id="readerMain" style="font-size:var(--content-font); line-height:var(--content-line)" aria-live="polite">
+        <div id="chapterBody"></div>
+      </div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:700">Notes & Tools</div>
+
+      <textarea id="chapterNotes" class="note" placeholder="Write study notes for this chapter..." aria-label="Chapter notes"></textarea>
+      <div class="note-actions">
+        <button id="saveNote" class="btn">Save Note</button>
+        <button id="clearNote" class="btn ghost">Clear Note</button>
+        <button id="downloadNote" class="btn ghost">Download Note</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="kv">Text size: <span id="textSizeLabel">14px</span></div>
+        <div style="margin-top:8px">
+          <div class="kv">Find in chapter</div>
+          <input id="localSearch" class="search" placeholder="Search inside chapter..." aria-label="Find in chapter" />
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="kv">Progress</div>
+          <div class="progress-bar" aria-hidden="true"><i id="progressFill" style="width:0%"></i></div>
+          <div class="kv" id="progressLabel" style="margin-top:6px">0% — not read</div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button id="exportReaderJSON" class="btn ghost small" title="Export reader state">Export JSON</button>
+          <button id="importReaderJSON" class="btn ghost small" title="Import reader state">Import JSON</button>
+        </div>
+      </div>
+
+      <div class="footer-small" style="margin-top:16px">Tip: Use the left list to jump chapters. Notes are private to this browser.</div>
+    </aside>
+  </div>
+
+<script>
+/* ========== Data & Storage ========== */
+const READER_STORAGE_KEY = 'plera_pe10_textbook_v1';
+
+/* Curriculum content (chapter bodies include study guide paragraphs under "What will be on the quiz") */
+const CURRICULUM = {
+  A1: { title:'Week A1 — Sport Science & Performance Foundations', subtitle:'Energy systems, testing, safety',
+    body: `
+<h2>Introduction & Safety</h2>
+<p>Before beginning any training session you must consider safety: environment, footwear, weather, adequate supervision, and appropriate baseline screening for prior injuries.</p>
+
+<h3>Energy systems</h3>
+<p><strong>ATP-PC</strong> — immediate energy used for very short maximal efforts (0–10s). <strong>Glycolytic</strong> — short high-intensity efforts (10s–2min). <strong>Oxidative</strong> — longer-duration energy for endurance activities (2min+).</p>
+
+<h3>Baseline testing</h3>
+<p>Common field tests: 20m sprint (speed), vertical jump (power), plank hold (core endurance), beep/yo-yo test (aerobic capacity).</p>
+
+<h3>What will be on the quiz</h3>
+<p>Definitions and time-domains of the three energy systems, examples of tests and what they assess, and basic safety / warm-up checklist items.</p>
+` },
+  A2: { title:'Week A2 — Advanced Aerobic & Anaerobic Conditioning', subtitle:'Interval progressions, pacing',
+    body: `
+<h2>Interval training principles</h2>
+<p>Intervals alternate higher intensity work with recovery periods. Work:rest ratios should match the energy demands of the sport. Use RPE and talk-test for intensity adjustments.</p>
+
+<h3>Practical examples</h3>
+<p>Example interval sessions: 1min hard/1min easy ×8 (beginner), 4×4min high/3min recovery (advanced).</p>
+
+<h3>What will be on the quiz</h3>
+<p>Talk test, RPE meaning, interval design basics, and interpreting session recovery needs.</p>
+` },
+  A3: { title:'Week A3 — Strength Mechanics & Hypertrophy Basics', subtitle:'Programming basics & movement quality',
+    body: `
+<h2>Movement quality & strength basics</h2>
+<p>Focus on compound lifts (squat, hinge, press) and technique. Eccentric (lowering) control is important for strength and tendon health. Breathe rhythmically: exhale on exertion.</p>
+
+<h3>Programming</h3>
+<p>Start with technique, progress load gradually, and prioritize quality over quantity.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Key cues for squat/hinge, why eccentric control matters, and basic progression principles.</p>
+` },
+  A4: { title:'Week A4 — Sports Nutrition for Performance', subtitle:'Macros, timing, hydration',
+    body: `
+<h2>Nutrition fundamentals</h2>
+<p>Carbohydrates provide immediate fuel for high-intensity work; protein supports repair and remodeling; fats support longer-duration energy needs. Hydration affects thermoregulation and performance.</p>
+
+<h3>Practical fuel</h3>
+<p>Pre-session small meal or snack 60–90 minutes before; post-session combo of carbs + protein to support recovery.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Macro roles, sample pre/post meals, and basic hydration rules.</p>
+` },
+  A5: { title:'Week A5 — Biomechanics & Movement Analysis', subtitle:'Motion, joint action, injury mechanisms',
+    body: `
+<h2>Biomechanics basics</h2>
+<p>Vocabulary: flexion, extension, abduction, adduction, rotation. Observe joint actions, segment sequencing, and common technique faults that can increase injury risk.</p>
+
+<h3>Analysis</h3>
+<p>Use slow-motion video to identify errors and choose corrective drills that are specific to deficits.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Key terms and common correction cues for common sport movements.</p>
+` },
+  A6: { title:'Week A6 — Assessment, Integration & Coaching Basics', subtitle:'Testing retest & peer coaching',
+    body: `
+<h2>Integration & assessment</h2>
+<p>Retest baselines to detect meaningful change. Use SMART goals to plan short programs. Peer coaching fosters leadership and helps deliver constructive feedback.</p>
+
+<h3>Design</h3>
+<p>Create short 2–4 week plans based on test results with clear objectives and measurable outcomes.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Interpreting retest changes, SMART goal components, and peer coaching basics.</p>
+` },
+
+  B1: { title:'Week B1 — Periodization & Program Design', subtitle:'Macro/micro cycles & load management',
+    body: `
+<h2>Periodization concepts</h2>
+<p>Plan at macro (season), meso (block) and micro (week) levels. Sequence load and rest to peak for events and reduce overtraining risk.</p>
+
+<h3>Load management</h3>
+<p>Monitor RPE, sleep, soreness, and volume trends to decide when to deload.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Cycle definitions, microcycle examples, and signs of excessive load.</p>
+` },
+  B2: { title:'Week B2 — Power & Plyo Progressions', subtitle:'Power development and transfer',
+    body: `
+<h2>Power & plyometrics</h2>
+<p>Start with low-impact hops and landing drills, progress volume and intensity safely. Emphasize soft knees and good hip extension on landing.</p>
+
+<h3>Transfer</h3>
+<p>Pair strength with explosive movements (contrast training) for better transfer to sport skills.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Plyo progressions, landing mechanics, and transfer principles.</p>
+` },
+  B3: { title:'Week B3 — Injury Prevention & Rehab Principles', subtitle:'Screening, rehab basics, return-to-play',
+    body: `
+<h2>Prevention & rehab</h2>
+<p>Movement screens detect asymmetries. Rehab follows protect → restore → strengthen → return. Use objective tests and symptom checks to inform return-to-play.</p>
+
+<h3>Red flags</h3>
+<p>Severe swelling, loss of function, or progressive neurological signs require referral.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Rehab phases, screening basics, and referral red flags.</p>
+` },
+  B4: { title:'Week B4 — Sports Psychology & Performance Readiness', subtitle:'Motivation, arousal, focus',
+    body: `
+<h2>Sports psychology basics</h2>
+<p>Arousal affects performance; too much or too little impairs skill. Use imagery, breathing and cue words to regulate arousal. Create pre-performance routines for consistency.</p>
+
+<h3>Goals & team</h3>
+<p>Set SMART goals and foster team cohesion through shared objectives and communication.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Elements of routines, imagery use, and SMART goal basics.</p>
+` },
+  B5: { title:'Week B5 — Advanced Tactics & Analytics', subtitle:'Decision-making & match analysis',
+    body: `
+<h2>Tactical principles</h2>
+<p>Spacing, tempo, and role clarity influence tactical success. Small-sided games build decision-making under pressure. Use simple metrics (sprints, distance, jump height) contextually.</p>
+
+<h3>Video</h3>
+<p>Video analysis is used to identify patterns and design targeted drills.</p>
+
+<h3>What will be on the quiz</h3>
+<p>Tactical spacing, basic metrics, and how to use video analysis.</p>
+` },
+  B6: { title:'Week B6 — Capstone Project & Final', subtitle:'Individual program & final exam',
+    body: `
+<h2>Capstone & synthesis</h2>
+<p>Design and present an evidence-based 4–6 week program that integrates the principles learned. The module final is closed-book and assesses cumulative applied knowledge.</p>
+
+<h3>Final preparation</h3>
+<p>Review B-module guides, capstone rationale, and practice short oral presentations for your program logic.</p>
+
+<h3>What will be on the final</h3>
+<p>Cumulative applied knowledge across Module B and capstone justification.</p>
+` }
+};
+
+/* ========== Reader State ========== */
+let readerState = { current: 'A1', progress: {} }; // progress[id] = { notes, readPct, marked, timestamp }
+function loadState(){
+  try{
+    const raw = localStorage.getItem(READER_STORAGE_KEY);
+    if(raw) readerState = JSON.parse(raw);
+    else readerState = { current: 'A1', progress: {} };
+  }catch(e){ readerState = { current: 'A1', progress: {} }; }
+}
+function saveState(){ localStorage.setItem(READER_STORAGE_KEY, JSON.stringify(readerState)); }
+
+/* ========== UI Refs ========== */
+const tocList = document.getElementById('tocList');
+const chapterTitleEl = document.getElementById('chapterTitle');
+const chapterSubtitleEl = document.getElementById('chapterSubtitle');
+const chapterBodyEl = document.getElementById('chapterBody');
+const chapterNotesEl = document.getElementById('chapterNotes');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const textSizeLabel = document.getElementById('textSizeLabel');
+const statusBadge = document.getElementById('statusBadge');
+const sidebarSearch = document.getElementById('sidebarSearch');
+
+/* ========== Build TOC ========== */
+const ORDER = ['A1','A2','A3','A4','A5','A6','B1','B2','B3','B4','B5','B6'];
+function renderTOC(filter=''){
+  tocList.innerHTML = '';
+  let lastGroup = '';
+  ORDER.forEach(id=>{
+    const data = CURRICULUM[id];
+    if(!data) return;
+    const group = id[0]==='A' ? 'P.E. 301 (A)' : 'P.E. 401 (B)';
+    if(group !== lastGroup){
+      const h = document.createElement('div'); h.style.fontWeight='700'; h.style.marginTop='10px'; h.textContent = group;
+      tocList.appendChild(h);
+      lastGroup = group;
+    }
+    // filter
+    if(filter){
+      const hay = (data.title + ' ' + data.subtitle + ' ' + stripHtml(data.body)).toLowerCase();
+      if(!hay.includes(filter.toLowerCase())) return;
+    }
+    const item = document.createElement('div'); item.className = 'chapter-item'; item.dataset.id = id;
+    item.setAttribute('role','listitem');
+    item.setAttribute('tabindex','0');
+    item.innerHTML = `<div><strong>${id}</strong> — ${data.title}</div><div class="kv">${data.subtitle}</div>`;
+    if(id === readerState.current) item.classList.add('active');
+    item.onclick = ()=> { openChapter(id); };
+    item.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); openChapter(id); }
+    });
+    tocList.appendChild(item);
+  });
+}
+function stripHtml(html){ return html.replace(/<[^>]*>/g,'').replace(/\s{2,}/g,' ').trim(); }
+
+/* ========== Open Chapter ========== */
+function openChapter(id){
+  readerState.current = id;
+  saveState();
+  renderCurrentChapter();
+  renderTOC(sidebarSearch.value || '');
+  // Clear any previous highlight input
+  document.getElementById('localSearch').value = '';
+}
+
+/* ========== Render current chapter ========== */
+function renderCurrentChapter(){
+  const id = readerState.current;
+  const data = CURRICULUM[id];
+  if(!data) {
+    chapterTitleEl.textContent = 'No chapter';
+    chapterSubtitleEl.textContent = '';
+    chapterBodyEl.innerHTML = '<p class="muted">No content available.</p>';
+    return;
+  }
+  chapterTitleEl.textContent = data.title;
+  chapterSubtitleEl.textContent = data.subtitle;
+  chapterBodyEl.innerHTML = data.body;
+  // set notes
+  const p = readerState.progress[id] || {};
+  chapterNotesEl.value = p.notes || '';
+  updateProgressUI();
+  statusBadge.textContent = `${id} • Reader loaded`;
+  updateControlStates(true);
+}
+
+/* ========== Progress UI ========== */
+function updateProgressUI(){
+  const id = readerState.current;
+  const p = readerState.progress[id] || {};
+  const pct = (typeof p.readPct === 'number') ? p.readPct : (p.marked ? 100 : 0);
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${pct}% — ${p.marked ? 'marked read' : 'not read'}`;
+}
+
+/* ========== Notes autosave (debounced) ========== */
+let noteTimer = null;
+function scheduleAutosave(){
+  if(noteTimer) clearTimeout(noteTimer);
+  noteTimer = setTimeout(()=> {
+    const id = readerState.current;
+    readerState.progress[id] = readerState.progress[id] || {};
+    readerState.progress[id].notes = chapterNotesEl.value;
+    readerState.progress[id].timestamp = Date.now();
+    saveState();
+    statusBadge.textContent = 'Notes auto-saved';
+  }, 1200);
+}
+chapterNotesEl.addEventListener('input', scheduleAutosave);
+
+/* ========== Notes actions ========== */
+document.getElementById('saveNote').onclick = ()=>{
+  const id = readerState.current;
+  readerState.progress[id] = readerState.progress[id] || {};
+  readerState.progress[id].notes = chapterNotesEl.value;
+  readerState.progress[id].timestamp = Date.now();
+  saveState();
+  statusBadge.textContent = 'Notes saved';
+};
+document.getElementById('clearNote').onclick = ()=>{
+  if(!confirm('Clear the note for this chapter?')) return;
+  const id = readerState.current;
+  chapterNotesEl.value = '';
+  if(readerState.progress[id]){ delete readerState.progress[id].notes; saveState(); }
+  statusBadge.textContent = 'Note cleared';
+};
+document.getElementById('downloadNote').onclick = ()=>{
+  const id = readerState.current;
+  const text = chapterNotesEl.value || '';
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${id}_notes.txt`; a.click();
+  statusBadge.textContent = 'Note downloaded';
+};
+
+/* ========== Text size controls ========== */
+let contentFontSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--content-font')) || 14;
+document.getElementById('incText').onclick = ()=> { contentFontSize = Math.min(28, contentFontSize + 2); applyTextSize(); };
+document.getElementById('decText').onclick = ()=> { contentFontSize = Math.max(12, contentFontSize - 2); applyTextSize(); };
+function applyTextSize(){
+  chapterBodyEl.style.fontSize = contentFontSize + 'px';
+  const lh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--content-line')) || 1.6;
+  chapterBodyEl.style.lineHeight = lh;
+  textSizeLabel.textContent = contentFontSize + 'px';
+}
+
+/* ========== Mark read toggle ========== */
+document.getElementById('toggleMark').onclick = ()=>{
+  const id = readerState.current;
+  readerState.progress[id] = readerState.progress[id] || {};
+  readerState.progress[id].marked = !readerState.progress[id].marked;
+  readerState.progress[id].readPct = readerState.progress[id].marked ? 100 : 0;
+  saveState(); updateProgressUI();
+  document.getElementById('toggleMark').setAttribute('aria-pressed', String(readerState.progress[id].marked));
+  statusBadge.textContent = readerState.progress[id].marked ? 'Marked read' : 'Marked unread';
+};
+
+/* ========== Local search within chapter ========== */
+document.getElementById('localSearch').addEventListener('input', (e)=> {
+  highlightInChapter(e.target.value || '');
+});
+function highlightInChapter(term){
+  const id = readerState.current;
+  const data = CURRICULUM[id];
+  if(!data){ chapterBodyEl.innerHTML = ''; return; }
+  if(!term){ chapterBodyEl.innerHTML = data.body; return; }
+  const re = new RegExp('(' + escapeRegExp(term) + ')','ig');
+  chapterBodyEl.innerHTML = data.body.replace(re, '<mark style="background:rgba(255,210,80,0.14);padding:0 2px;border-radius:2px;color:inherit">$1</mark>');
+}
+function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+/* ========== Print & Download chapter ========== */
+function updateControlStates(enabled){
+  // enable/disable print/download based on current content
+  const has = !!CURRICULUM[readerState.current];
+  document.getElementById('printChapter').disabled = !has;
+  document.getElementById('downloadChapter').disabled = !has;
+}
+document.getElementById('printChapter').onclick = ()=>{
+  const id = readerState.current; const data = CURRICULUM[id];
+  if(!data) return alert('No chapter loaded.');
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>${data.title}</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;color:#111;padding:28px} h1{font-size:22px}</style></head><body><h1>${data.title}</h1><h3>${data.subtitle}</h3>${data.body}</body></html>`;
+  const w = window.open('', '_blank', 'width=900,height=700'); w.document.write(html); w.document.close();
+  setTimeout(()=> w.print(), 350);
+};
+document.getElementById('downloadChapter').onclick = ()=>{
+  const id = readerState.current; const data = CURRICULUM[id];
+  if(!data) return alert('No chapter loaded.');
+  const md = `# ${data.title}\n\n${stripHtml(data.body)}`;
+  const blob = new Blob([md], {type:'text/markdown'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${id}_chapter.md`; a.click();
+};
+
+/* ========== TTS ========== */
+let ttsUtter = null;
+document.getElementById('playTTS').onclick = ()=>{
+  if(!('speechSynthesis' in window)) { alert('Text-to-speech is not supported in this browser.'); return; }
+  const text = chapterBodyEl.innerText || chapterBodyEl.textContent || '';
+  if(!text) return alert('No text in chapter.');
+  // cancel existing
+  if(window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = document.documentElement.lang || 'en-US';
+  u.rate = 1; u.pitch = 1;
+  u.onend = ()=> { ttsUtter = null; statusBadge.textContent = 'TTS ended'; };
+  u.onerror = (e)=> { ttsUtter = null; statusBadge.textContent = 'TTS error'; };
+  window.speechSynthesis.speak(u); ttsUtter = u; statusBadge.textContent = 'Reading aloud...';
+};
+document.getElementById('stopTTS').onclick = ()=> {
+  if('speechSynthesis' in window && window.speechSynthesis.speaking) window.speechSynthesis.cancel();
+  ttsUtter = null; statusBadge.textContent = 'TTS stopped';
+};
+
+/* ========== Export / Import reader state ========== */
+document.getElementById('exportReaderJSON').onclick = ()=> {
+  const payload = { exportedAt: new Date().toISOString(), state: readerState };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pe10_textbook_export.json'; a.click();
+};
+document.getElementById('importReaderJSON').onclick = ()=> document.getElementById('importReaderFile').click();
+document.getElementById('importReaderFile').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  try{
+    const txt = await f.text(); const j = JSON.parse(txt);
+    if(j && j.state){ readerState = j.state; saveState(); renderCurrentChapter(); renderTOC(sidebarSearch.value || ''); alert('Reader state imported.'); }
+    else alert('Invalid file format.');
+  }catch(err){ alert('Import failed: ' + err); }
+  e.target.value = '';
+});
+
+/* Also provide the two top small export/import buttons */
+document.getElementById('exportReaderBtn').onclick = ()=> document.getElementById('exportReaderJSON').click();
+document.getElementById('importReaderBtn').onclick = ()=> document.getElementById('importReaderFile').click();
+
+/* ========== TOC search ========== */
+sidebarSearch.addEventListener('input', (e)=> renderTOC(e.target.value || ''));
+
+/* ========== Initialisation ========== */
+function init(){
+  loadState();
+  applyTextSize();
+  renderTOC();
+  renderCurrentChapter();
+  updateControlStates(!!CURRICULUM[readerState.current]);
+  // attach click handler on TOC entries to support alt-click open in new tab behavior
+  tocList.addEventListener('click', (ev)=> {
+    const it = ev.target.closest('.chapter-item');
+    if(!it) return;
+    const id = it.dataset.id; if(!id) return;
+    openChapter(id);
+  });
+}
+init();
+
+/* ========== Utility ========= */
+</script>
+</body>
+</html>
