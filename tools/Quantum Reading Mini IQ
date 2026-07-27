@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quantum Reading Mini IQ — Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#050510;
+      --card:#111827;
+      --card-soft:#1f2937;
+      --accent:#c9a227;
+      --accent-soft:#fbbf24;
+      --ink:#f9fafb;
+      --muted:#9ca3af;
+      --danger:#f97373;
+      --good:#4ade80;
+      --radius:14px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      padding:16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827, #020617 60%);
+      color:var(--ink);
+      display:flex;
+      justify-content:center;
+    }
+    .iq-wrap{
+      width:100%;
+      max-width:960px;
+      background:linear-gradient(135deg,#020617,#020617 40%,#0b1120);
+      border-radius:24px;
+      box-shadow:0 20px 50px rgba(0,0,0,.65);
+      padding:20px 18px 22px;
+    }
+    @media (min-width:768px){
+      .iq-wrap{padding:26px 26px 28px;}
+    }
+    h1,h2,h3,h4{margin:0;}
+    h2{
+      font-size:1.5rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--accent-soft);
+      margin-bottom:4px;
+    }
+    .lead{
+      margin:0 0 12px;
+      font-size:.96rem;
+      color:var(--muted);
+    }
+    .band{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin:10px 0 16px;
+      padding:10px 12px;
+      border-radius:999px;
+      background:radial-gradient(circle at left,#4b5563,#020617);
+      font-size:.9rem;
+    }
+    .band span.label{
+      font-weight:600;
+      color:var(--accent-soft);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.75rem;
+    }
+    .chip{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(249,250,251,.12);
+      font-size:.8rem;
+      color:var(--muted);
+    }
+
+    /* Controls */
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:14px 0 18px;
+      align-items:center;
+    }
+    .control-block{
+      flex:1 1 140px;
+      min-width:140px;
+    }
+    label span.lbl{
+      display:block;
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    input[type="range"]{
+      width:100%;
+    }
+    .energy-value{
+      font-size:.85rem;
+      color:var(--accent-soft);
+      margin-top:3px;
+    }
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+    button{
+      border:none;
+      border-radius:999px;
+      padding:8px 16px;
+      font-size:.9rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:var(--accent);
+      color:#111827;
+      font-weight:600;
+      box-shadow:0 6px 18px rgba(0,0,0,.45);
+      transition:transform .08s ease, box-shadow .08s ease, background .12s;
+    }
+    button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(0,0,0,.6);
+      background:var(--accent-soft);
+    }
+    button.ghost{
+      background:transparent;
+      color:var(--ink);
+      border:1px solid rgba(249,250,251,.2);
+      box-shadow:none;
+    }
+    button.ghost:hover{
+      background:rgba(15,23,42,.8);
+    }
+
+    /* Passage */
+    .passage-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:14px 14px 10px;
+      margin-bottom:14px;
+      border:1px solid rgba(148,163,184,.4);
+    }
+    details summary{
+      cursor:pointer;
+      list-style:none;
+    }
+    details summary::-webkit-details-marker{display:none;}
+    .passage-header{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+    .passage-title{
+      font-size:1rem;
+      font-weight:600;
+    }
+    .pill{
+      padding:3px 9px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.4);
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .passage-body{
+      margin-top:10px;
+      max-height:260px;
+      overflow-y:auto;
+      padding-right:6px;
+      font-size:.9rem;
+      line-height:1.45;
+      color:#e5e7eb;
+    }
+    .passage-body p{
+      margin:0 0 .6em;
+    }
+
+    /* Questions */
+    .questions{
+      margin-top:10px;
+    }
+    .q-card{
+      background:var(--card-soft);
+      border-radius:var(--radius);
+      padding:12px 12px 10px;
+      margin-bottom:10px;
+      border:1px solid rgba(31,41,55,.8);
+    }
+    .q-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      margin-bottom:6px;
+    }
+    .q-label{
+      font-size:.8rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+    }
+    .q-diff{
+      font-size:.75rem;
+      color:var(--muted);
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.4);
+    }
+    .q-text{
+      font-size:.95rem;
+      margin-bottom:6px;
+    }
+    .options{
+      list-style:none;
+      padding:0;
+      margin:0;
+      font-size:.9rem;
+    }
+    .options li{
+      margin-bottom:4px;
+    }
+    .options label{
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+      cursor:pointer;
+    }
+    .options input[type="radio"]{
+      margin-top:3px;
+    }
+
+    /* Result & log */
+    .result{
+      margin-top:10px;
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:10px 12px;
+      border:1px solid rgba(148,163,184,.4);
+      font-size:.9rem;
+    }
+    .result strong{
+      color:var(--accent-soft);
+    }
+    .result .good{color:var(--good);}
+    .result .warn{color:var(--danger);}
+    .result .bandline{
+      font-size:.8rem;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .log{
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px dashed rgba(148,163,184,.5);
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .log h3{
+      font-size:.9rem;
+      margin-bottom:4px;
+      color:var(--accent-soft);
+    }
+    .log-list{
+      margin:4px 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .log-list li{
+      margin-bottom:3px;
+    }
+    .log small{
+      font-size:.78rem;
+    }
+
+    .mut{
+      color:var(--muted);
+      font-size:.8rem;
+    }
+  </style>
+</head>
+<body>
+<div class="iq-wrap">
+  <h2>Quantum Reading Mini IQ</h2>
+  <p class="lead">
+    Critical reading & logic prototype based on <em>“The Graduate Who Couldn’t Read”</em>. 
+    The “Quantum Energy” slider nudges which questions you see; each submit is a “collapse event”.
+  </p>
+
+  <div class="band">
+    <span class="label">Quantum Mode</span>
+    <span class="chip">Monte-Carlo-ish question picker</span>
+    <span class="chip">Local, sovereign, offline</span>
+    <span class="chip">Logs today’s collapses</span>
+  </div>
+
+  <div class="controls">
+    <div class="control-block">
+      <label>
+        <span class="lbl">Energy Today (1–5)</span>
+        <input id="energySlider" type="range" min="1" max="5" value="3" />
+        <div id="energyValue" class="energy-value">Energy: 3 — medium focus</div>
+      </label>
+    </div>
+    <div class="control-block">
+      <label>
+        <span class="lbl">Question Set</span>
+        <div class="btn-row">
+          <button id="buildBtn" type="button">♻️ Re-spin Questions</button>
+          <button id="resetAnswersBtn" type="button" class="ghost">Clear Answers</button>
+        </div>
+        <div class="mut" style="margin-top:4px">
+          Re-spin changes which 5 questions are pulled from the bank, biased by your Energy.
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Passage -->
+  <section class="passage-card">
+    <details open>
+      <summary>
+        <div class="passage-header">
+          <div>
+            <div class="passage-title">The Graduate Who Couldn’t Read</div>
+            <div class="mut" style="font-size:.8rem;">Series: Education — Tales from America’s Classroom</div>
+          </div>
+          <div class="pill">Reading Stimulus</div>
+        </div>
+      </summary>
+      <div id="passageBody" class="passage-body"></div>
+      <div class="mut" style="font-size:.76rem;margin-top:6px;">
+        Source: Author manuscript, dated 2026-01-15. This passage is used for reasoning practice only.
+      </div>
+    </details>
+  </section>
+
+  <!-- Questions -->
+  <section id="questionSection" class="questions"></section>
+
+  <div class="btn-row" style="margin-top:8px;">
+    <button id="collapseBtn" type="button">🌀 Collapse & Score</button>
+  </div>
+
+  <section id="result" class="result" aria-live="polite">
+    <div class="mut">Answer the questions above, then tap <strong>Collapse &amp; Score</strong> to see your result.</div>
+  </section>
+
+  <section id="quantumLog" class="log">
+    <h3>Quantum Log</h3>
+    <div id="logSummary" class="mut">No collapses recorded yet today.</div>
+    <ul id="logList" class="log-list"></ul>
+    <button id="resetLogBtn" type="button" class="ghost" style="margin-top:6px;">Clear Log (this device)</button>
+  </section>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===========================
+     Core Data
+     =========================== */
+
+  const PASSAGE = `Once upon a time, graduating from high school meant something rather straightforward: you could read, write, and do math well enough to function in the adult world. Today, that assumption has become dangerously quaint.
+
+Consider the modern American graduate. Dressed in cap and gown, smiling for photos, shaking hands with administrators, and clutching a diploma that certifies readiness for the future. Then imagine discovering that this same graduate struggles to read one-syllable words. This is not a metaphor. It is not satire. It is not a dystopian novel draft. It is a documented reality.
+
+So what exactly is going on inside America’s education system? Has it lost its compass, its conscience, or simply its integrity?
+
+In theory, schools are places of learning. In practice, they increasingly resemble theatrical productions where everyone agrees to play along until the curtain falls. Students advance because holding them back would be uncomfortable. Teachers pass them because failing them would create paperwork, conflict, or accusations. Administrators celebrate rising scores because declining ones might threaten funding, bonuses, or reputations. And the system, smiling nervously, insists that everything is “fine.”
+
+When standardized testing became the holy oracle of achievement, schools learned quickly that learning doesn't matter. The appearance of having an education is enough. The Atlanta cheating scandal didn’t erupt because dozens of educators suddenly forgot ethics. It happened because greed met incentives and truth lost. Another child slipped through the cracks in our educational system. When test scores determine survival, truth becomes optional, numbers become negotiable.
+
+Meanwhile, classrooms themselves have taken on a surreal quality. Teachers and students dodge flying objects, literally, while attempting to teach Shakespeare to students who cannot read. Discipline policies often prioritize feelings over function, optics over order. The result is a classroom culture where chaos is managed, not corrected, and learning is frequently the collateral damage.
+
+Teachers are leaving in droves, not because they dislike teaching, but because they are asked to perform miracles without tools, authority, or trust. They are expected to raise scores, manage trauma, serve as counselors, social workers, surrogate parents, and content experts. All while being told that standards are “harmful” and failure is “discouraging.” Burnout isn’t a mystery; it’s the job description.
+
+Technology has added another layer of absurdity. Students now submit essays written by machines, while adults debate whether noticing this is “unfair.” We worry more about discouraging students than about whether they are learning at all. The bar is not just lowered; it’s been quietly removed so no one trips over it.
+
+And yet, we continue the ritual. Diplomas are printed. Graduation speeches praise resilience. Politicians promise reform. Parents are reassured. Students move on. They are unprepared, but credentialed. Some graduate into colleges, jobs, and civic life, carrying gaps in their learning that were politely ignored rather than honestly addressed.
+
+The most uncomfortable truth is this: the system is not failing accidentally. It is functioning exactly as designed: to avoid conflict, minimize accountability, and preserve appearances. It rewards compliance over competence and comfort over truth.
+
+America has not forgotten how to educate. It has simply become afraid of doing so honestly.
+
+The question is not whether the system is broken. The question is whether we are willing to admit that teaching without standards is not compassion. Teaching without accountability isn't ethical. Progress without proficiency is theater, and a diploma without literacy is not opportunity; it is neglect dressed up as success.
+
+Until that conversation happens, the graduate who can’t read will not be an anomaly. He will be the norm, a symbol of American Education and a token of our inability to care for our children.`;
+
+  // Question bank (6 items for now; can easily add more)
+  const QUESTIONS = [
+    {
+      id:"main_claim",
+      difficulty:3,
+      prompt:"Which statement best captures the main claim of the passage?",
+      options:[
+        "Standardized tests are the only reliable measure of learning.",
+        "The education system often grants diplomas without ensuring true literacy or learning.",
+        "Most students today are too lazy to study.",
+        "Technology has eliminated the need for reading skills."
+      ],
+      correctIndex:1
+    },
+    {
+      id:"theater",
+      difficulty:3,
+      prompt:"What does the author suggest when describing schools as 'theatrical productions where everyone agrees to play along'?",
+      options:[
+        "Learning has become more fun and creative.",
+        "Only arts-focused schools maintain high standards.",
+        "Stakeholders often pretend that students are learning while quietly lowering standards.",
+        "Parents want more school plays and performances."
+      ],
+      correctIndex:2
+    },
+    {
+      id:"atlanta",
+      difficulty:4,
+      prompt:"According to the passage, the Atlanta cheating scandal happened primarily because:",
+      options:[
+        "Teachers did not understand the testing rules.",
+        "Educators suddenly became less ethical than before.",
+        "Incentives and pressure around test scores encouraged people to manipulate results.",
+        "Students hacked into the testing system."
+      ],
+      correctIndex:2
+    },
+    {
+      id:"teachers_leave",
+      difficulty:2,
+      prompt:"Which of the following is NOT given as a reason teachers are leaving the profession?",
+      options:[
+        "Being asked to act as counselors and social workers.",
+        "Being expected to manage trauma without enough support.",
+        "Receiving extremely high salaries that make them uncomfortable.",
+        "Being held responsible for raising test scores."
+      ],
+      correctIndex:2
+    },
+    {
+      id:"progress",
+      difficulty:4,
+      prompt:"Which scenario would BEST support the author's argument about 'progress without proficiency'?",
+      options:[
+        "A school reduces homework but sees student attendance rise.",
+        "A student passes all classes but cannot read grade-level text.",
+        "A district adopts more arts classes and music programs.",
+        "Test scores drop after raising standards and improving curriculum."
+      ],
+      correctIndex:1
+    },
+    {
+      id:"tone",
+      difficulty:3,
+      prompt:"What is the overall tone of the passage?",
+      options:[
+        "Lighthearted and humorous.",
+        "Detached and purely analytical.",
+        "Sharply critical but motivated by concern for students.",
+        "Optimistic and celebratory about recent reforms."
+      ],
+      correctIndex:2
+    }
+  ];
+
+  const LS_STATE_KEY = "miniIq_quantum_state_v1";
+  const LS_LOG_KEY   = "miniIq_quantum_log_v1";
+
+  /* ===========================
+     DOM Helpers
+     =========================== */
+  const $ = sel => document.querySelector(sel);
+
+  const energySlider     = $("#energySlider");
+  const energyValueLabel = $("#energyValue");
+  const passageBodyEl    = $("#passageBody");
+  const questionSection  = $("#questionSection");
+  const resultBox        = $("#result");
+  const logSummaryEl     = $("#logSummary");
+  const logListEl        = $("#logList");
+
+  const buildBtn         = $("#buildBtn");
+  const resetAnswersBtn  = $("#resetAnswersBtn");
+  const collapseBtn      = $("#collapseBtn");
+  const resetLogBtn      = $("#resetLogBtn");
+
+  /* ===========================
+     State
+     =========================== */
+  let currentQuestions = [];
+  let currentAnswers   = {}; // { questionId: selectedIndex }
+
+  /* ===========================
+     Passage Rendering
+     =========================== */
+  function renderPassage(){
+    const paras = PASSAGE.split(/\n\s*\n/);
+    passageBodyEl.innerHTML = paras.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+  }
+
+  function escapeHtml(str){
+    return str
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  /* ===========================
+     Quantum Question Selection
+     =========================== */
+  function chooseQuestions(energy, count = 5){
+    // Higher energy -> slightly more likely to pick higher difficulty, but with randomness
+    const scored = QUESTIONS.map(q => {
+      const diffGap = Math.abs((q.difficulty || 3) - energy);
+      const jitter  = Math.random(); // 0–1 noise
+      const score   = diffGap * 2 + jitter; // lower is “more aligned”
+      return { q, score };
+    }).sort((a,b)=> a.score - b.score);
+
+    return scored.slice(0, count).map(x => x.q);
+  }
+
+  function renderQuestions(){
+    questionSection.innerHTML = "";
+    currentAnswers = {};
+
+    currentQuestions.forEach((q, idx) => {
+      const card = document.createElement("div");
+      card.className = "q-card";
+      card.dataset.qid = q.id;
+
+      const diffLabel = `Difficulty: ${"★".repeat(q.difficulty)}${"☆".repeat(5-q.difficulty)}`;
+
+      const optionsHtml = q.options.map((opt, i) => {
+        const name = "q_" + q.id;
+        return `
+          <li>
+            <label>
+              <input type="radio" name="${name}" value="${i}">
+              <span>${String.fromCharCode(65+i)}. ${escapeHtml(opt)}</span>
+            </label>
+          </li>
+        `;
+      }).join("");
+
+      card.innerHTML = `
+        <div class="q-header">
+          <div class="q-label">Question ${idx+1}</div>
+          <div class="q-diff">${diffLabel}</div>
+        </div>
+        <div class="q-text">${escapeHtml(q.prompt)}</div>
+        <ul class="options">
+          ${optionsHtml}
+        </ul>
+      `;
+
+      // Track changes
+      card.addEventListener("change", (e)=>{
+        if(e.target && e.target.type === "radio"){
+          const chosen = parseInt(e.target.value, 10);
+          currentAnswers[q.id] = chosen;
+          saveState();
+        }
+      });
+
+      questionSection.appendChild(card);
+    });
+  }
+
+  /* ===========================
+     Scoring / Collapse
+     =========================== */
+  function collapseAndScore(){
+    if(!currentQuestions.length){
+      resultBox.innerHTML = `<div class="mut">No questions loaded. Tap <strong>Re-spin Questions</strong> first.</div>`;
+      return;
+    }
+    let correct = 0;
+    let total   = currentQuestions.length;
+
+    currentQuestions.forEach(q => {
+      const chosen = currentAnswers[q.id];
+      if(chosen === q.correctIndex) correct++;
+    });
+
+    const pct = Math.round((correct / total) * 100);
+    const bandLow  = Math.max(0, correct-1);
+    const bandHigh = Math.min(total, correct+1);
+
+    let msg;
+    if(pct >= 80){
+      msg = `<span class="good">Strong critical reading. You’re catching the hidden logic and tone.</span>`;
+    } else if(pct >= 50){
+      msg = `Solid start. Re-read one paragraph that felt fuzzy and try a new collapse.`;
+    } else {
+      msg = `<span class="warn">This passage is dense and sharp. A slower re-read will change everything.</span>`;
+    }
+
+    resultBox.innerHTML = `
+      <div><strong>Result:</strong> ${correct} / ${total} correct (${pct}%).</div>
+      <div>${msg}</div>
+      <div class="bandline">
+        Quantum confidence band (±1 question): ~${bandLow} to ${bandHigh} correct in this region of realities.
+      </div>
+    `;
+
+    updateLog(correct, total);
+  }
+
+  /* ===========================
+     Quantum Log (per day)
+     =========================== */
+  function todayKey(){
+    return new Date().toISOString().slice(0,10); // YYYY-MM-DD
+  }
+
+  function loadLog(){
+    try{
+      const raw = localStorage.getItem(LS_LOG_KEY);
+      return raw ? JSON.parse(raw) : { byDate:{} };
+    }catch(e){
+      return { byDate:{} };
+    }
+  }
+
+  function saveLog(log){
+    try{
+      localStorage.setItem(LS_LOG_KEY, JSON.stringify(log));
+    }catch(e){}
+  }
+
+  function updateLog(correct, total){
+    const log = loadLog();
+    const key = todayKey();
+    if(!log.byDate[key]){
+      log.byDate[key] = { attempts:0, bestScore:0, history:[] };
+    }
+    const entry = log.byDate[key];
+    entry.attempts++;
+    if(correct > entry.bestScore) entry.bestScore = correct;
+    entry.history.unshift({
+      time: new Date().toLocaleTimeString(),
+      correct,
+      total
+    });
+    // keep last 6
+    entry.history = entry.history.slice(0,6);
+    saveLog(log);
+    renderLog();
+  }
+
+  function renderLog(){
+    const log = loadLog();
+    const key = todayKey();
+    const entry = log.byDate[key];
+
+    if(!entry){
+      logSummaryEl.textContent = "No collapses recorded yet today.";
+      logListEl.innerHTML = "";
+      return;
+    }
+
+    logSummaryEl.innerHTML = `
+      Collapses today: <strong>${entry.attempts}</strong> ·
+      Best score: <strong>${entry.bestScore}</strong> / ${currentQuestions.length || 5}
+    `;
+    logListEl.innerHTML = entry.history.map(h => `
+      <li><small>${h.time} — ${h.correct}/${h.total} correct</small></li>
+    `).join("");
+  }
+
+  function resetLog(){
+    if(!confirm("Clear Quantum Log for this device?")){
+      return;
+    }
+    localStorage.removeItem(LS_LOG_KEY);
+    renderLog();
+  }
+
+  /* ===========================
+     State Persistence
+     =========================== */
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_STATE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){
+      return null;
+    }
+  }
+
+  function saveState(){
+    const state = {
+      energy: parseInt(energySlider.value,10),
+      questions: currentQuestions.map(q => q.id),
+      answers: currentAnswers
+    };
+    try{
+      localStorage.setItem(LS_STATE_KEY, JSON.stringify(state));
+    }catch(e){}
+  }
+
+  function applyState(){
+    const state = loadState();
+    if(!state) return;
+
+    if(state.energy){
+      energySlider.value = state.energy;
+      updateEnergyLabel();
+    }
+
+    if(state.questions && Array.isArray(state.questions)){
+      // Reconstruct question list in same order
+      const idToQ = {};
+      QUESTIONS.forEach(q => { idToQ[q.id] = q; });
+      currentQuestions = state.questions.map(id => idToQ[id]).filter(Boolean);
+    }
+    if(!currentQuestions.length){
+      const energy = parseInt(energySlider.value,10) || 3;
+      currentQuestions = chooseQuestions(energy);
+    }
+
+    renderQuestions();
+
+    if(state.answers){
+      currentAnswers = state.answers;
+      // Mark radios
+      currentQuestions.forEach(q => {
+        const chosen = state.answers[q.id];
+        if(typeof chosen === "number"){
+          const name = "q_" + q.id;
+          const selector = `input[name="${name}"][value="${chosen}"]`;
+          const input = questionSection.querySelector(selector);
+          if(input){
+            input.checked = true;
+          }
+        }
+      });
+    }
+  }
+
+  /* ===========================
+     Energy UI
+     =========================== */
+  function updateEnergyLabel(){
+    const v = parseInt(energySlider.value,10);
+    let label = "low";
+    if(v === 3) label = "medium focus";
+    else if(v >= 4) label = "high focus";
+    energyValueLabel.textContent = `Energy: ${v} — ${label}`;
+  }
+
+  /* ===========================
+     Reset answers
+     =========================== */
+  function clearAnswers(){
+    currentAnswers = {};
+    questionSection.querySelectorAll("input[type=radio]").forEach(r => r.checked = false);
+    resultBox.innerHTML = `<div class="mut">Answers cleared. When you’re ready, tap <strong>Collapse &amp; Score</strong> again.</div>`;
+    saveState();
+  }
+
+  /* ===========================
+     Init
+     =========================== */
+  function init(){
+    renderPassage();
+    updateEnergyLabel();
+
+    const saved = loadState();
+    if(saved){
+      applyState();
+    }else{
+      const energy = parseInt(energySlider.value,10) || 3;
+      currentQuestions = chooseQuestions(energy);
+      renderQuestions();
+      saveState();
+    }
+    renderLog();
+
+    energySlider.addEventListener("input", ()=>{
+      updateEnergyLabel();
+      saveState();
+    });
+
+    buildBtn.addEventListener("click", ()=>{
+      const energy = parseInt(energySlider.value,10) || 3;
+      currentQuestions = chooseQuestions(energy);
+      renderQuestions();
+      saveState();
+      resultBox.innerHTML = `<div class="mut">New question set spun based on Energy ${energy}. Answer, then collapse to score.</div>`;
+    });
+
+    resetAnswersBtn.addEventListener("click", clearAnswers);
+    collapseBtn.addEventListener("click", collapseAndScore);
+    resetLogBtn.addEventListener("click", resetLog);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
