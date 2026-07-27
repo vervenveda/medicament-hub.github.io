@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Noetic Elementary – Psychology Explorer (Upgraded)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(135deg,#c7d2fe,#fef9c3,#bbf7d0);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .app{
+      background:#fff;
+      width:100%;
+      max-width:900px;
+      border-radius:20px;
+      box-shadow:0 20px 45px rgba(0,0,0,0.15);
+      padding:22px 22px 26px;
+      position:relative;
+    }
+    h1{
+      text-align:center;
+      color:#4338ca;
+      font-size:2.35rem;
+      margin:6px 0 2px;
+    }
+    .subtitle{
+      text-align:center;
+      color:#475569;
+      margin:0 0 16px;
+      font-size:1.05rem;
+    }
+
+    /* Top mini-dashboard */
+    .dash{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin:10px 0 14px;
+      padding:12px 12px;
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+    }
+    .dash-left, .dash-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:#1e293b;
+      font-size:0.95rem;
+      border:1px solid rgba(79,70,229,.15);
+    }
+    .pill b{ color:#312e81; font-weight:700; }
+    .btn{
+      background:#4f46e5;
+      color:white;
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      font-size:1rem;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{ background:#4338ca; }
+    .btn.ghost{
+      background:transparent;
+      color:#4f46e5;
+      border:1px solid #c7d2fe;
+    }
+    .btn.ghost:hover{ background:#eef2ff; }
+    .btn.small{ padding:8px 12px; font-size:.95rem; border-radius:11px; }
+
+    /* Controls row */
+    .controls{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      margin:10px 0 14px;
+      padding:14px;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+      background:#ffffff;
+    }
+    .control-block{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:220px;
+      flex:1;
+    }
+    .label{
+      font-size:.95rem;
+      color:#334155;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    select, input[type="text"]{
+      padding:10px 12px;
+      font-size:1rem;
+      border-radius:12px;
+      border:1px solid #cbd5e1;
+      outline:none;
+      background:#fff;
+    }
+    input[type="text"]:focus, select:focus{ border-color:#818cf8; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
+
+    /* Topic filter pills */
+    .topics{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .topic{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#f8fafc;
+      color:#0f172a;
+      cursor:pointer;
+      user-select:none;
+      font-size:.98rem;
+      transition:transform .12s ease, background .12s ease, border .12s ease;
+    }
+    .topic:hover{ transform:scale(1.02); border-color:#818cf8; }
+    .topic.active{
+      background:#eef2ff;
+      border-color:#4f46e5;
+      box-shadow:0 10px 20px rgba(79,70,229,.10);
+    }
+
+    /* Quiz area */
+    #badge{
+      font-size:2.8rem;
+      text-align:center;
+      margin:6px 0 10px;
+    }
+    .question{
+      font-size:1.45rem;
+      text-align:center;
+      margin:0 0 16px;
+      color:#0f172a;
+      line-height:1.35;
+    }
+    .answers{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:14px;
+    }
+    .answers button{
+      padding:15px 14px;
+      font-size:1.07rem;
+      border-radius:14px;
+      border:none;
+      cursor:pointer;
+      background:#eef2ff;
+      transition:transform .15s ease, background .15s ease;
+    }
+    .answers button:hover{ transform:scale(1.04); }
+    .answers button.correct{ background:#bbf7d0; }
+    .answers button.wrong{ background:#fecaca; }
+
+    .footer{
+      margin-top:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:1.02rem;
+      color:#334155;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .hint{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      color:#0f172a;
+      line-height:1.35;
+    }
+    .hint .kicker{
+      font-weight:800;
+      color:#4338ca;
+      margin-right:6px;
+    }
+    .hidden{ display:none; }
+
+    /* End screen */
+    #end h2{
+      text-align:center;
+      color:#4338ca;
+      margin:6px 0 6px;
+    }
+    #result{
+      text-align:center;
+      font-size:1.2rem;
+      color:#0f172a;
+      margin:10px 0 12px;
+    }
+    .end-actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    /* Modal */
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:1000;
+    }
+    .overlay.show{ display:flex; }
+    .modal{
+      width:100%;
+      max-width:860px;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      overflow:hidden;
+      border:1px solid rgba(2,6,23,.08);
+    }
+    .modal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      background:#f8fafc;
+      border-bottom:1px solid #e2e8f0;
+    }
+    .modal-title{
+      font-weight:800;
+      color:#0f172a;
+    }
+    .modal-body{
+      padding:14px 16px 16px;
+    }
+
+    /* Calendar */
+    .cal-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .cal-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+    }
+    .dow{
+      font-size:.85rem;
+      color:#475569;
+      text-align:center;
+      padding:6px 0;
+      font-weight:700;
+    }
+    .day{
+      min-height:70px;
+      border:1px solid #e2e8f0;
+      border-radius:12px;
+      padding:8px;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:6px;
+    }
+    .day.muted{
+      background:#f8fafc;
+      color:#94a3b8;
+    }
+    .day .dnum{
+      font-weight:800;
+      color:#0f172a;
+      font-size:.95rem;
+    }
+    .day.muted .dnum{ color:#94a3b8; }
+    .day .marks{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      font-size:.9rem;
+      color:#0f172a;
+    }
+    .stars{
+      display:inline-flex;
+      gap:2px;
+      align-items:center;
+      white-space:nowrap;
+    }
+
+    /* Certificate */
+    .cert-wrap{
+      padding:18px 18px 22px;
+    }
+    .certificate{
+      border:3px solid #c7d2fe;
+      border-radius:18px;
+      padding:22px;
+      background:linear-gradient(180deg,#ffffff,#f8fafc);
+    }
+    .cert-title{
+      text-align:center;
+      font-size:1.9rem;
+      color:#312e81;
+      font-weight:900;
+      margin:4px 0 8px;
+      letter-spacing:.02em;
+    }
+    .cert-sub{
+      text-align:center;
+      color:#334155;
+      margin:0 0 16px;
+      font-weight:700;
+    }
+    .cert-name{
+      text-align:center;
+      font-size:2rem;
+      color:#0f172a;
+      font-weight:900;
+      margin:10px 0 12px;
+    }
+    .cert-body{
+      color:#0f172a;
+      font-size:1.05rem;
+      line-height:1.5;
+      text-align:center;
+      margin:0 auto 16px;
+      max-width:720px;
+    }
+    .cert-foot{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      color:#334155;
+      font-size:.95rem;
+    }
+    .sig{
+      border-top:2px solid #cbd5e1;
+      padding-top:6px;
+      min-width:220px;
+      text-align:center;
+      font-weight:800;
+      color:#0f172a;
+    }
+
+    /* Print only certificate */
+    @media print{
+      body{ background:#fff; padding:0; }
+      .app, .overlay{ display:none !important; }
+      #printZone{ display:block !important; }
+    }
+    #printZone{ display:none; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <h1>Psychology Explorer</h1>
+  <div class="subtitle">Thoughts · Feelings · Choices </div>
+
+  <div class="dash">
+    <div class="dash-left">
+      <span class="pill">🔥 Streak: <b id="streakNum">0</b> day(s)</span>
+      <span class="pill">⭐ Total Stars: <b id="starsTotal">0</b></span>
+      <span class="pill">🏅 Best: <b id="bestScore">0</b></span>
+    </div>
+    <div class="dash-right">
+      <button class="btn ghost small" id="calendarBtn">View Calendar</button>
+      <button class="btn ghost small" id="certificateBtn">Certificate</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-block">
+      <div class="label">
+        <span>Student name (for certificate)</span>
+        <button class="btn ghost small" id="saveNameBtn" title="Save name">Save</button>
+      </div>
+      <input id="studentName" type="text" placeholder="Type your name (optional)" />
+    </div>
+
+    <div class="control-block" style="min-width:190px; max-width:260px;">
+      <div class="label">Questions this session</div>
+      <select id="sessionSize">
+        <option value="5" selected>5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+
+    <div class="control-block" style="flex:2; min-width:260px;">
+      <div class="label">
+        <span>Topic filters</span>
+        <button class="btn ghost small" id="toggleAllTopics">Select All</button>
+      </div>
+      <div class="topics" id="topics"></div>
+    </div>
+  </div>
+
+  <div id="play">
+    <div id="badge">🧠</div>
+    <div id="question" class="question"></div>
+    <div id="answers" class="answers"></div>
+
+    <div id="explainBox" class="hint hidden">
+      <span class="kicker" id="explainKicker">Nice try!</span>
+      <span id="explainText"></span>
+    </div>
+
+    <div class="footer">
+      <span id="progress"></span>
+      <button id="nextBtn" class="btn hidden">Next</button>
+    </div>
+  </div>
+
+  <div id="end" class="hidden">
+    <h2>Session Complete 🎉</h2>
+    <p id="result"></p>
+    <div style="text-align:center; color:#334155; margin-top:4px;">
+      Stars earned today: <b id="starsEarned">0</b> ⭐
+    </div>
+    <div class="end-actions">
+      <button class="btn" onclick="startGame()">Play Again</button>
+      <button class="btn ghost" id="openCalendar2">View Calendar</button>
+      <button class="btn ghost" id="openCert2">Certificate</button>
+    </div>
+  </div>
+</div>
+
+<!-- CALENDAR MODAL -->
+<div class="overlay" id="calendarOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="modal-title">Daily Brain Workout Calendar</div>
+      <button class="btn ghost small" id="closeCalendar">Close</button>
+    </div>
+    <div class="modal-body">
+      <div class="cal-top">
+        <div class="pill">🔥 Streak: <b id="streakNum2">0</b></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn ghost small" id="prevMonth">←</button>
+          <span class="pill" id="monthLabel">Month</span>
+          <button class="btn ghost small" id="nextMonth">→</button>
+        </div>
+        <div class="pill">Legend: 🟩 played · ⭐ stars</div>
+      </div>
+
+      <div class="cal-grid" id="calDow"></div>
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div style="margin-top:12px; color:#334155; line-height:1.4;">
+        Tip: One good session per day keeps your streak going. Multiple sessions in one day can earn more learning, but streak counts once per day.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE MODAL -->
+<div class="overlay" id="certOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="modal-title">Certificate Center</div>
+      <button class="btn ghost small" id="closeCert">Close</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div class="pill">Unlocked: <b id="certUnlocked">No</b></div>
+        <div class="pill">Requirement: <b>10+ questions</b> with <b>80%+</b> OR <b>50 total stars</b></div>
+      </div>
+
+      <div style="margin-top:12px; padding:12px 14px; border-radius:14px; background:#f8fafc; border:1px solid #e2e8f0; color:#0f172a;">
+        <b>How it works:</b> When you unlock the certificate, you can print it. (It saves locally on this device.)
+      </div>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" id="printCertBtn">Print Certificate</button>
+        <button class="btn ghost" id="resetProgressBtn" title="Resets streak, stars, and logs on this device">Reset Local Progress</button>
+      </div>
+
+      <div style="margin-top:14px; color:#334155; line-height:1.4;">
+        Latest session: <span id="latestSessionText">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT ZONE (certificate only) -->
+<div id="printZone">
+  <div class="cert-wrap">
+    <div class="certificate" id="certCard">
+      <div class="cert-title">Certificate of Brain Power</div>
+      <div class="cert-sub">Psychology Explorer · Noetic Elementary</div>
+      <div class="cert-name" id="certName">Student</div>
+      <p class="cert-body" id="certBody">
+        This certificate celebrates your daily brain workouts, kind choices, and growing skills in understanding thoughts, feelings, habits, friendship, and problem-solving.
+      </p>
+      <div class="cert-foot">
+        <div>
+          <div><b>Date:</b> <span id="certDate">—</span></div>
+          <div><b>Streak:</b> <span id="certStreak">0</span> day(s)</div>
+          <div><b>Total Stars:</b> <span id="certStars">0</span></div>
+        </div>
+        <div class="sig">Teacher / Guide</div>
+        <div class="sig">Student</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================
+   NOETIC ELEMENTARY MINI-CLOUD
+   (offline-first, localStorage)
+============================ */
+const Cloud = {
+  dir: 'noetic_elementary_v1',
+  key(k){ return this.dir + ':' + k; },
+  save(k,v){ localStorage.setItem(this.key(k), JSON.stringify(v)); },
+  load(k,fallback=null){
+    const raw = localStorage.getItem(this.key(k));
+    return raw ? JSON.parse(raw) : fallback;
+  },
+  del(k){ localStorage.removeItem(this.key(k)); }
+};
+
+function localDateKey(d=new Date()){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function addDays(dateObj, days){
+  const d = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+  d.setDate(d.getDate()+days);
+  return d;
+}
+
+/* ============================
+   TOPICS
+============================ */
+const TOPICS = [
+  { id:'Emotions', icon:'🎭' },
+  { id:'Brain', icon:'🧠' },
+  { id:'Friendship', icon:'🤝' },
+  { id:'Habits', icon:'🔁' },
+  { id:'Problem-Solving', icon:'🧩' },
+];
+
+const topicEl = document.getElementById('topics');
+let selectedTopics = new Set(Cloud.load('selectedTopics', TOPICS.map(t=>t.id)));
+
+function renderTopicPills(){
+  topicEl.innerHTML = '';
+  TOPICS.forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'topic' + (selectedTopics.has(t.id) ? ' active' : '');
+    b.type = 'button';
+    b.innerHTML = `<span>${t.icon}</span><span>${t.id}</span>`;
+    b.onclick = ()=>{
+      if(selectedTopics.has(t.id)) selectedTopics.delete(t.id);
+      else selectedTopics.add(t.id);
+      if(selectedTopics.size === 0){
+        // never allow "none" — snap back to all
+        TOPICS.forEach(x=>selectedTopics.add(x.id));
+      }
+      Cloud.save('selectedTopics', Array.from(selectedTopics));
+      renderTopicPills();
+    };
+    topicEl.appendChild(b);
+  });
+
+  const allSelected = TOPICS.every(t=>selectedTopics.has(t.id));
+  document.getElementById('toggleAllTopics').textContent = allSelected ? 'Clear to Defaults' : 'Select All';
+}
+document.getElementById('toggleAllTopics').onclick = ()=>{
+  const allSelected = TOPICS.every(t=>selectedTopics.has(t.id));
+  selectedTopics = new Set(allSelected ? TOPICS.map(t=>t.id) : TOPICS.map(t=>t.id));
+  // If already all selected, "Clear to Defaults" keeps all (kid-friendly). (You can customize later.)
+  Cloud.save('selectedTopics', Array.from(selectedTopics));
+  renderTopicPills();
+};
+renderTopicPills();
+
+/* ============================
+   STUDENT NAME
+============================ */
+const studentNameInput = document.getElementById('studentName');
+studentNameInput.value = Cloud.load('studentName','') || '';
+document.getElementById('saveNameBtn').onclick = ()=>{
+  Cloud.save('studentName', (studentNameInput.value || '').trim());
+  refreshDashboard();
+};
+
+/* ============================
+   QUESTION BANK
+   - We'll infer topic if not provided
+   - We'll generate 1-sentence explanation automatically
+============================ */
+const QUESTIONS = [
+  // (A compact, kid-friendly bank — topic inferred by keywords/icons; you can keep adding!)
+  {q:'What is something your brain helps you do?', icon:'🧠', a:['Think','Turn into a robot','Change the weather'], c:0},
+  {q:'If you feel nervous, what can help?', icon:'😟', a:['Yell louder','Take deep breaths','Run away forever'], c:1},
+  {q:'Which feeling is pleasant?', icon:'😊', a:['Anger','Fear','Happiness'], c:2},
+  {q:'If a friend is sad, what is a good choice?', icon:'🤝', a:['Ignore','Comfort them','Laugh at them'], c:1},
+  {q:'What does empathy mean?', icon:'❤️', a:['Understanding others','Always winning','Being loud'], c:0},
+  {q:'If you make a mistake, what should you do?', icon:'🔁', a:['Try again','Give up forever','Blame others'], c:0},
+  {q:'Which part of you helps you think?', icon:'🧠', a:['Elbow','Brain','Foot'], c:1},
+  {q:'What helps you calm down?', icon:'🌬️', a:['Breathing slowly','Yelling','Breaking things'], c:0},
+  {q:'What is a good way to solve a problem?', icon:'🧩', a:['Quit right away','Think it through','Hide'], c:1},
+  {q:'Which feeling warns you of danger?', icon:'⚠️', a:['Fear','Joy','Silliness'], c:0},
+  {q:'If you are frustrated, what can help?', icon:'🧘', a:['Throw things','Take a break','Shout at someone'], c:1},
+  {q:'What helps build friendships?', icon:'🤝', a:['Ignoring','Kindness','Name-calling'], c:1},
+  {q:'Which action shows respect?', icon:'🎓', a:['Interrupting','Listening','Yelling'], c:1},
+  {q:'What helps you learn better?', icon:'📘', a:['Practice','Never trying','Giving up'], c:0},
+  {q:'What should you do if someone feels left out?', icon:'💛', a:['Tease','Include them','Ignore'], c:1},
+  {q:'What is self-control?', icon:'🛑', a:['Managing actions','Doing anything','Yelling'], c:0},
+  {q:'What does your brain do when you sleep?', icon:'😴', a:['Rest and grow','Stop working forever','Forget everything'], c:0},
+  {q:'Why is sleep important?', icon:'🛏️', a:['It helps your brain and body','It wastes time','It makes you forget'], c:0},
+  {q:'Which is a helpful self-talk sentence?', icon:'💬', a:['I can try again','I am the worst','Nothing will ever work'], c:0},
+  {q:'What does “focus” mean?', icon:'🎯', a:['Pay attention to one thing','Talk nonstop','Jump around'], c:0},
+  {q:'What is a habit?', icon:'🔁', a:['Something you do often','A single sneeze','A type of tree'], c:0},
+  {q:'If you are confused, what can you do?', icon:'❓', a:['Ask a question','Pretend you know','Quit'], c:0},
+  {q:'If someone says “stop,” what should you do?', icon:'🛑', a:['Stop','Keep going','Laugh'], c:0},
+  {q:'Which is an example of patience?', icon:'⏳', a:['Waiting your turn','Cutting in line','Grabbing'], c:0},
+  {q:'What does teamwork mean?', icon:'🤝', a:['Working together','Bossing everyone','Never sharing'], c:0},
+  {q:'If you don’t understand, it’s okay to…', icon:'🧑‍🏫', a:['Ask for help','Hide it forever','Yell'], c:0},
+  {q:'Which is a respectful way to disagree?', icon:'🗣️', a:['I think something else because…','You are dumb','I will never talk again'], c:0},
+  {q:'If you feel angry, what is a safe choice?', icon:'🔥', a:['Use words','Hit','Break things'], c:0},
+  {q:'Which is a calm-down tool?', icon:'🧰', a:['Throwing','Slow breathing','Name-calling'], c:1},
+  {q:'Which shows good listening?', icon:'👂', a:['Interrupting','Looking and waiting your turn','Rolling your eyes'], c:1},
+  {q:'What is bullying?', icon:'🚫', a:['Being mean again and again on purpose','Accidental bump','Playing fairly'], c:0},
+  {q:'If someone is bullying, what should you do?', icon:'🛡️', a:['Tell a trusted adult','Join in','Keep it secret forever'], c:0},
+  {q:'If someone doesn’t want a hug, what should you do?', icon:'🙅', a:['Respect their “no”','Hug anyway','Laugh at them'], c:0},
+  {q:'What does “problem-solving” mean?', icon:'🧩', a:['Finding a way to fix something','Getting mad','Giving up'], c:0},
+  {q:'If you are stuck, it helps to…', icon:'🪜', a:['Try another strategy','Quit','Get revenge'], c:0},
+  {q:'Which helps your brain remember?', icon:'🧠', a:['Practice','Never reviewing','Skipping sleep'], c:0},
+  {q:'A kind word can make someone feel…', icon:'💖', a:['Better','Worse','Invisible'], c:0},
+  {q:'What does “responsibility” mean?', icon:'🧰', a:['Doing what you should do','Never helping','Always blaming'], c:0},
+  {q:'If you break something by accident, you should…', icon:'🧩', a:['Tell the truth','Hide it','Blame a friend'], c:0}
+];
+
+/* ============================
+   Topic inference
+============================ */
+function inferTopic(q){
+  const t = (q.q || '').toLowerCase();
+  const icon = q.icon || '';
+
+  // Keyword rules (simple + kid-safe)
+  if(icon === '🧠' || t.includes('brain') || t.includes('sleep') || t.includes('memory') || t.includes('focus'))
+    return 'Brain';
+
+  if(t.includes('friend') || t.includes('bully') || t.includes('team') || t.includes('kind') || t.includes('respect') || t.includes('empathy') || t.includes('listen') || t.includes('hug') || t.includes('turns'))
+    return 'Friendship';
+
+  if(t.includes('habit') || t.includes('practice') || t.includes('routine') || t.includes('self-control') || t.includes('responsibility'))
+    return 'Habits';
+
+  if(t.includes('problem') || t.includes('solve') || t.includes('stuck') || t.includes('plan') || t.includes('strategy') || t.includes('choice'))
+    return 'Problem-Solving';
+
+  if(t.includes('feel') || t.includes('emotion') || icon === '😊' || icon === '😟' || icon === '🔥' || icon === '⚠️')
+    return 'Emotions';
+
+  // default
+  return 'Problem-Solving';
+}
+
+/* ============================
+   Explanation generator (1 sentence)
+============================ */
+const TOPIC_TEMPLATES = {
+  'Emotions': (correct)=> `The best answer is “${correct}” because feelings are signals, and we can respond safely and kindly.`,
+  'Brain': (correct)=> `The best answer is “${correct}” because your brain helps you learn, remember, and make choices.`,
+  'Friendship': (correct)=> `The best answer is “${correct}” because good friends help each other feel safe, seen, and respected.`,
+  'Habits': (correct)=> `The best answer is “${correct}” because good habits help your brain grow stronger over time.`,
+  'Problem-Solving': (correct)=> `The best answer is “${correct}” because small calm steps help you solve problems better.`
+};
+function makeExplanation(q){
+  const topic = q.topic || inferTopic(q);
+  const correct = q.a[q.c];
+  const fn = TOPIC_TEMPLATES[topic] || TOPIC_TEMPLATES['Problem-Solving'];
+  return fn(correct);
+}
+
+/* ============================
+   Progress model (localStorage)
+============================ */
+function getProgress(){
+  return Cloud.load('progress', {
+    totalStars: 0,
+    best: 0, // best correct answers in a session
+    streak: 0,
+    lastPlayed: null, // YYYY-MM-DD
+    activity: {}, // dateKey -> {stars, score, total, ts}
+    sessions: 0,
+    latestSession: null
+  });
+}
+function saveProgress(p){ Cloud.save('progress', p); }
+
+/* ============================
+   Dashboard render
+============================ */
+const streakNum = document.getElementById('streakNum');
+const starsTotal = document.getElementById('starsTotal');
+const bestScoreEl = document.getElementById('bestScore');
+const streakNum2 = document.getElementById('streakNum2');
+const latestSessionText = document.getElementById('latestSessionText');
+
+function refreshDashboard(){
+  const p = getProgress();
+  streakNum.textContent = p.streak || 0;
+  streakNum2.textContent = p.streak || 0;
+  starsTotal.textContent = p.totalStars || 0;
+  bestScoreEl.textContent = p.best || 0;
+
+  // latest session summary
+  if(p.latestSession){
+    const ls = p.latestSession;
+    latestSessionText.textContent = `${ls.date} · ${ls.score}/${ls.total} · ${ls.stars}⭐ · Topics: ${ls.topics.join(', ')}`;
+  } else {
+    latestSessionText.textContent = '—';
+  }
+
+  // Certificate label
+  document.getElementById('certUnlocked').textContent = isCertificateUnlocked(p) ? 'Yes' : 'No';
+}
+refreshDashboard();
+
+/* ============================
+   Quiz engine
+============================ */
+let session = [];
+let index = 0;
+let score = 0;
+let locked = false;
+
+const qEl = document.getElementById('question');
+const badgeEl = document.getElementById('badge');
+const aEl = document.getElementById('answers');
+const progressEl = document.getElementById('progress');
+const nextBtn = document.getElementById('nextBtn');
+const playEl = document.getElementById('play');
+const endEl = document.getElementById('end');
+const resultEl = document.getElementById('result');
+const explainBox = document.getElementById('explainBox');
+const explainKicker = document.getElementById('explainKicker');
+const explainText = document.getElementById('explainText');
+const starsEarnedEl = document.getElementById('starsEarned');
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function buildPool(){
+  const topics = Array.from(selectedTopics);
+  const pool = QUESTIONS.map(q=>({ ...q, topic: q.topic || inferTopic(q) }))
+    .filter(q => topics.includes(q.topic));
+  // If somehow empty, fall back
+  return pool.length ? pool : QUESTIONS.map(q=>({ ...q, topic: q.topic || inferTopic(q) }));
+}
+
+function startGame(){
+  const sessionCount = parseInt(document.getElementById('sessionSize').value, 10);
+  const pool = buildPool();
+
+  session = shuffle([...pool]).slice(0, Math.min(sessionCount, pool.length));
+  index = 0;
+  score = 0;
+  locked = false;
+
+  playEl.classList.remove('hidden');
+  endEl.classList.add('hidden');
+
+  explainBox.classList.add('hidden');
+  nextBtn.classList.add('hidden');
+
+  loadQuestion();
+}
+
+function loadQuestion(){
+  locked = false;
+  nextBtn.classList.add('hidden');
+  explainBox.classList.add('hidden');
+
+  const q = session[index];
+  badgeEl.textContent = q.icon || '🧠';
+  qEl.textContent = q.q;
+  aEl.innerHTML = '';
+
+  q.a.forEach((text,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.onclick = ()=>selectAnswer(btn,i);
+    aEl.appendChild(btn);
+  });
+
+  progressEl.textContent = `Question ${index+1} of ${session.length} · Topic: ${q.topic}`;
+}
+
+function selectAnswer(btn, i){
+  if(locked) return;
+  locked = true;
+
+  const q = session[index];
+  const buttons = aEl.querySelectorAll('button');
+  if(buttons[q.c]) buttons[q.c].classList.add('correct');
+
+  const correct = (i === q.c);
+  if(correct) score++;
+  else btn.classList.add('wrong');
+
+  // explanation (1 sentence)
+  const explain = q.why || makeExplanation(q);
+  explainKicker.textContent = correct ? 'Correct!' : 'Good try!';
+  explainText.textContent = explain;
+  explainBox.classList.remove('hidden');
+
+  nextBtn.classList.remove('hidden');
+}
+
+nextBtn.onclick = ()=>{
+  index++;
+  if(index < session.length) loadQuestion();
+  else endGame();
+};
+
+/* ============================
+   Streak + Stars + Activity Log
+============================ */
+function computeStars(score, total){
+  const pct = total ? (score/total) : 0;
+  if(pct >= 0.999) return 3;
+  if(pct >= 0.80) return 2;
+  if(pct >= 0.60) return 1;
+  return 0;
+}
+
+function updateStreak(p, todayKey){
+  if(!p.lastPlayed){
+    p.streak = 1;
+    p.lastPlayed = todayKey;
+    return;
+  }
+  if(p.lastPlayed === todayKey){
+    // already counted today
+    return;
+  }
+  const last = p.lastPlayed;
+  const y = localDateKey(addDays(new Date(), -1));
+  if(last === y){
+    p.streak = (p.streak || 0) + 1;
+  } else {
+    p.streak = 1;
+  }
+  p.lastPlayed = todayKey;
+}
+
+function endGame(){
+  playEl.classList.add('hidden');
+  endEl.classList.remove('hidden');
+
+  const total = session.length;
+  resultEl.textContent = `You answered ${score} out of ${total} correctly! ⭐`;
+
+  const stars = computeStars(score, total);
+  starsEarnedEl.textContent = stars;
+
+  const p = getProgress();
+  const today = localDateKey();
+
+  // streak update (counts once per day)
+  updateStreak(p, today);
+
+  // activity: keep the BEST stars for a day (so re-playing can improve the day marker)
+  const prev = p.activity[today];
+  if(!prev || stars > prev.stars){
+    p.activity[today] = { stars, score, total, ts: Date.now() };
+  }
+
+  p.totalStars = (p.totalStars || 0) + stars;
+  p.best = Math.max(p.best || 0, score);
+  p.sessions = (p.sessions || 0) + 1;
+
+  p.latestSession = {
+    date: today,
+    score, total,
+    stars,
+    topics: Array.from(selectedTopics)
+  };
+
+  saveProgress(p);
+  refreshDashboard();
+  renderCalendar(); // keep calendar fresh
+  refreshCertificateState();
+}
+
+function isCertificateUnlocked(p){
+  const has50Stars = (p.totalStars || 0) >= 50;
+  const ls = p.latestSession;
+  const hasStrongSession =
+    ls && ls.total >= 10 && (ls.score / ls.total) >= 0.80;
+  return !!(has50Stars || hasStrongSession);
+}
+
+/* ============================
+   Calendar
+============================ */
+const calendarOverlay = document.getElementById('calendarOverlay');
+const calendarBtn = document.getElementById('calendarBtn');
+const closeCalendar = document.getElementById('closeCalendar');
+const calGrid = document.getElementById('calGrid');
+const calDow = document.getElementById('calDow');
+const monthLabel = document.getElementById('monthLabel');
+
+let calCursor = new Date(); // month shown
+calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth(), 1);
+
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function renderCalendar(){
+  // DOW header
+  calDow.innerHTML = '';
+  DOW.forEach(d=>{
+    const div = document.createElement('div');
+    div.className = 'dow';
+    div.textContent = d;
+    calDow.appendChild(div);
+  });
+
+  const year = calCursor.getFullYear();
+  const month = calCursor.getMonth();
+
+  const p = getProgress();
+  const activity = p.activity || {};
+
+  const firstDay = new Date(year, month, 1);
+  const startDow = firstDay.getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  const prevMonthDays = new Date(year, month, 0).getDate();
+
+  monthLabel.textContent = firstDay.toLocaleString(undefined, { month:'long', year:'numeric' });
+
+  calGrid.innerHTML = '';
+  const totalCells = 42; // 6 weeks grid
+  for(let cell=0; cell<totalCells; cell++){
+    const dayIndex = cell - startDow + 1;
+    let dnum, isMuted=false, y=year, m=month;
+
+    if(dayIndex <= 0){
+      dnum = prevMonthDays + dayIndex;
+      isMuted = true;
+      // previous month
+      const prev = new Date(year, month-1, 1);
+      y = prev.getFullYear(); m = prev.getMonth();
+    } else if(dayIndex > daysInMonth){
+      dnum = dayIndex - daysInMonth;
+      isMuted = true;
+      const nxt = new Date(year, month+1, 1);
+      y = nxt.getFullYear(); m = nxt.getMonth();
+    } else {
+      dnum = dayIndex;
+    }
+
+    const dateKey = `${y}-${String(m+1).padStart(2,'0')}-${String(dnum).padStart(2,'0')}`;
+    const log = activity[dateKey];
+
+    const box = document.createElement('div');
+    box.className = 'day' + (isMuted ? ' muted' : '');
+    if(log && !isMuted){
+      box.style.borderColor = '#86efac';
+      box.style.boxShadow = '0 10px 18px rgba(34,197,94,.12)';
+      box.style.background = '#f0fdf4';
+    }
+
+    const top = document.createElement('div');
+    top.className = 'dnum';
+    top.textContent = dnum;
+
+    const bottom = document.createElement('div');
+    bottom.className = 'marks';
+
+    if(log && !isMuted){
+      const left = document.createElement('span');
+      left.textContent = '🟩';
+      const stars = document.createElement('span');
+      stars.className = 'stars';
+      stars.innerHTML = '⭐'.repeat(log.stars) + (log.stars===0 ? '—' : '');
+      bottom.appendChild(left);
+      bottom.appendChild(stars);
+      box.title = `${dateKey}: ${log.score}/${log.total} (${log.stars}⭐)`;
+    } else {
+      const left = document.createElement('span');
+      left.textContent = '';
+      const right = document.createElement('span');
+      right.textContent = '';
+      bottom.appendChild(left);
+      bottom.appendChild(right);
+    }
+
+    box.appendChild(top);
+    box.appendChild(bottom);
+    calGrid.appendChild(box);
+  }
+}
+
+calendarBtn.onclick = ()=>{
+  renderCalendar();
+  calendarOverlay.classList.add('show');
+  calendarOverlay.setAttribute('aria-hidden','false');
+};
+closeCalendar.onclick = ()=>{
+  calendarOverlay.classList.remove('show');
+  calendarOverlay.setAttribute('aria-hidden','true');
+};
+document.getElementById('openCalendar2').onclick = calendarBtn.onclick;
+document.getElementById('prevMonth').onclick = ()=>{
+  calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth()-1, 1);
+  renderCalendar();
+};
+document.getElementById('nextMonth').onclick = ()=>{
+  calCursor = new Date(calCursor.getFullYear(), calCursor.getMonth()+1, 1);
+  renderCalendar();
+};
+// close on backdrop click
+calendarOverlay.addEventListener('click', (e)=>{
+  if(e.target === calendarOverlay) closeCalendar.onclick();
+});
+
+/* ============================
+   Certificate Center
+============================ */
+const certOverlay = document.getElementById('certOverlay');
+const certificateBtn = document.getElementById('certificateBtn');
+const closeCert = document.getElementById('closeCert');
+const printCertBtn = document.getElementById('printCertBtn');
+const resetProgressBtn = document.getElementById('resetProgressBtn');
+
+function refreshCertificateState(){
+  const p = getProgress();
+  const unlocked = isCertificateUnlocked(p);
+
+  // Update print zone content
+  const name = (Cloud.load('studentName','') || 'Student').trim() || 'Student';
+  document.getElementById('certName').textContent = name;
+  document.getElementById('certDate').textContent = localDateKey();
+  document.getElementById('certStreak').textContent = p.streak || 0;
+  document.getElementById('certStars').textContent = p.totalStars || 0;
+
+  // Print button behavior
+  printCertBtn.disabled = !unlocked;
+  printCertBtn.style.opacity = unlocked ? '1' : '.55';
+  printCertBtn.style.cursor = unlocked ? 'pointer' : 'not-allowed';
+}
+
+certificateBtn.onclick = ()=>{
+  refreshCertificateState();
+  refreshDashboard();
+  certOverlay.classList.add('show');
+  certOverlay.setAttribute('aria-hidden','false');
+};
+closeCert.onclick = ()=>{
+  certOverlay.classList.remove('show');
+  certOverlay.setAttribute('aria-hidden','true');
+};
+document.getElementById('openCert2').onclick = certificateBtn.onclick;
+
+printCertBtn.onclick = ()=>{
+  const p = getProgress();
+  if(!isCertificateUnlocked(p)) return;
+  refreshCertificateState();
+  window.print();
+};
+
+resetProgressBtn.onclick = ()=>{
+  // safe local reset
+  Cloud.del('progress');
+  // keep studentName and selectedTopics
+  refreshDashboard();
+  renderCalendar();
+  refreshCertificateState();
+  alert('Local progress reset on this device.');
+};
+
+certOverlay.addEventListener('click', (e)=>{
+  if(e.target === certOverlay) closeCert.onclick();
+});
+
+/* ============================
+   Start
+============================ */
+refreshCertificateState();
+startGame();
+</script>
+</body>
+</html>
