@@ -1,0 +1,1967 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diet Template Generator — Health is Wealth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#081226;
+      --bg2:#071a2e;
+      --card: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.13);
+      --ink:#f3f4f6;
+      --muted: rgba(243,244,246,0.72);
+      --accent:#7dd3fc;
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --radius: 21px;
+      --radius2: 14px;
+      --shadow: 0 16px 48px rgba(0,0,0,.35);
+      --fz: 22px;          /* your readability rule */
+      --fzSmall: 20px;     /* still readable */
+      --max: 1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(980px 680px at 18% 10%, rgba(125,211,252,0.18), transparent 58%),
+        radial-gradient(980px 680px at 82% 0%, rgba(52,211,153,0.12), transparent 60%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
+      padding: 16px;
+      font-size: var(--fz);
+    }
+    a{color:inherit}
+    .app{max-width: var(--max); margin: 0 auto;}
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    header{
+      padding: 16px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size: clamp(24px, 2.8vw, 34px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: var(--fzSmall);
+      line-height: 1.35;
+      max-width: 720px;
+    }
+    .posture{
+      margin-top: 10px;
+      border:1px solid rgba(251,191,36,.30);
+      background: rgba(251,191,36,.08);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-size: var(--fzSmall);
+      line-height:1.35;
+      color: rgba(243,244,246,0.92);
+    }
+    .posture strong{color:#fff}
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: var(--ink);
+      font-size: var(--fzSmall);
+      padding: 10px 14px;
+      cursor:pointer;
+      transition: transform .05s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space: nowrap;
+    }
+    .btn:hover{background: rgba(255,255,255,0.09); border-color: rgba(125,211,252,.35)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      border-color: rgba(125,211,252,.42);
+      background: linear-gradient(180deg, rgba(125,211,252,.22), rgba(125,211,252,.10));
+    }
+    .btn.good{
+      border-color: rgba(52,211,153,.42);
+      background: linear-gradient(180deg, rgba(52,211,153,.20), rgba(52,211,153,.08));
+    }
+    .btn.warn{
+      border-color: rgba(251,191,36,.42);
+      background: linear-gradient(180deg, rgba(251,191,36,.16), rgba(251,191,36,.07));
+    }
+    .btn.bad{
+      border-color: rgba(251,113,133,.45);
+      background: linear-gradient(180deg, rgba(251,113,133,.18), rgba(251,113,133,.07));
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding: 14px 16px 0;
+      justify-content:center;
+    }
+    .tab{
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: var(--fzSmall);
+      cursor:pointer;
+      background: rgba(255,255,255,0.05);
+      color: rgba(243,244,246,0.9);
+    }
+    .tab.active{
+      border-color: rgba(125,211,252,.42);
+      background: rgba(125,211,252,.14);
+      color: rgba(255,255,255,0.98);
+    }
+
+    .body{padding: 14px 16px 18px;}
+    .grid{
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr;}
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,0.18);
+      padding: 12px;
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size: 24px;
+      text-align:center;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: var(--fzSmall);
+      line-height:1.35;
+      text-align:center;
+      margin: 0 0 10px;
+    }
+
+    label{display:block; margin: 10px 0 6px; font-size: var(--fzSmall); color: rgba(243,244,246,0.92)}
+    select, input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.06);
+      color: var(--ink);
+      padding: 12px 12px;
+      font-size: var(--fzSmall);
+      outline:none;
+    }
+    textarea{min-height: 96px; resize: vertical;}
+    .row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+    @media (max-width: 560px){ .row2{grid-template-columns:1fr;} }
+
+    .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top: 10px;}
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: var(--fzSmall);
+      color: rgba(243,244,246,0.88);
+    }
+    .chip strong{color: var(--ink)}
+    .chip.good{border-color: rgba(52,211,153,.35)}
+    .chip.info{border-color: rgba(125,211,252,.35)}
+    .chip.warn{border-color: rgba(251,191,36,.35)}
+    .chip.bad{border-color: rgba(251,113,133,.35)}
+
+    .hr{height:1px; background: var(--line); margin: 12px 0;}
+    .sectionTitle{
+      margin: 0 0 10px;
+      font-size: 26px;
+      text-align:center;
+    }
+
+    .dietCards{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 980px){ .dietCards{grid-template-columns:1fr;} }
+    .dietCard{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+    }
+    .dietTop{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+    }
+    .dietName{
+      font-weight: 700;
+      font-size: 24px;
+      margin:0;
+    }
+    .dietMeta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .pill{
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: var(--fzSmall);
+      background: rgba(0,0,0,0.18);
+      color: rgba(243,244,246,0.9);
+      white-space: nowrap;
+    }
+    .pill.strong{border-color: rgba(52,211,153,.40)}
+    .pill.mod{border-color: rgba(251,191,36,.40)}
+    .pill.limited{border-color: rgba(251,113,133,.45)}
+    .dietCard p{
+      margin: 10px 0 0;
+      color: rgba(243,244,246,0.88);
+      font-size: var(--fzSmall);
+      line-height:1.4;
+    }
+    .bul{
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: rgba(243,244,246,0.88);
+      font-size: var(--fzSmall);
+      line-height:1.4;
+    }
+    .tiny{
+      font-size: 18px;
+      color: rgba(243,244,246,0.70);
+      line-height:1.35;
+    }
+    .compareRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center;
+    }
+
+    .tableWrap{overflow:auto; border-radius: 14px; border:1px solid var(--line); background: rgba(0,0,0,0.18);}
+    table{width:100%; border-collapse: collapse; min-width: 920px;}
+    th, td{
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      padding: 10px 10px;
+      vertical-align: top;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+    th{position:sticky; top:0; background: rgba(10,16,30,0.95); z-index:1;}
+    th:first-child, td:first-child{position:sticky; left:0; background: rgba(10,16,30,0.95); z-index:2;}
+    td{background: rgba(255,255,255,0.02);}
+
+    .result{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+    }
+    .result h3{margin:0 0 10px; font-size: 26px; text-align:center;}
+    .result .k{
+      text-transform: uppercase;
+      letter-spacing:.7px;
+      font-size: 18px;
+      color: rgba(243,244,246,0.70);
+    }
+    .result .big{
+      font-size: 24px;
+      font-weight: 700;
+      margin: 4px 0 0;
+      text-align:center;
+    }
+    .flexRow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; margin-top: 10px;}
+    .note{
+      border:1px solid rgba(251,191,36,.30);
+      background: rgba(251,191,36,.08);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: var(--fzSmall);
+      line-height:1.35;
+      color: rgba(243,244,246,0.92);
+    }
+    .danger{
+      border:1px solid rgba(251,113,133,.35);
+      background: rgba(251,113,133,.10);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: var(--fzSmall);
+      line-height:1.35;
+      color: rgba(243,244,246,0.92);
+    }
+
+    /* Print only the results panel */
+    @media print{
+      body{background:#fff; color:#000; padding:0}
+      header, .tabs, #leftPanel, #libraryPanel, #comparePanel, #resourcesPanel, #plannerPanel, .toolbar{display:none !important}
+      .card{border:none; box-shadow:none}
+      #resultsPanel{display:block !important}
+      .result, .panel, .note, .danger{border:1px solid #ddd; background:#fff; color:#000}
+      a{color:#000; text-decoration: underline}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <section class="card">
+      <header>
+        <div>
+          <h1>Diet Template Generator</h1>
+          <div class="sub">
+            A neutral, evidence-informed diet library + a generator that creates a sustainable, self-planned “lifestyle pattern” (not a crash diet).
+          </div>
+          <div class="posture">
+            <strong>Course Posture:</strong> This tool is educational and general. It does not diagnose, treat, or replace medical care.
+            If you’re pregnant, under 18, have an eating disorder history, kidney disease, diabetes on medication, GI disease, or other conditions—use professional guidance.
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <!-- OPTIONAL: set a link back to your Health is Wealth portal -->
+          <a class="btn primary" id="backBtn" href="#" target="_blank" rel="noopener">✨ Back to Health is Wealth</a>
+          <button class="btn" id="saveBtn" type="button">💾 Save</button>
+          <button class="btn" id="loadBtn" type="button">📥 Load</button>
+          <button class="btn warn" id="printBtn" type="button">🖨️ Print Plan</button>
+          <button class="btn bad" id="resetBtn" type="button">↺ Reset</button>
+        </div>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Diet Generator Tabs">
+        <button class="tab active" data-tab="generator">Generator</button>
+        <button class="tab" data-tab="library">Diet Library</button>
+        <button class="tab" data-tab="compare">Compare</button>
+        <button class="tab" data-tab="planner">Daily Planner</button>
+        <button class="tab" data-tab="resources">Resources</button>
+      </div>
+
+      <div class="body">
+        <!-- GENERATOR TAB -->
+        <section id="tab-generator">
+          <div class="grid">
+            <div class="panel" id="leftPanel">
+              <h2>Build My Diet Template</h2>
+              <p class="hint">Choose your goals + constraints. Then generate a plan you can actually keep.</p>
+
+              <label for="goal">Primary Goal</label>
+              <select id="goal">
+                <option value="sustainable">Sustainable Healthy Lifestyle</option>
+                <option value="fatloss">Fat Loss (gentle deficit)</option>
+                <option value="muscle">Build Strength / Muscle Support</option>
+                <option value="heart">Heart Health / Cholesterol</option>
+                <option value="bp">Blood Pressure Support</option>
+                <option value="bloodsugar">Blood Sugar Stability</option>
+                <option value="gut">Gut Comfort (bloating/IBS-like)</option>
+                <option value="energy">Energy / Focus</option>
+              </select>
+
+              <label for="style">Preferred Eating Style</label>
+              <select id="style">
+                <option value="flex">Flexible / Omnivore</option>
+                <option value="plant">Plant-Forward (mostly plants)</option>
+                <option value="veg">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="pesc">Pescatarian (fish OK)</option>
+                <option value="lowcarb">Lower-Carb Preference</option>
+              </select>
+
+              <div class="row2">
+                <div>
+                  <label for="cook">Cooking Reality</label>
+                  <select id="cook">
+                    <option value="easy">Easy / Minimal cooking</option>
+                    <option value="normal">Normal home cooking</option>
+                    <option value="batch">Batch-cook / meal prep</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="budget">Budget</label>
+                  <select id="budget">
+                    <option value="low">Budget-friendly</option>
+                    <option value="mid">Middle</option>
+                    <option value="high">Flexible</option>
+                  </select>
+                </div>
+              </div>
+
+              <label for="meals">Meals Per Day</label>
+              <select id="meals">
+                <option value="3">3 meals</option>
+                <option value="2">2 meals</option>
+                <option value="4">3 meals + 1 snack</option>
+                <option value="5">3 meals + 2 snacks</option>
+              </select>
+
+              <label for="window">Eating Window (Optional)</label>
+              <select id="window">
+                <option value="none">No time window</option>
+                <option value="12">~12 hours (gentle structure)</option>
+                <option value="10">~10 hours (time-restricted eating)</option>
+                <option value="8">~8 hours (tighter window)</option>
+              </select>
+
+              <div class="hr"></div>
+
+              <h2 style="margin-top:0">Health Constraints</h2>
+
+              <label for="allergies">Allergies / Avoid List (free text)</label>
+              <input id="allergies" placeholder="e.g., peanuts, shellfish, lactose..." />
+
+              <label for="medicalFlags">Medical Notes (optional, general)</label>
+              <input id="medicalFlags" placeholder="e.g., kidney concerns, GERD, migraine triggers..." />
+
+              <div class="row2">
+                <div>
+                  <label for="gluten">Gluten</label>
+                  <select id="gluten">
+                    <option value="ok">No preference</option>
+                    <option value="gf">Gluten-free needed</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="fodmap">FODMAP</label>
+                  <select id="fodmap">
+                    <option value="no">No preference</option>
+                    <option value="low">Prefer lower-FODMAP approach</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="hr"></div>
+
+              <h2 style="margin-top:0">Calorie Target (Optional)</h2>
+              <p class="tiny" style="text-align:center; margin:0 0 10px;">
+                If you fill this in, we’ll estimate a daily calorie range (education-only). You can leave it blank and still generate a plan.
+              </p>
+
+              <div class="row2">
+                <div>
+                  <label for="age">Age</label>
+                  <input id="age" type="number" min="10" max="100" placeholder="e.g., 35" />
+                </div>
+                <div>
+                  <label for="sex">Sex (for equation)</label>
+                  <select id="sex">
+                    <option value="skip">Skip</option>
+                    <option value="f">Female</option>
+                    <option value="m">Male</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label for="height">Height</label>
+                  <input id="height" placeholder="e.g., 5'6 or 168 cm" />
+                </div>
+                <div>
+                  <label for="weight">Weight</label>
+                  <input id="weight" placeholder="e.g., 160 lb or 73 kg" />
+                </div>
+              </div>
+
+              <label for="activity">Activity Level</label>
+              <select id="activity">
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Lightly active</option>
+                <option value="1.55" selected>Moderately active</option>
+                <option value="1.725">Very active</option>
+              </select>
+
+              <div class="flexRow" style="margin-top:14px;">
+                <button class="btn good" id="genBtn" type="button">⚡ Generate My Template</button>
+                <button class="btn" id="quickBtn" type="button">✨ Quick Start</button>
+              </div>
+
+              <div class="chips">
+                <div class="chip info">Library diets: <strong id="dietCount">—</strong></div>
+                <div class="chip warn">Compare slots: <strong>4</strong></div>
+              </div>
+            </div>
+
+            <div class="panel" id="resultsPanel">
+              <h2>Your Plan Output</h2>
+              <p class="hint">Your recommendations will appear here. Print anytime.</p>
+              <div id="results"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LIBRARY TAB -->
+        <section id="tab-library" style="display:none;">
+          <div class="panel" id="libraryPanel">
+            <h2 class="sectionTitle">Diet Library (Popular Patterns)</h2>
+
+            <div class="row2">
+              <div>
+                <label for="libSearch">Search</label>
+                <input id="libSearch" placeholder="Type: keto, dash, vegan, fasting, fodmap..." />
+              </div>
+              <div>
+                <label for="libEvidence">Filter by Evidence</label>
+                <select id="libEvidence">
+                  <option value="all">All</option>
+                  <option value="Strong">Strong</option>
+                  <option value="Moderate">Moderate</option>
+                  <option value="Limited">Limited</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="dietCards" id="dietCards"></div>
+          </div>
+        </section>
+
+        <!-- COMPARE TAB -->
+        <section id="tab-compare" style="display:none;">
+          <div class="panel" id="comparePanel">
+            <h2 class="sectionTitle">Compare Diets (Pick up to 4)</h2>
+
+            <div class="compareRow">
+              <input id="cmpSearch" style="max-width:520px" placeholder="Search to add: Mediterranean, DASH, keto..." />
+              <button class="btn" id="clearCompareBtn" type="button">Clear Compare</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div id="comparePick" class="dietCards"></div>
+
+            <div class="hr"></div>
+
+            <div class="tableWrap" id="compareTableWrap" style="display:none;">
+              <table id="compareTable">
+                <thead>
+                  <tr>
+                    <th>Dimension</th>
+                    <th id="c1">—</th>
+                    <th id="c2">—</th>
+                    <th id="c3">—</th>
+                    <th id="c4">—</th>
+                  </tr>
+                </thead>
+                <tbody id="compareBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PLANNER TAB -->
+        <section id="tab-planner" style="display:none;">
+          <div class="panel" id="plannerPanel">
+            <h2 class="sectionTitle">Daily Diet Planner + Calorie Tally</h2>
+            <p class="hint">Use this as a simple accountability planner. You can enter calories manually (no external database).</p>
+
+            <div class="row2">
+              <div>
+                <label for="plannerDate">Date</label>
+                <input id="plannerDate" type="date" />
+              </div>
+              <div>
+                <label for="plannerTarget">Daily Calorie Target (optional)</label>
+                <input id="plannerTarget" type="number" min="0" placeholder="e.g., 1900" />
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div id="plannerMeals"></div>
+
+            <div class="hr"></div>
+
+            <div class="result">
+              <div class="k" style="text-align:center;">Totals</div>
+              <div class="big" id="plannerTotal">0 calories logged</div>
+              <div class="chips" style="margin-top:10px;">
+                <div class="chip info">Entries: <strong id="plannerEntries">0</strong></div>
+                <div class="chip good">Target gap: <strong id="plannerGap">—</strong></div>
+              </div>
+
+              <div class="flexRow" style="margin-top:12px;">
+                <button class="btn good" id="plannerSaveBtn" type="button">💾 Save Day</button>
+                <button class="btn" id="plannerLoadBtn" type="button">📥 Load Day</button>
+                <button class="btn bad" id="plannerClearBtn" type="button">Clear Day</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESOURCES TAB -->
+        <section id="tab-resources" style="display:none;">
+          <div class="panel" id="resourcesPanel">
+            <h2 class="sectionTitle">Resource Center (Evidence + Guides)</h2>
+            <p class="hint">These links are included for deeper study. Always prioritize qualified medical guidance for personal conditions.</p>
+
+            <div class="dietCards" id="resourceCards"></div>
+
+            <div class="hr"></div>
+
+            <div class="note">
+              <strong>How to use this tool wisely:</strong>
+              <ul class="bul">
+                <li>Choose a “pattern” you can keep for months, not days.</li>
+                <li>Use structure (plate method + routines) before restriction.</li>
+                <li>Quality matters: whole foods &amp; fiber usually outperform ultra-processed options.</li>
+                <li>For IBS or major symptoms: elimination diets are best done with a trained clinician/dietitian.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div style="text-align:center; margin-top:12px; color: rgba(243,244,246,0.62); font-size: 18px;">
+      Thank You For Visiting
+    </div>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ============================
+  // EDIT THESE URLs
+  // ============================
+  const BACK_TO_HEALTH_URL = "https://www.khaemenesacademy.org/health-is-wealth";
+
+  // LocalStorage Keys
+  const KEY_APP   = "khae_diet_generator_v1";
+  const KEY_CMP   = "khae_diet_compare_v1";
+  const KEY_DAY   = "khae_diet_planner_day_v1";
+
+  // Evidence label helper
+  function evidenceClass(e){
+    if(e === "Strong") return "strong";
+    if(e === "Moderate") return "mod";
+    return "limited";
+  }
+
+  // ============================
+  // DIET LIBRARY (popular patterns)
+  // Keep language neutral & general; education-only.
+  // ============================
+  const DIETS = [
+    {
+      id:"med",
+      name:"Mediterranean-Style",
+      evidence:"Strong",
+      restriction:"Low",
+      bestFor:["heart","sustainable","energy","bloodsugar"],
+      summary:"Plant-forward pattern emphasizing vegetables, fruits, legumes, whole grains, olive oil, nuts, and often fish; minimal ultra-processed foods; red/processed meat limited.",
+      benefits:["Strong overall evidence base for heart health markers and long-term sustainability for many people."],
+      shortfalls:["Portion awareness still matters for weight goals.","Budget can rise if relying heavily on specialty items (fish/nuts) — can be adapted."],
+      cautions:["If you have allergies (nuts/fish) adapt with alternatives."],
+      resources:[
+        {label:"AHA Mediterranean overview", url:"https://www.heart.org/en/healthy-living/healthy-eating/eat-smart/nutrition-basics/mediterranean-diet"},
+        {label:"Harvard Nutrition Source review", url:"https://nutritionsource.hsph.harvard.edu/healthy-weight/diet-reviews/mediterranean-diet/"},
+        {label:"Mayo Clinic overview", url:"https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating/in-depth/mediterranean-diet/art-20047801"}
+      ],
+      template:{
+        plate:"½ non-starchy vegetables • ¼ protein • ¼ high-fiber carbs + olive oil/avocado/nuts",
+        staples:["beans/lentils","whole grains","olive oil","frozen vegetables","canned fish (if desired)","eggs","fruit"],
+        proteinOptions:["fish","beans/lentils","Greek yogurt/fortified soy","poultry","eggs"],
+        carbOptions:["oats","brown rice","whole wheat/whole grain alternatives","potatoes","fruit"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"dash",
+      name:"DASH",
+      evidence:"Strong",
+      restriction:"Low",
+      bestFor:["bp","heart","sustainable"],
+      summary:"A flexible, balanced plan emphasizing fruits, vegetables, whole grains, low-fat dairy or alternatives, lean proteins, and lower sodium.",
+      benefits:["Commonly used for blood-pressure support and overall heart-healthy eating patterns."],
+      shortfalls:["Needs planning for lower-sodium choices when eating out."],
+      cautions:["If lactose intolerant, use lactose-free or fortified alternatives."],
+      resources:[
+        {label:"NHLBI DASH Eating Plan", url:"https://www.nhlbi.nih.gov/education/dash-eating-plan"},
+        {label:"MedlinePlus DASH summary", url:"https://medlineplus.gov/dasheatingplan.html"}
+      ],
+      template:{
+        plate:"DASH-style plate: lots of produce + whole grains + lean protein; sodium-aware",
+        staples:["frozen veg","fruit","low-sodium canned beans","whole grains","yogurt/fortified alternatives","nuts/seeds"],
+        proteinOptions:["beans/lentils","fish","poultry","eggs","tofu"],
+        carbOptions:["whole grains","fruit","starchy veg (portion)"],
+        fatOptions:["non-tropical oils","nuts/seeds"]
+      }
+    },
+    {
+      id:"mind",
+      name:"MIND (Mediterranean + DASH for brain)",
+      evidence:"Moderate",
+      restriction:"Low",
+      bestFor:["energy","sustainable","heart"],
+      summary:"A Mediterranean/DASH blend emphasizing leafy greens, berries, nuts, legumes, whole grains, fish/poultry, and olive oil; limits ultra-processed foods and sweets.",
+      benefits:["Often used as a structured ‘brain-forward’ pattern; overlaps with widely recommended healthy eating."],
+      shortfalls:["Can get complicated if treated as a strict checklist — keep it simple."],
+      cautions:["Adapt for allergies and budget (frozen berries work)."],
+      resources:[
+        {label:"Harvard Nutrition Source MIND review", url:"https://nutritionsource.hsph.harvard.edu/healthy-weight/diet-reviews/mind-diet/"},
+        {label:"Mass General sample plan", url:"https://www.massgeneral.org/news/article/mind-diet-3-day-sample-meal-plan"}
+      ],
+      template:{
+        plate:"Mediterranean/DASH base + weekly ‘anchors’ (greens, berries, legumes, nuts)",
+        staples:["leafy greens","berries (frozen ok)","beans","nuts/seeds","olive oil","whole grains"],
+        proteinOptions:["fish","poultry","beans","tofu","eggs"],
+        carbOptions:["whole grains","fruit","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"portfolio",
+      name:"Portfolio Diet (cholesterol-focused)",
+      evidence:"Moderate",
+      restriction:"Moderate",
+      bestFor:["heart","bloodsugar"],
+      summary:"A plant-forward pattern emphasizing specific LDL-supportive foods: viscous/soluble fiber (oats, barley, legumes), nuts, plant sterols, and plant proteins.",
+      benefits:["Often used when cholesterol is a key target and someone prefers food-first strategies."],
+      shortfalls:["Can feel ‘ingredient mathy’ — simplify by hitting the key categories daily."],
+      cautions:["If you have nut allergies, swap with seeds/legumes; sterol-fortified products vary by person."],
+      resources:[
+        {label:"Harvard overview", url:"https://www.health.harvard.edu/heart-health/the-portfolio-diet-a-smart-investment-for-your-heart"},
+        {label:"AHA news overview", url:"https://www.heart.org/en/news/2023/10/25/ever-heard-of-the-portfolio-diet-it-may-lower-risk-for-heart-disease-and-stroke"}
+      ],
+      template:{
+        plate:"Plant-forward plate + daily ‘portfolio anchors’ (soluble fiber + nuts + plant protein)",
+        staples:["oats/barley","beans/lentils","nuts/seeds","soy/tofu/edamame","fruit/veg"],
+        proteinOptions:["beans/lentils","tofu/tempeh","soy milk","seitan (if gluten OK)"],
+        carbOptions:["oats","barley","whole grains","fruit"],
+        fatOptions:["nuts/seeds","olive oil","avocado"]
+      }
+    },
+    {
+      id:"wfpb",
+      name:"Whole-Food Plant-Forward",
+      evidence:"Moderate",
+      restriction:"Moderate",
+      bestFor:["heart","bloodsugar","sustainable","fatloss"],
+      summary:"Mostly minimally processed plant foods: vegetables, fruits, legumes, whole grains, nuts/seeds; animal foods optional or limited.",
+      benefits:["Often increases fiber and nutrient density; many people find it helps appetite control."],
+      shortfalls:["Requires B12 planning if fully vegan; protein planning matters for athletes."],
+      cautions:["Highly processed ‘plant-based’ foods can still be ultra-processed; quality matters."],
+      resources:[
+        {label:"Harvard: plant-based diet overview", url:"https://www.health.harvard.edu/blog/what-is-a-plant-based-diet-and-why-should-you-try-it-2018092614760"},
+        {label:"PubMed review (plant-based & CVD)", url:"https://pubmed.ncbi.nlm.nih.gov/29496410/"}
+      ],
+      template:{
+        plate:"½ veg • ¼ legumes/tofu • ¼ whole grains/starchy veg + nuts/seeds",
+        staples:["beans","lentils","frozen veg","oats","brown rice","tofu","fruit"],
+        proteinOptions:["beans/lentils","tofu/tempeh","edamame","soy yogurt","nuts/seeds (as add-on)"],
+        carbOptions:["whole grains","fruit","starchy veg"],
+        fatOptions:["nuts/seeds","olive oil","avocado"]
+      }
+    },
+    {
+      id:"flex",
+      name:"Flexitarian",
+      evidence:"Moderate",
+      restriction:"Low",
+      bestFor:["sustainable","heart","fatloss","energy"],
+      summary:"Mostly plant-based with optional animal foods; aims for flexibility and sustainability.",
+      benefits:["Lower restriction can improve adherence; easy to adapt culturally."],
+      shortfalls:["Needs a simple structure to avoid drifting into ultra-processed convenience foods."],
+      cautions:["None specific—focus on whole foods and fiber."],
+      resources:[
+        {label:"WHO Healthy diet basics", url:"https://www.who.int/news-room/fact-sheets/detail/healthy-diet"},
+        {label:"USDA MyPlate basics", url:"https://www.myplate.gov/eat-healthy/what-is-myplate"}
+      ],
+      template:{
+        plate:"MyPlate-style base + plant-forward default",
+        staples:["beans","veg","fruit","whole grains","eggs","canned fish (optional)"],
+        proteinOptions:["beans","eggs","fish","poultry","tofu"],
+        carbOptions:["whole grains","fruit","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"pesc",
+      name:"Pescatarian",
+      evidence:"Moderate",
+      restriction:"Moderate",
+      bestFor:["heart","energy","bloodsugar"],
+      summary:"Plant-forward with fish/seafood as main animal protein; meat/poultry typically excluded.",
+      benefits:["Can align well with Mediterranean-style patterns."],
+      shortfalls:["Cost and sustainability sourcing can be a challenge."],
+      cautions:["Seafood allergies or pregnancy guidelines may apply."],
+      resources:[
+        {label:"AHA Mediterranean pattern (fish included)", url:"https://www.heart.org/en/healthy-living/healthy-eating/eat-smart/nutrition-basics/mediterranean-diet"},
+        {label:"CDC healthy eating basics", url:"https://www.cdc.gov/healthy-weight-growth/healthy-eating/index.html"}
+      ],
+      template:{
+        plate:"Plant base + fish a few times per week",
+        staples:["canned salmon/sardines (optional)","frozen veg","whole grains","beans","fruit","olive oil"],
+        proteinOptions:["fish","beans/lentils","tofu","eggs"],
+        carbOptions:["whole grains","fruit","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"lowcarb",
+      name:"Lower-Carb (Balanced)",
+      evidence:"Moderate",
+      restriction:"Moderate",
+      bestFor:["bloodsugar","fatloss","energy"],
+      summary:"Reduces refined carbs and often total carbs; emphasizes protein, non-starchy vegetables, and unsaturated fats.",
+      benefits:["Some people find it improves appetite control and blood sugar stability."],
+      shortfalls:["If too restrictive long-term, may reduce fiber or micronutrients unless planned well."],
+      cautions:["If you have kidney disease or take glucose-lowering meds, get medical guidance."],
+      resources:[
+        {label:"Mayo Clinic low-carb overview", url:"https://www.mayoclinic.org/healthy-lifestyle/weight-loss/in-depth/low-carb-diet/art-20045831"}
+      ],
+      template:{
+        plate:"½ non-starchy veg • ¼ protein • ¼ higher-fiber carbs (smaller) + healthy fat",
+        staples:["eggs","Greek yogurt/fortified soy","leafy greens","berries","beans (portion)","nuts/seeds"],
+        proteinOptions:["eggs","fish","poultry","tofu","beans (portion)"],
+        carbOptions:["berries","beans (portion)","small whole grains","starchy veg (portion)"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"keto",
+      name:"Ketogenic (very low carb, high fat)",
+      evidence:"Limited",
+      restriction:"High",
+      bestFor:["bloodsugar","fatloss"],
+      summary:"Very low carbs with high fat intake; commonly discussed for weight loss. Clinically, ketogenic therapy has a long history in epilepsy care under supervision.",
+      benefits:["Some people experience short-term appetite suppression and weight loss; clinical ketogenic therapy is used in specific medical contexts."],
+      shortfalls:["Restrictive; can increase constipation and risk of nutrient gaps unless carefully planned; long-term effects vary and are still studied."],
+      cautions:["Not ideal for everyone; medical supervision recommended in many scenarios; prioritize unsaturated fats and vegetables if used."],
+      resources:[
+        {label:"Mayo Clinic: keto (risks/considerations)", url:"https://communityhealth.mayoclinic.org/featured-stories/keto-diet"},
+        {label:"Johns Hopkins: keto therapy for epilepsy", url:"https://www.hopkinsmedicine.org/neurology-neurosurgery/specialty-areas/epilepsy/diet-therapy"}
+      ],
+      template:{
+        plate:"Very low carb; protein adequate; fats high — focus on food quality",
+        staples:["eggs","non-starchy veg","olive oil","avocado","nuts (if ok)","plain yogurt/cheese (if ok)"],
+        proteinOptions:["eggs","fish","poultry","tofu (lower carb)"],
+        carbOptions:["leafy greens","cruciferous veg","berries (small)"],
+        fatOptions:["olive oil","avocado","nuts/seeds"]
+      }
+    },
+    {
+      id:"tre",
+      name:"Time-Restricted Eating (TRE)",
+      evidence:"Moderate",
+      restriction:"Low",
+      bestFor:["fatloss","bloodsugar","energy"],
+      summary:"An eating schedule (time window) rather than a food list—often 8–10 hours/day. Food quality still matters.",
+      benefits:["Some studies show modest improvements in cardiometabolic markers for certain groups when paired with healthy eating."],
+      shortfalls:["Can backfire if it increases overeating in the window or worsens sleep/stress."],
+      cautions:["Not recommended for everyone (pregnancy, eating disorders, some medical meds)."],
+      resources:[
+        {label:"NIH Research Matters: time-restricted eating", url:"https://www.nih.gov/news-events/nih-research-matters/time-restricted-eating-metabolic-syndrome"},
+        {label:"Trial article (public)", url:"https://pubmed.ncbi.nlm.nih.gov/39348690/"}
+      ],
+      template:{
+        plate:"Pick a window that supports sleep + consistency; keep meals balanced",
+        staples:["simple balanced meals","protein at each meal","fiber-rich carbs","veg"],
+        proteinOptions:["any (per preference)"],
+        carbOptions:["whole grains/starchy veg (portion)","fruit"],
+        fatOptions:["olive oil/nuts/avocado"]
+      }
+    },
+    {
+      id:"paleo",
+      name:"Paleo-Style",
+      evidence:"Limited",
+      restriction:"Moderate",
+      bestFor:["bloodsugar","fatloss","energy"],
+      summary:"Emphasizes meats, fish, eggs, vegetables, fruits, nuts; often excludes grains, legumes, and dairy.",
+      benefits:["Can reduce ultra-processed foods for some people and increase whole-food cooking."],
+      shortfalls:["May lower calcium intake and exclude fiber-rich legumes/whole grains unless replaced thoughtfully."],
+      cautions:["Avoid making it a ‘red meat upgrade’; balance with vegetables and unsaturated fats."],
+      resources:[
+        {label:"Harvard: paleo health is complicated", url:"https://hsph.harvard.edu/news/paleo-diet-health-benefits-complicated/"},
+        {label:"Harvard Nutrition Source: paleo review", url:"https://nutritionsource.hsph.harvard.edu/healthy-weight/diet-reviews/paleo-diet/"}
+      ],
+      template:{
+        plate:"Veg-heavy + protein + healthy fats; replace lost fiber with more veg, seeds",
+        staples:["vegetables","fruit","eggs","fish","nuts/seeds","olive oil"],
+        proteinOptions:["fish","eggs","poultry","lean meats"],
+        carbOptions:["fruit","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"whole30",
+      name:"Whole30 (short-term elimination program)",
+      evidence:"Limited",
+      restriction:"High",
+      bestFor:["gut","energy"],
+      summary:"A 30-day elimination-style reset removing added sugars, alcohol, grains, legumes, and dairy; then reintroduction.",
+      benefits:["Can help someone identify trigger foods if done thoughtfully and reintroduced systematically."],
+      shortfalls:["Very restrictive; not intended as a permanent lifestyle without adaptation."],
+      cautions:["Elimination plans are best supervised if symptoms are significant."],
+      resources:[
+        {label:"General healthy diet basics (WHO)", url:"https://www.who.int/news-room/fact-sheets/detail/healthy-diet"},
+        {label:"MyPlate: adults guidance", url:"https://www.myplate.gov/life-stages/adults"}
+      ],
+      template:{
+        plate:"Whole foods only; plan reintroduction intentionally",
+        staples:["whole foods","vegetables","protein","healthy fats"],
+        proteinOptions:["eggs","fish","poultry","lean meats"],
+        carbOptions:["starchy veg","fruit"],
+        fatOptions:["olive oil","avocado","nuts/seeds"]
+      }
+    },
+    {
+      id:"gf",
+      name:"Gluten-Free (medical necessity for celiac, etc.)",
+      evidence:"Strong (for celiac)",
+      restriction:"Moderate",
+      bestFor:["gut"],
+      summary:"Removes gluten-containing grains. Crucial for celiac disease management; not automatically ‘healthier’ unless diet quality remains high.",
+      benefits:["Essential treatment for celiac disease; can reduce symptoms when medically indicated."],
+      shortfalls:["Packaged GF foods can be low-fiber or ultra-processed if not planned."],
+      cautions:["Medical diagnosis matters; replace with whole grains that are naturally GF (if tolerated)."],
+      resources:[
+        {label:"MedlinePlus: gluten-free diets", url:"https://medlineplus.gov/ency/patientinstructions/000813.htm"},
+        {label:"MedlinePlus: celiac disease", url:"https://medlineplus.gov/celiacdisease.html"}
+      ],
+      template:{
+        plate:"Whole foods + naturally GF grains (as tolerated)",
+        staples:["rice","oats (certified GF)","potatoes","corn tortillas","beans (if tolerated)","fruit/veg"],
+        proteinOptions:["any (per preference)"],
+        carbOptions:["rice","potatoes","GF oats","fruit"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"fod",
+      name:"Low-FODMAP (IBS-targeted)",
+      evidence:"Moderate",
+      restriction:"High (short-term)",
+      bestFor:["gut"],
+      summary:"A structured IBS approach: short elimination phase + systematic reintroduction to identify triggers, ideally with trained guidance.",
+      benefits:["Many with IBS report improved symptoms when implemented correctly and individualized."],
+      shortfalls:["Not meant to be permanent strict elimination; can become overly restrictive without reintroduction."],
+      cautions:["Use a dietitian if possible; nutrient variety matters."],
+      resources:[
+        {label:"ACG: Low-FODMAP overview", url:"https://gi.org/topics/low-fodmap-diet/"},
+        {label:"Monash: starting low FODMAP (guidance)", url:"https://www.monashfodmap.com/ibs-central/i-have-ibs/starting-the-low-fodmap-diet/"}
+      ],
+      template:{
+        plate:"Short elimination + reintroduction plan; focus on tolerated produce + proteins",
+        staples:["rice/oats","eggs","firm tofu","low-FODMAP veg list","berries (portion)"],
+        proteinOptions:["eggs","fish","poultry","firm tofu"],
+        carbOptions:["rice","oats","potatoes"],
+        fatOptions:["olive oil","seeds","small nuts (if tolerated)"]
+      }
+    },
+    {
+      id:"lowsodium",
+      name:"Lower-Sodium Pattern",
+      evidence:"Strong (for BP support)",
+      restriction:"Low",
+      bestFor:["bp","heart"],
+      summary:"Focuses on reducing sodium intake, especially from ultra-processed foods; often paired with DASH-style eating.",
+      benefits:["Supports blood pressure management for many people."],
+      shortfalls:["Restaurant and packaged foods can be the main challenge."],
+      cautions:["If you have specific medical sodium needs, follow clinician guidance."],
+      resources:[
+        {label:"NHLBI DASH (sodium-aware)", url:"https://www.nhlbi.nih.gov/education/dash-eating-plan"},
+        {label:"WHO: salt guidance (within healthy diet)", url:"https://www.who.int/news-room/fact-sheets/detail/healthy-diet"}
+      ],
+      template:{
+        plate:"Cook more at home; flavor with herbs/spices; choose low-sodium versions",
+        staples:["herbs/spices","low-sodium beans","fresh/frozen veg","plain proteins"],
+        proteinOptions:["fish","beans","poultry","tofu"],
+        carbOptions:["whole grains","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds"]
+      }
+    },
+    {
+      id:"highprotein",
+      name:"Higher-Protein Balanced",
+      evidence:"Moderate",
+      restriction:"Low",
+      bestFor:["muscle","fatloss","bloodsugar"],
+      summary:"Keeps a balanced plate but prioritizes adequate protein per meal plus fiber-rich carbs and vegetables.",
+      benefits:["Often improves satiety and supports strength goals when paired with resistance training."],
+      shortfalls:["Can skew toward processed ‘protein products’—use whole foods first."],
+      cautions:["Kidney disease considerations require clinical guidance."],
+      resources:[
+        {label:"CDC: healthy eating basics", url:"https://www.cdc.gov/healthy-weight-growth/healthy-eating/index.html"},
+        {label:"Dietary Guidelines for Americans (PDF)", url:"https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf"}
+      ],
+      template:{
+        plate:"Protein + veg first; carbs/fats scaled to goal",
+        staples:["eggs","Greek yogurt/fortified soy","beans","lean meats (optional)","tofu","veg"],
+        proteinOptions:["eggs","fish","beans","tofu","poultry"],
+        carbOptions:["whole grains","fruit","starchy veg"],
+        fatOptions:["olive oil","nuts/seeds","avocado"]
+      }
+    },
+    {
+      id:"carn",
+      name:"Carnivore (animal-only)",
+      evidence:"Limited",
+      restriction:"Very High",
+      bestFor:["gut"],
+      summary:"Animal foods only; excludes plants entirely. Popular online, but long-term evidence is limited and diet quality concerns are common in clinical commentary.",
+      benefits:["Some people report short-term symptom change via elimination; however evidence remains limited."],
+      shortfalls:["No fiber; higher risk of nutrient gaps; very restrictive and socially difficult; long-term outcomes are uncertain."],
+      cautions:["Not generally recommended as a long-term ‘default’ without medical oversight."],
+      resources:[
+        {label:"Cleveland Clinic: carnivore overview", url:"https://health.clevelandclinic.org/the-carnivore-diet"},
+        {label:"Cleveland Clinic: lion diet risks", url:"https://health.clevelandclinic.org/lion-diet"}
+      ],
+      template:{
+        plate:"If someone insists: strongly prefer medical supervision; reintroduce plants if possible",
+        staples:["(not recommended as default)"],
+        proteinOptions:["animal foods"],
+        carbOptions:["none"],
+        fatOptions:["animal fats"]
+      }
+    }
+  ];
+
+  // A few global “foundation resources”
+  const GENERAL_RESOURCES = [
+    {title:"WHO Healthy Diet (factsheet)", url:"https://www.who.int/news-room/fact-sheets/detail/healthy-diet", note:"General guidance on balanced eating, sugar/salt limits."},
+    {title:"USDA MyPlate (What is MyPlate?)", url:"https://www.myplate.gov/eat-healthy/what-is-myplate", note:"Practical plate model: fruits/veg, grains, protein, dairy/alternatives."},
+    {title:"CDC Healthy Eating (DGA-based)", url:"https://www.cdc.gov/healthy-weight-growth/healthy-eating/index.html", note:"Plain-language summary aligned with Dietary Guidelines."},
+    {title:"Dietary Guidelines for Americans 2020–2025 (PDF)", url:"https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf", note:"US national guideline document; details and recommendations."}
+  ];
+
+  // ============================
+  // DOM Helpers
+  // ============================
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+  function escapeHtml(s){
+    return String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
+
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+  // ============================
+  // Tabs
+  // ============================
+  const tabs = $$(".tab");
+  const tabSections = {
+    generator: $("#tab-generator"),
+    library: $("#tab-library"),
+    compare: $("#tab-compare"),
+    planner: $("#tab-planner"),
+    resources: $("#tab-resources")
+  };
+
+  function setTab(name){
+    tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+    Object.keys(tabSections).forEach(k => tabSections[k].style.display = (k === name) ? "block" : "none");
+  }
+  tabs.forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
+
+  // ============================
+  // Back button URL
+  // ============================
+  $("#backBtn").href = BACK_TO_HEALTH_URL;
+
+  // ============================
+  // Library Rendering
+  // ============================
+  $("#dietCount").textContent = String(DIETS.length);
+
+  function renderDietCard(d){
+    const ev = d.evidence.startsWith("Strong") ? "Strong" : (d.evidence.startsWith("Moderate") ? "Moderate" : "Limited");
+    return `
+      <div class="dietCard">
+        <div class="dietTop">
+          <div>
+            <p class="dietName">${escapeHtml(d.name)}</p>
+          </div>
+          <div class="dietMeta">
+            <span class="pill ${evidenceClass(ev)}">Evidence: ${escapeHtml(d.evidence)}</span>
+            <span class="pill">Restriction: ${escapeHtml(d.restriction)}</span>
+          </div>
+        </div>
+        <p>${escapeHtml(d.summary)}</p>
+
+        <ul class="bul">
+          <li><strong>Often helpful for:</strong> ${escapeHtml(d.bestFor.join(", "))}</li>
+          <li><strong>Common shortfalls:</strong> ${escapeHtml((d.shortfalls||[]).join(" • "))}</li>
+          <li><strong>Cautions:</strong> ${escapeHtml((d.cautions||[]).join(" • "))}</li>
+        </ul>
+
+        <div class="hr"></div>
+
+        <div class="compareRow">
+          <button class="btn" type="button" data-addcmp="${escapeHtml(d.id)}">➕ Add to Compare</button>
+          <button class="btn primary" type="button" data-use="${escapeHtml(d.id)}">⚡ Use as Base</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="tiny">
+          <strong>Study links:</strong>
+          ${(d.resources||[]).map(r => `<div>• <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.label)}</a></div>`).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function libraryFilter(){
+    const q = ($("#libSearch").value || "").trim().toLowerCase();
+    const ev = $("#libEvidence").value;
+
+    const list = DIETS.filter(d => {
+      const hay = (d.name + " " + d.summary + " " + d.bestFor.join(" ") + " " + d.evidence).toLowerCase();
+      const okQ = !q || hay.includes(q);
+      const okE = (ev === "all") || d.evidence.startsWith(ev);
+      return okQ && okE;
+    });
+
+    $("#dietCards").innerHTML = list.map(renderDietCard).join("") || `<div class="note">No matches. Try a different search term.</div>`;
+
+    // wire buttons
+    $$("[data-addcmp]").forEach(b => b.addEventListener("click", () => addToCompare(b.getAttribute("data-addcmp"))));
+    $$("[data-use]").forEach(b => b.addEventListener("click", () => {
+      const id = b.getAttribute("data-use");
+      const base = DIETS.find(x => x.id === id);
+      if(!base) return;
+      generatePlan({forceBase: base.id});
+      setTab("generator");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }));
+  }
+
+  $("#libSearch").addEventListener("input", libraryFilter);
+  $("#libEvidence").addEventListener("change", libraryFilter);
+
+  // ============================
+  // Compare
+  // ============================
+  let compareIds = loadCompare();
+
+  function loadCompare(){
+    try{
+      const raw = localStorage.getItem(KEY_CMP);
+      if(!raw) return [];
+      const parsed = JSON.parse(raw);
+      if(Array.isArray(parsed.ids)) return parsed.ids.slice(0,4);
+      return [];
+    }catch(e){ return []; }
+  }
+  function saveCompare(){
+    try{ localStorage.setItem(KEY_CMP, JSON.stringify({ids: compareIds, savedAt: Date.now()})); }catch(e){}
+  }
+
+  function addToCompare(id){
+    if(compareIds.includes(id)) return;
+    if(compareIds.length >= 4){
+      alert("Compare is full (4). Remove one first.");
+      return;
+    }
+    compareIds.push(id);
+    saveCompare();
+    renderCompare();
+    setTab("compare");
+  }
+
+  function clearCompare(){
+    compareIds = [];
+    saveCompare();
+    renderCompare();
+  }
+
+  $("#clearCompareBtn").addEventListener("click", clearCompare);
+
+  function renderCompare(){
+    // picker tiles
+    const q = ($("#cmpSearch").value||"").trim().toLowerCase();
+    const candidates = DIETS.filter(d => !q || (d.name+" "+d.summary).toLowerCase().includes(q));
+    $("#comparePick").innerHTML = candidates.slice(0,8).map(d => `
+      <div class="dietCard">
+        <div class="dietTop">
+          <p class="dietName">${escapeHtml(d.name)}</p>
+          <span class="pill ${evidenceClass(d.evidence.startsWith("Strong")?"Strong":(d.evidence.startsWith("Moderate")?"Moderate":"Limited"))}">${escapeHtml(d.evidence)}</span>
+        </div>
+        <p class="tiny">${escapeHtml(d.summary)}</p>
+        <div class="flexRow" style="margin-top:10px;">
+          <button class="btn" type="button" data-addcmp="${escapeHtml(d.id)}">➕ Add</button>
+        </div>
+      </div>
+    `).join("");
+
+    $$("[data-addcmp]", $("#comparePick")).forEach(b => b.addEventListener("click", () => addToCompare(b.getAttribute("data-addcmp"))));
+
+    // table
+    const selected = compareIds.map(id => DIETS.find(d => d.id === id)).filter(Boolean);
+    $("#compareTableWrap").style.display = selected.length ? "block" : "none";
+
+    const headers = ["c1","c2","c3","c4"];
+    headers.forEach((h,i) => {
+      const el = $("#"+h);
+      if(!el) return;
+      el.textContent = selected[i] ? selected[i].name : "—";
+    });
+
+    const rows = [
+      ["Evidence", d => d.evidence],
+      ["Restriction Level", d => d.restriction],
+      ["Best For", d => d.bestFor.join(", ")],
+      ["Core Idea", d => d.summary],
+      ["Common Shortfalls", d => (d.shortfalls||[]).join(" • ") || "—"],
+      ["Cautions", d => (d.cautions||[]).join(" • ") || "—"],
+      ["Key Template", d => d.template?.plate || "—"],
+      ["Staples", d => (d.template?.staples||[]).join(", ") || "—"],
+      ["Links", d => (d.resources||[]).map(r => `${r.label}: ${r.url}`).join("\n") || "—"]
+    ];
+
+    $("#compareBody").innerHTML = rows.map(([label, fn]) => {
+      const cols = [0,1,2,3].map(i => selected[i] ? escapeHtml(fn(selected[i])) : "—");
+      return `
+        <tr>
+          <th>${escapeHtml(label)}</th>
+          <td>${cols[0].replace(/\n/g,"<br>")}</td>
+          <td>${cols[1].replace(/\n/g,"<br>")}</td>
+          <td>${cols[2].replace(/\n/g,"<br>")}</td>
+          <td>${cols[3].replace(/\n/g,"<br>")}</td>
+        </tr>
+      `;
+    }).join("") + `
+      <tr>
+        <th>Actions</th>
+        <td>${selected[0] ? `<button class="btn primary" data-use="${selected[0].id}" type="button">Use as Base</button> <button class="btn bad" data-rem="${selected[0].id}" type="button">Remove</button>` : "—"}</td>
+        <td>${selected[1] ? `<button class="btn primary" data-use="${selected[1].id}" type="button">Use as Base</button> <button class="btn bad" data-rem="${selected[1].id}" type="button">Remove</button>` : "—"}</td>
+        <td>${selected[2] ? `<button class="btn primary" data-use="${selected[2].id}" type="button">Use as Base</button> <button class="btn bad" data-rem="${selected[2].id}" type="button">Remove</button>` : "—"}</td>
+        <td>${selected[3] ? `<button class="btn primary" data-use="${selected[3].id}" type="button">Use as Base</button> <button class="btn bad" data-rem="${selected[3].id}" type="button">Remove</button>` : "—"}</td>
+      </tr>
+    `;
+
+    $$("[data-rem]").forEach(b => b.addEventListener("click", () => {
+      const id = b.getAttribute("data-rem");
+      compareIds = compareIds.filter(x => x !== id);
+      saveCompare();
+      renderCompare();
+    }));
+    $$("[data-use]").forEach(b => b.addEventListener("click", () => {
+      const id = b.getAttribute("data-use");
+      generatePlan({forceBase:id});
+      setTab("generator");
+      window.scrollTo({top:0, behavior:"smooth"});
+    }));
+  }
+
+  $("#cmpSearch").addEventListener("input", renderCompare);
+
+  // ============================
+  // Resources Tab
+  // ============================
+  function renderResources(){
+    const blocks = [];
+
+    blocks.push(`
+      <div class="dietCard">
+        <div class="dietTop">
+          <p class="dietName">General Healthy Eating Foundations</p>
+          <div class="dietMeta"><span class="pill strong">Guidelines</span></div>
+        </div>
+        <p class="tiny">Use these as your baseline “north star” when customizing any pattern.</p>
+        <div class="hr"></div>
+        ${GENERAL_RESOURCES.map(r => `
+          <div class="tiny">• <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.title)}</a><div class="tiny">${escapeHtml(r.note)}</div></div>
+        `).join("")}
+      </div>
+    `);
+
+    DIETS.forEach(d => {
+      blocks.push(`
+        <div class="dietCard">
+          <div class="dietTop">
+            <p class="dietName">${escapeHtml(d.name)}</p>
+            <div class="dietMeta">
+              <span class="pill ${evidenceClass(d.evidence.startsWith("Strong")?"Strong":(d.evidence.startsWith("Moderate")?"Moderate":"Limited"))}">
+                ${escapeHtml(d.evidence)}
+              </span>
+            </div>
+          </div>
+          <p class="tiny">${escapeHtml(d.summary)}</p>
+          <div class="hr"></div>
+          ${(d.resources||[]).map(r => `<div class="tiny">• <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.label)}</a></div>`).join("") || `<div class="tiny">No curated links.</div>`}
+        </div>
+      `);
+    });
+
+    $("#resourceCards").innerHTML = blocks.join("");
+  }
+
+  // ============================
+  // Generator Logic
+  // ============================
+  function parseHeightToCm(raw){
+    const s = String(raw||"").trim().toLowerCase();
+    if(!s) return null;
+
+    // cm
+    const cmMatch = s.match(/(\d+(?:\.\d+)?)\s*cm/);
+    if(cmMatch) return Number(cmMatch[1]);
+
+    // feet'inches e.g., 5'6 or 5 ft 6
+    const ftIn = s.match(/(\d+)\s*(?:ft|')\s*(\d+)?/);
+    if(ftIn){
+      const ft = Number(ftIn[1]||0);
+      const inch = Number(ftIn[2]||0);
+      const totalIn = ft*12 + inch;
+      return totalIn * 2.54;
+    }
+
+    // inches only
+    const inMatch = s.match(/(\d+(?:\.\d+)?)\s*(?:in|inch|")/);
+    if(inMatch) return Number(inMatch[1]) * 2.54;
+
+    // number assume cm if >= 100 else inches
+    const n = Number(s.replace(/[^\d.]/g,""));
+    if(!isFinite(n)) return null;
+    return (n >= 100) ? n : (n * 2.54);
+  }
+
+  function parseWeightToKg(raw){
+    const s = String(raw||"").trim().toLowerCase();
+    if(!s) return null;
+
+    const kgMatch = s.match(/(\d+(?:\.\d+)?)\s*kg/);
+    if(kgMatch) return Number(kgMatch[1]);
+
+    const lbMatch = s.match(/(\d+(?:\.\d+)?)\s*(?:lb|lbs|pound)/);
+    if(lbMatch) return Number(lbMatch[1]) * 0.45359237;
+
+    // number assume lb if >= 90 else kg (rough heuristic)
+    const n = Number(s.replace(/[^\d.]/g,""));
+    if(!isFinite(n)) return null;
+    return (n >= 90) ? (n * 0.45359237) : n;
+  }
+
+  function estimateCalories({age, sex, heightCm, weightKg, activity, goal}){
+    // Mifflin-St Jeor (education only)
+    if(!age || !sex || !heightCm || !weightKg) return null;
+    const a = Number(age);
+    const h = Number(heightCm);
+    const w = Number(weightKg);
+    if(!(a>0 && h>0 && w>0)) return null;
+
+    const s = (sex === "m") ? 5 : -161;
+    const bmr = 10*w + 6.25*h - 5*a + s;
+    const tdee = bmr * Number(activity || 1.55);
+
+    let lo = tdee, hi = tdee;
+
+    if(goal === "fatloss"){
+      lo = tdee * 0.80;
+      hi = tdee * 0.90;
+    } else if(goal === "muscle"){
+      lo = tdee * 1.05;
+      hi = tdee * 1.12;
+    } else {
+      lo = tdee * 0.95;
+      hi = tdee * 1.05;
+    }
+
+    return {
+      bmr: Math.round(bmr),
+      tdee: Math.round(tdee),
+      range: [Math.round(lo), Math.round(hi)]
+    };
+  }
+
+  function scoreDiet(d, prefs){
+    // Simple scoring: goal fit + style fit + constraint fit - restriction mismatch
+    let score = 0;
+
+    // Goal match
+    if(d.bestFor.includes(prefs.goal)) score += 3;
+    if(prefs.goal === "sustainable" && d.bestFor.includes("sustainable")) score += 3;
+    if(prefs.goal === "heart" && d.bestFor.includes("heart")) score += 3;
+    if(prefs.goal === "bp" && d.bestFor.includes("bp")) score += 3;
+    if(prefs.goal === "bloodsugar" && d.bestFor.includes("bloodsugar")) score += 3;
+    if(prefs.goal === "gut" && d.bestFor.includes("gut")) score += 3;
+    if(prefs.goal === "fatloss" && d.bestFor.includes("fatloss")) score += 2;
+    if(prefs.goal === "muscle" && d.bestFor.includes("muscle")) score += 2;
+
+    // Style match
+    if(prefs.style === "vegan" && /vegan|plant/i.test(d.name + " " + d.summary)) score += 2;
+    if(prefs.style === "veg" && /veget/i.test(d.name + " " + d.summary)) score += 2;
+    if(prefs.style === "plant" && /(plant|mediterranean|dash|mind|flexitarian|portfolio)/i.test(d.id)) score += 2;
+    if(prefs.style === "pesc" && /pesc|mediterranean/i.test(d.name + " " + d.summary)) score += 2;
+    if(prefs.style === "lowcarb" && /(lowcarb|keto)/i.test(d.id)) score += 2;
+
+    // Constraints
+    if(prefs.gluten === "gf"){
+      if(d.id === "gf" || d.id === "fod") score += 2;
+      // others can be adapted, but keep modest
+      if(["med","dash","mind","flex","pesc","wfpb","highprotein","lowsodium","lowcarb","portfolio"].includes(d.id)) score += 1;
+    }
+    if(prefs.fodmap === "low"){
+      if(d.id === "fod") score += 4;
+      // elimination-like diets get a small bump (not endorsement, just mechanism)
+      if(d.id === "whole30") score += 1;
+    }
+
+    // Eating window preference
+    if(prefs.window !== "none" && d.id === "tre") score += 2;
+
+    // Penalize very high restriction when goal is sustainability
+    if(prefs.goal === "sustainable"){
+      if(d.restriction === "High" || d.restriction === "Very High") score -= 3;
+      if(d.restriction === "Moderate") score -= 1;
+    }
+
+    // Penalize carnivore as default
+    if(d.id === "carn") score -= 6;
+
+    return score;
+  }
+
+  function buildLifestyleRules(prefs){
+    // Neutral, guideline-aligned rules (not medical)
+    const rules = [];
+
+    rules.push("Build each meal around a simple plate: vegetables first, then protein, then high-fiber carbs, then healthy fat.");
+    rules.push("Aim for minimally processed foods most of the time. Convenience is fine — just choose better convenience.");
+    rules.push("Include a protein source at each main meal (and snacks if you tend to get hungry).");
+    rules.push("Aim for fiber daily via vegetables, fruit, legumes, whole grains (as tolerated).");
+    rules.push("Hydration: keep water available; add electrolytes only if truly needed (exercise/heat).");
+    rules.push("Sleep + stress management matter: your diet is easier when recovery is real.");
+
+    if(prefs.goal === "fatloss"){
+      rules.push("For fat loss: keep a gentle deficit by shrinking the ‘extras’ first (sugary drinks, snacks, ultra-processed) before shrinking whole meals.");
+    }
+    if(prefs.goal === "muscle"){
+      rules.push("For muscle support: pair adequate protein with resistance training, and don’t under-eat long-term.");
+    }
+    if(prefs.goal === "bp"){
+      rules.push("For blood pressure support: emphasize DASH-style produce and reduce sodium from packaged/restaurant foods.");
+    }
+    if(prefs.goal === "bloodsugar"){
+      rules.push("For blood sugar stability: prioritize protein + fiber at meals; choose higher-fiber carbs; consider walking after meals.");
+    }
+    if(prefs.goal === "gut"){
+      rules.push("For gut comfort: consider a symptom journal; avoid long-term elimination unless reintroducing foods; seek dietitian help if symptoms are significant.");
+    }
+
+    if(prefs.window !== "none"){
+      rules.push(`Optional structure: use a ~${prefs.window}-hour eating window if it supports your sleep and reduces late-night grazing.`);
+    }
+
+    return rules;
+  }
+
+  function mealTemplateFromBase(base, prefs){
+    const meals = Number(prefs.meals || 3);
+    const items = [];
+
+    const slots = (meals === 2) ? ["Meal 1","Meal 2"] :
+                  (meals === 3) ? ["Breakfast","Lunch","Dinner"] :
+                  (meals === 4) ? ["Breakfast","Lunch","Dinner","Snack"] :
+                                  ["Breakfast","Snack 1","Lunch","Snack 2","Dinner"];
+
+    slots.forEach(slot => {
+      const isSnack = /snack/i.test(slot);
+      items.push({
+        slot,
+        structure: isSnack
+          ? "Protein + fiber (or fruit/veg) — keep it simple."
+          : base.template?.plate || "½ veg • ¼ protein • ¼ high-fiber carbs + healthy fat",
+        options: {
+          protein: base.template?.proteinOptions || ["protein of choice"],
+          carbs: base.template?.carbOptions || ["high-fiber carbs as desired"],
+          fats: base.template?.fatOptions || ["healthy fat"]
+        }
+      });
+    });
+
+    return items;
+  }
+
+  function generatePlan(opts = {}){
+    const prefs = {
+      goal: $("#goal").value,
+      style: $("#style").value,
+      cook: $("#cook").value,
+      budget: $("#budget").value,
+      meals: $("#meals").value,
+      window: $("#window").value,
+      gluten: $("#gluten").value,
+      fodmap: $("#fodmap").value,
+      allergies: ($("#allergies").value || "").trim(),
+      medicalFlags: ($("#medicalFlags").value || "").trim(),
+      age: ($("#age").value || "").trim(),
+      sex: $("#sex").value,
+      height: ($("#height").value || "").trim(),
+      weight: ($("#weight").value || "").trim(),
+      activity: $("#activity").value
+    };
+
+    const heightCm = parseHeightToCm(prefs.height);
+    const weightKg = parseWeightToKg(prefs.weight);
+
+    const cal = (prefs.sex !== "skip")
+      ? estimateCalories({
+          age: Number(prefs.age || 0),
+          sex: prefs.sex,
+          heightCm,
+          weightKg,
+          activity: Number(prefs.activity),
+          goal: prefs.goal
+        })
+      : null;
+
+    const scored = DIETS.map(d => ({d, score: scoreDiet(d, prefs)}))
+      .sort((a,b) => b.score - a.score);
+
+    // Force base if requested
+    let base = scored[0]?.d || DIETS[0];
+    if(opts.forceBase){
+      const forced = DIETS.find(x => x.id === opts.forceBase);
+      if(forced) base = forced;
+    }
+
+    // pick top 3 distinct recommendations
+    const top = [];
+    for(const s of scored){
+      if(top.length >= 3) break;
+      if(s.score < 1 && top.length) continue;
+      if(!top.some(x => x.id === s.d.id)) top.push(s.d);
+    }
+    if(!top.length) top.push(base);
+
+    const rules = buildLifestyleRules(prefs);
+    const meals = mealTemplateFromBase(base, prefs);
+
+    const staples = base.template?.staples || [];
+    const grocery = [
+      "Vegetables (fresh/frozen)",
+      "Fruit (fresh/frozen)",
+      ...(prefs.style === "vegan" || prefs.style === "veg" || prefs.style === "plant" ? ["Legumes (beans/lentils)","Tofu/tempeh or plant protein"] : ["Protein (lean options you enjoy)"]),
+      "High-fiber carbs (whole grains / starchy veg as tolerated)",
+      "Healthy fats (olive oil, nuts/seeds, avocado)",
+      "Flavor (herbs, spices, lemon, vinegar)"
+    ];
+
+    // Output HTML
+    const evTag = base.evidence.startsWith("Strong") ? "Strong" : (base.evidence.startsWith("Moderate") ? "Moderate" : "Limited");
+    const cautionBlock =
+      (prefs.fodmap === "low" || base.id === "fod" || base.id === "whole30" || base.id === "keto" || base.id === "carn")
+        ? `<div class="danger"><strong>Important caution:</strong> More restrictive approaches can backfire or cause nutrient gaps if followed rigidly or long-term. Use reintroduction and professional guidance when symptoms or medical risks exist.</div>`
+        : "";
+
+    const calorieBlock = cal ? `
+      <div class="result">
+        <h3>Estimated Calories (Optional)</h3>
+        <div class="k" style="text-align:center;">Education-only estimate</div>
+        <div class="big">${cal.range[0]}–${cal.range[1]} kcal/day <span style="font-weight:400; color: rgba(243,244,246,0.75);">(goal-adjusted)</span></div>
+        <div class="chips">
+          <div class="chip info">BMR: <strong>${cal.bmr}</strong></div>
+          <div class="chip warn">TDEE: <strong>${cal.tdee}</strong></div>
+        </div>
+        <div class="tiny" style="margin-top:10px;">
+          If this estimate feels wrong (hunger, fatigue, sleep disruption), adjust and/or use a professional.
+        </div>
+      </div>
+    ` : "";
+
+    const resultHtml = `
+      <div class="result">
+        <h3>Recommended Base Pattern</h3>
+        <div class="k" style="text-align:center;">Best match for your inputs</div>
+        <div class="big">${escapeHtml(base.name)}</div>
+        <div class="chips">
+          <div class="chip ${evTag==="Strong"?"good":(evTag==="Moderate"?"warn":"bad")}">Evidence: <strong>${escapeHtml(base.evidence)}</strong></div>
+          <div class="chip info">Restriction: <strong>${escapeHtml(base.restriction)}</strong></div>
+          <div class="chip warn">Goal: <strong>${escapeHtml(prefs.goal)}</strong></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="note">
+          <strong>What this means:</strong> ${escapeHtml(base.summary)}
+        </div>
+
+        ${cautionBlock ? `<div class="hr"></div>${cautionBlock}` : ""}
+
+        <div class="hr"></div>
+
+        <div class="tiny">
+          <strong>Helpful links:</strong><br>
+          ${(base.resources||[]).map(r => `• <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener">${escapeHtml(r.label)}</a>`).join("<br>")}
+        </div>
+      </div>
+
+      ${calorieBlock}
+
+      <div class="result">
+        <h3>Your Lifestyle Rules (Sustainable)</h3>
+        <ul class="bul">
+          ${rules.map(x => `<li>${escapeHtml(x)}</li>`).join("")}
+        </ul>
+      </div>
+
+      <div class="result">
+        <h3>Your Daily Meal Template</h3>
+        <div class="tiny" style="text-align:center; margin-bottom:10px;">
+          Pick one option per category. Repeat meals you enjoy. Consistency &gt; novelty.
+        </div>
+        ${meals.map(m => `
+          <div class="panel" style="margin-top:10px;">
+            <div class="dietTop">
+              <div class="dietName">${escapeHtml(m.slot)}</div>
+              <span class="pill">Structure</span>
+            </div>
+            <p class="tiny">${escapeHtml(m.structure)}</p>
+            <div class="hr"></div>
+            <div class="tiny"><strong>Protein:</strong> ${escapeHtml(m.options.protein.join(", "))}</div>
+            <div class="tiny"><strong>High-fiber carbs:</strong> ${escapeHtml(m.options.carbs.join(", "))}</div>
+            <div class="tiny"><strong>Healthy fats:</strong> ${escapeHtml(m.options.fats.join(", "))}</div>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="result">
+        <h3>Grocery List (Starter)</h3>
+        <ul class="bul">
+          ${grocery.map(g => `<li>${escapeHtml(g)}</li>`).join("")}
+        </ul>
+        <div class="hr"></div>
+        <div class="tiny"><strong>Staples for your base pattern:</strong> ${escapeHtml(staples.join(", ") || "—")}</div>
+      </div>
+
+      <div class="result">
+        <h3>Top Alternative Patterns (Backups)</h3>
+        <div class="tiny" style="text-align:center; margin-bottom:10px;">If your first pick feels hard, choose an easier backup and keep going.</div>
+        ${top.map(d => {
+          const ev = d.evidence.startsWith("Strong") ? "Strong" : (d.evidence.startsWith("Moderate") ? "Moderate" : "Limited");
+          return `
+            <div class="dietCard" style="margin-top:10px;">
+              <div class="dietTop">
+                <p class="dietName">${escapeHtml(d.name)}</p>
+                <div class="dietMeta">
+                  <span class="pill ${evidenceClass(ev)}">${escapeHtml(d.evidence)}</span>
+                  <span class="pill">Restriction: ${escapeHtml(d.restriction)}</span>
+                </div>
+              </div>
+              <p class="tiny">${escapeHtml(d.summary)}</p>
+            </div>
+          `;
+        }).join("")}
+      </div>
+
+      <div class="flexRow" style="margin-top:12px;">
+        <button class="btn good" id="copyPlanBtn" type="button">📋 Copy Plan Summary</button>
+        <button class="btn" id="openPlannerBtn" type="button">🗓️ Send to Planner</button>
+      </div>
+    `;
+
+    $("#results").innerHTML = resultHtml;
+
+    // Wire actions
+    $("#copyPlanBtn").addEventListener("click", () => {
+      const text =
+`Diet Template Generator — Plan Summary
+Base Pattern: ${base.name} (Evidence: ${base.evidence}; Restriction: ${base.restriction})
+Goal: ${prefs.goal}
+Meals/Day: ${prefs.meals}${prefs.window !== "none" ? `; Eating window: ~${prefs.window}h` : ""}
+Gluten: ${prefs.gluten}; FODMAP: ${prefs.fodmap}
+
+Lifestyle Rules:
+- ${rules.join("\n- ")}
+
+Meal Plate:
+- ${base.template?.plate || "Balanced plate"}
+
+Grocery Starter:
+- ${grocery.join("\n- ")}
+
+Links:
+${(base.resources||[]).map(r => `- ${r.label}: ${r.url}`).join("\n")}
+`;
+      copyToClipboard(text);
+      alert("Copied plan summary to clipboard ✅");
+    });
+
+    $("#openPlannerBtn").addEventListener("click", () => {
+      // carry calorie target to planner if available
+      if(cal){
+        $("#plannerTarget").value = String(cal.range[0]); // conservative lower end
+      }
+      setTab("planner");
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+
+    // Save the latest generated plan into memory state for Save button
+    currentPlan = {prefs, baseId: base.id, generatedAt: Date.now(), calorieEstimate: cal};
+  }
+
+  function copyToClipboard(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else fallbackCopy(text);
+  }
+  function fallbackCopy(text){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position="fixed";
+    ta.style.left="-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  // Quick Start (simple defaults)
+  function quickStart(){
+    $("#goal").value = "sustainable";
+    $("#style").value = "flex";
+    $("#cook").value = "easy";
+    $("#budget").value = "mid";
+    $("#meals").value = "3";
+    $("#window").value = "12";
+    $("#gluten").value = "ok";
+    $("#fodmap").value = "no";
+    $("#allergies").value = "";
+    $("#medicalFlags").value = "";
+    $("#sex").value = "skip";
+    $("#age").value = "";
+    $("#height").value = "";
+    $("#weight").value = "";
+    $("#activity").value = "1.55";
+    generatePlan();
+  }
+
+  $("#genBtn").addEventListener("click", () => generatePlan());
+  $("#quickBtn").addEventListener("click", () => quickStart());
+
+  // ============================
+  // Save / Load / Reset
+  // ============================
+  let currentPlan = null;
+
+  $("#saveBtn").addEventListener("click", () => {
+    if(!currentPlan){
+      alert("Generate a plan first.");
+      return;
+    }
+    try{
+      localStorage.setItem(KEY_APP, JSON.stringify({currentPlan, savedAt: Date.now()}));
+      alert("Saved ✅");
+    }catch(e){
+      alert("Could not save (storage blocked).");
+    }
+  });
+
+  $("#loadBtn").addEventListener("click", () => {
+    try{
+      const raw = localStorage.getItem(KEY_APP);
+      if(!raw){ alert("No saved plan found."); return; }
+      const parsed = JSON.parse(raw);
+      const p = parsed.currentPlan?.prefs;
+      if(!p){ alert("Saved data is incomplete."); return; }
+
+      // restore
+      $("#goal").value = p.goal || "sustainable";
+      $("#style").value = p.style || "flex";
+      $("#cook").value = p.cook || "easy";
+      $("#budget").value = p.budget || "mid";
+      $("#meals").value = p.meals || "3";
+      $("#window").value = p.window || "none";
+      $("#gluten").value = p.gluten || "ok";
+      $("#fodmap").value = p.fodmap || "no";
+      $("#allergies").value = p.allergies || "";
+      $("#medicalFlags").value = p.medicalFlags || "";
+      $("#age").value = p.age || "";
+      $("#sex").value = p.sex || "skip";
+      $("#height").value = p.height || "";
+      $("#weight").value = p.weight || "";
+      $("#activity").value = p.activity || "1.55";
+
+      generatePlan({forceBase: parsed.currentPlan.baseId});
+      alert("Loaded ✅");
+    }catch(e){
+      alert("Could not load saved plan.");
+    }
+  });
+
+  $("#resetBtn").addEventListener("click", () => {
+    if(!confirm("Reset this app's saved data and clear fields?")) return;
+    try{
+      localStorage.removeItem(KEY_APP);
+      localStorage.removeItem(KEY_CMP);
+      localStorage.removeItem(KEY_DAY);
+    }catch(e){}
+    compareIds = [];
+    quickStart();
+    renderCompare();
+    libraryFilter();
+    renderResources();
+    initPlanner();
+    alert("Reset complete ✅");
+  });
+
+  $("#printBtn").addEventListener("click", () => {
+    // Print only results section via CSS
+    window.print();
+  });
+
+  // ============================
+  // Daily Planner
+  // ============================
+  function plannerMealRow(i){
+    return `
+      <div class="panel" style="margin-top:10px;">
+        <div class="dietTop">
+          <div class="dietName">Entry ${i+1}</div>
+          <span class="pill">Meal log</span>
+        </div>
+        <div class="row2" style="margin-top:10px;">
+          <div>
+            <label>Meal / Item</label>
+            <input class="pItem" placeholder="e.g., Oatmeal + berries" />
+          </div>
+          <div>
+            <label>Calories (manual)</label>
+            <input class="pCal" type="number" min="0" placeholder="e.g., 420" />
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function initPlanner(){
+    // default date
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const dd = String(d.getDate()).padStart(2,"0");
+    $("#plannerDate").value = `${yyyy}-${mm}-${dd}`;
+
+    // 6 entry slots (enough for most days)
+    $("#plannerMeals").innerHTML = Array.from({length:6}, (_,i) => plannerMealRow(i)).join("");
+
+    // wire calc
+    $$(".pCal").forEach(inp => inp.addEventListener("input", updatePlannerTotals));
+    updatePlannerTotals();
+  }
+
+  function updatePlannerTotals(){
+    const cals = $$(".pCal").map(x => Number(x.value || 0)).filter(n => isFinite(n) && n > 0);
+    const total = cals.reduce((a,b) => a+b, 0);
+    $("#plannerEntries").textContent = String(cals.length);
+    $("#plannerTotal").textContent = `${total} calories logged`;
+
+    const target = Number($("#plannerTarget").value || 0);
+    if(target > 0){
+      const gap = target - total;
+      const sign = (gap >= 0) ? "under" : "over";
+      $("#plannerGap").textContent = `${Math.abs(Math.round(gap))} ${sign}`;
+    }else{
+      $("#plannerGap").textContent = "—";
+    }
+  }
+
+  $("#plannerTarget").addEventListener("input", updatePlannerTotals);
+
+  $("#plannerSaveBtn").addEventListener("click", () => {
+    const date = $("#plannerDate").value;
+    const target = Number($("#plannerTarget").value || 0);
+    const entries = $$(".pItem").map((itemEl, i) => {
+      const calEl = $$(".pCal")[i];
+      return {
+        item: (itemEl.value||"").trim(),
+        calories: Number(calEl.value || 0)
+      };
+    }).filter(e => e.item || e.calories);
+
+    try{
+      localStorage.setItem(KEY_DAY, JSON.stringify({date, target, entries, savedAt: Date.now()}));
+      alert("Day saved ✅");
+    }catch(e){
+      alert("Could not save day (storage blocked).");
+    }
+  });
+
+  $("#plannerLoadBtn").addEventListener("click", () => {
+    try{
+      const raw = localStorage.getItem(KEY_DAY);
+      if(!raw){ alert("No saved day found."); return; }
+      const data = JSON.parse(raw);
+      $("#plannerDate").value = data.date || $("#plannerDate").value;
+      $("#plannerTarget").value = String(data.target || "");
+
+      // clear then fill
+      $$(".pItem").forEach(el => el.value = "");
+      $$(".pCal").forEach(el => el.value = "");
+      (data.entries || []).slice(0, $$(".pItem").length).forEach((e, i) => {
+        $$(".pItem")[i].value = e.item || "";
+        $$(".pCal")[i].value = e.calories || "";
+      });
+
+      updatePlannerTotals();
+      alert("Day loaded ✅");
+    }catch(e){
+      alert("Could not load saved day.");
+    }
+  });
+
+  $("#plannerClearBtn").addEventListener("click", () => {
+    if(!confirm("Clear today’s entries?")) return;
+    $$(".pItem").forEach(el => el.value = "");
+    $$(".pCal").forEach(el => el.value = "");
+    updatePlannerTotals();
+  });
+
+  // ============================
+  // Init
+  // ============================
+  renderResources();
+  libraryFilter();
+  renderCompare();
+  initPlanner();
+  quickStart();
+
+})();
+</script>
+</body>
+</html>
