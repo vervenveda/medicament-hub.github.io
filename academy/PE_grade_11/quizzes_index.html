@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PE 501 / PE 601 — 11th Grade Portal (Open-book quizzes, Closed final)</title>
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:8px; --maxw:1200px; --content-font:15px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),#061225);color:var(--ink);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+.wrapper{width:94%;max-width:var(--maxw);display:grid;grid-template-columns:300px 1fr 320px;gap:12px}
+.sidebar{background:var(--panel);border-radius:8px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,0.6);height:calc(100vh - 40px);overflow:auto}
+.brand{font-weight:800;color:var(--accent-strong);margin-bottom:8px}
+.search{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--ink)}
+.week-item{padding:8px;border-radius:8px;margin:8px 0;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
+.week-item.locked{opacity:0.45;cursor:not-allowed}
+.week-item.active{background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03));box-shadow:0 6px 14px rgba(3,7,18,0.4)}
+.main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:8px;padding:16px;min-height:640px;overflow:auto;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.title{font-weight:800;font-size:20px}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{background:var(--accent);color:#04232a;padding:6px 10px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+.reader{background:var(--glass);padding:14px;border-radius:8px;color:var(--ink);margin-bottom:12px}
+.quiz{background:rgba(0,0,0,0.08);padding:12px;border-radius:8px;margin-top:10px}
+.sidepanel{background:var(--panel);border-radius:8px;padding:14px;height:calc(100vh - 40px);box-shadow:0 8px 30px rgba(2,6,23,0.6);overflow:auto}
+.note{width:100%;min-height:160px;background:transparent;color:#fffff0;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;resize:vertical}
+.kv{color:var(--muted);font-size:12px}
+.lock-overlay{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:9999}
+.modal{background:#071b2a;padding:18px;border-radius:10px;max-width:640px;color:var(--ink)}
+[disabled]{opacity:0.55;pointer-events:none}
+</style>
+</head>
+<body>
+  <div class="wrapper" id="app">
+    <aside class="sidebar">
+      <div class="brand">PLERA — 11th Grade P.E.</div>
+      <div class="kv">PE 501 (A) + PE 601 (B) — Student Portal</div>
+
+      <input id="searchInput" class="search" placeholder="Search weeks / topics..." style="margin-top:10px"/>
+
+      <div style="margin-top:12px;font-weight:700">Module A — PE 501 (Weeks A1–A6)</div>
+      <div id="listA" style="margin-top:8px"></div>
+
+      <div style="margin-top:12px;font-weight:700">Module B — PE 601 (Weeks B1–B6)</div>
+      <div id="listB" style="margin-top:8px"></div>
+
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="exportProgress" class="btn ghost small">Export</button>
+        <button id="importProgress" class="btn ghost small">Import</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none"/>
+      </div>
+
+      <div style="margin-top:12px" class="kv">Weekly quizzes are <strong>open-book</strong>. Final exam is <strong>closed-book</strong> (study text & notes will be disabled while final is running).</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="mainTitle">PE 501 — Week A1</div>
+          <div class="kv" id="mainSubtitle">Sport Science & Testing Basics</div>
+        </div>
+
+        <div class="controls">
+          <button id="printPage" class="btn ghost">Print</button>
+          <button id="downloadState" class="btn ghost">Download JSON</button>
+        </div>
+      </div>
+
+      <div id="lessonArea"></div>
+      <div id="quizArea"></div>
+      <div id="finalArea" style="margin-top:18px"></div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:800">My Study Notes</div>
+      <textarea id="noteBox" class="note" placeholder="Personal study notes for the current week..."></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button id="saveNote" class="btn">Save</button>
+        <button id="clearNote" class="btn ghost">Clear</button>
+        <button id="downloadNote" class="btn ghost">Download</button>
+      </div>
+
+      <div style="margin-top:14px">
+        <div style="font-weight:700">Progress</div>
+        <pre id="progressSnapshot" class="kv" style="white-space:pre-wrap;margin-top:8px">No data yet</pre>
+      </div>
+
+      <div style="margin-top:12px" class="kv">Everything stored locally in your browser. Export to move progress to another device.</div>
+    </aside>
+  </div>
+
+  <!-- locked overlay used only during closed-book final -->
+  <div id="lockOverlay" class="lock-overlay" style="display:none">
+    <div class="modal">
+      <div style="font-weight:800;margin-bottom:8px">Closed-book Final — Rules</div>
+      <div class="kv" style="margin-bottom:12px">
+        When you start the final:
+        <ul>
+          <li>Study text and notes will be hidden until the final is submitted or cancelled.</li>
+          <li>Printing / exporting / navigation will be disabled during the final.</li>
+          <li>If you cancel the final before submitting, everything will be restored and no attempt will be recorded.</li>
+        </ul>
+      </div>
+      <div style="text-align:right">
+        <button id="cancelFinalStart" class="btn ghost">Cancel</button>
+        <button id="confirmFinalStart" class="btn">Start Final</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ====== Student portal config & curriculum ====== */
+const STORAGE_KEY = 'PE11_PORTAL_OPENBOOK_V1';
+const UNLOCK_THRESHOLD = 80;
+const FINAL_PASS = 70;
+
+const CURRICULUM = {
+  A1:{title:'Week A1 — Sport Science & Testing Basics', subtitle:'Energy systems & baseline testing', study:`<h3>Intro</h3><p>Energy systems: ATP-PC, glycolytic, oxidative. Baseline tests: 20m sprint, vertical jump, plank, shuttle/beep. Warm-up & safety are essential.</p><p><strong>Quiz focus:</strong> energy systems definitions, baseline tests and safety.</p>`, quiz: [ {q:'Which system supports 6-second sprint?', opts:['Oxidative','ATP-PC','Glycolytic','None'], a:1}, {q:'Vertical jump best measures:', opts:['Aerobic capacity','Power','Flexibility','Balance'], a:1}, {q:'Warm-up should include:', opts:['Only static stretch','Dynamic movement','No movement','Max lifts'], a:1}, {q:'Glycolytic time domain is approx:', opts:['<10s','10s–2min','>5min','days'], a:1}, {q:'Core endurance example:', opts:['Plank','Sprint','Vertical jump','Beep test'], a:0}, {q:'Baseline tests should be:', opts:['Standardized','Random','Different each time','Useless'], a:0}, {q:'Hydration affects:', opts:['Performance','Nothing','Only strength','Only mood'], a:0}, {q:'A valid baseline is:', opts:['Reliable & relevant','Random','Only fancy','Unrepeatable'], a:0}, {q:'Safety before test includes:', opts:['Proper shoes','Broken glass','No warm-up','Armor'], a:0}, {q:'Retesting measures:', opts:['Adaptation','Time wasting','Color change','Noise'], a:0}] },
+  A2:{title:'Week A2 — Interval Training & Pacing', subtitle:'Design & RPE', study:`<p>Intervals: work:rest ratios. Use RPE and talk test. Examples: 1:1 for short intervals, 4x4 for endurance development.</p><p><strong>Quiz focus:</strong> RPE, talk test, interval design.</p>`, quiz:[ {q:'RPE means', opts:['Rate of Perceived Exertion','Random Pace Estimate','Rest Period Estimate','None'], a:0}, {q:'Talk test gauges', opts:['Relative intensity','Exact HR','Weight','None'], a:0}, {q:'1:1 work:rest is', opts:['Short intervals','Long distance','Strength','Flexibility'], a:0}, {q:'Heart rate recovery indicates', opts:['Aerobic fitness','Jump power','Flexibility','Luck'], a:0}, {q:'Beginner interval example', opts:['1min hard/1min easy×8','10×200m race','30×5s sprints','Static holds'], a:0}, {q:'Best recovery is', opts:['Active recovery','Complete rest','Skipping','Max lifts'], a:0}, {q:'True/False: intervals must be maximal', opts:['True','False'], a:1}, {q:'Interval progression prioritizes', opts:['Technique & recovery','Only volume','Random','Speed only'], a:0}, {q:'Monitoring helps prevent', opts:['Overreaching','Adaptation','Hydration','Energy'], a:0}, {q:'Intervals are tailored by', opts:['Individual fitness','Team mood','Weather only','Shoe color'], a:0}] },
+  A3:{title:'Week A3 — Strength Mechanics & Movement Quality', subtitle:'Technique & progressions', study:`<p>Focus on squat, hinge, press; emphasize eccentric control, breathing, and proper progression.</p><p><strong>Quiz focus:</strong> cues, eccentric, progression basics.</p>`, quiz:[ {q:'Eccentric =', opts:['Muscle lengthening','Shortening','No movement','Flip'], a:0}, {q:'Squat cue:', opts:['Chest up & depth','Knees collapse','Hold breath','Look down'], a:0}, {q:'Start programming with', opts:['Technique','Heavy loads','No plan','Random'], a:0}, {q:'Breathing during lifts', opts:['Exhale on exertion','Hold','Irrelevant','Only inhale'], a:0}, {q:'Core supports', opts:['Force transfer','Only cardio','Not needed','Only speed'], a:0}, {q:'Progression rule', opts:['When form is solid','Always add weight','Never change','Randomly'], a:0}, {q:'Best feedback tool', opts:['Video','Opinion only','No feedback','Magic'], a:0}, {q:'Compound lifts =', opts:['Multiple joints','Single joint','No joint','Passive'], a:0}, {q:'Mobility matters for', opts:['Movement & strength','No relation','Only posture','Only speed'], a:0}, {q:'Safe session includes', opts:['Warm-up & practice','Jump in cold','Max lifts only','Ignore form'], a:0}] },
+  A4:{title:'Week A4 — Nutrition & Hydration', subtitle:'Fueling for training', study:`<p>Carbs = fuel, protein = repair, fats = long energy. Hydration and timing matter pre/post session.</p><p><strong>Quiz focus:</strong> macro roles, timing, hydration basics.</p>`, quiz:[ {q:'Post-workout: best.', opts:['Carbs+protein','Fats only','No food','Only water'], a:0}, {q:'Hydration affects', opts:['Thermoregulation','Nothing','Only strength','Only mood'], a:0}, {q:'Pre-snack timing', opts:['60–90 min','Right before','Never','2 days prior'], a:0}, {q:'Protein supports', opts:['Repair','Fuel only','Hydration','Flexibility'], a:0}, {q:'True/False: carbs irrelevant for hi-int', opts:['True','False'], a:1}, {q:'Good pre-snack', opts:['Banana+yogurt','Greasy burger','Nothing','Only caffeine'], a:0}, {q:'Dehydration impairs', opts:['Performance','Nothing','Only weight','Only mood'], a:0}, {q:'Refueling window', opts:['30–120 min','24 hours','A week','Irrelevant'], a:0}, {q:'Electrolytes important when', opts:['Prolonged sweating','No sweat','Only sleep','Never'], a:0}, {q:'Supplements should be', opts:['Evidence-based','Ads-based','Random','Peer pressure'], a:0}] },
+  A5:{title:'Week A5 — Biomechanics & Movement Analysis', subtitle:'Terms & corrections', study:`<p>Key terms: flexion/extension/abduction/adduction. Use video to identify errors and select specific corrective drills.</p><p><strong>Quiz focus:</strong> terms & corrective cue basics.</p>`, quiz:[ {q:'Flexion is', opts:['Decreasing joint angle','Increasing angle','Rotation','Else'], a:0}, {q:'Video helps', opts:['Identify errors','Confuse','Replace coach','None'], a:0}, {q:'Corrective drills should be', opts:['Specific','Generic','Maximal','Random'], a:0}, {q:'True/False: sequencing matters', opts:['True','False'], a:0}, {q:'Abduction moves limb', opts:['Away from midline','Toward midline','Rotate','Compress'], a:0}, {q:'Common fault', opts:['Knee valgus','Perfect form','No errors','Always fine'], a:0}, {q:'Technique priority', opts:['Safety then efficiency','Only speed','Only looks','Never'], a:0}, {q:'Slow motion reveals', opts:['Timing errors','Colors','Shoes','None'], a:0}, {q:'Everyone needs same drill?', opts:['False','True'], a:0}, {q:'Good cueing is', opts:['Concise & clear','Long & vague','Insulting','None'], a:0}] },
+  A6:{title:'Week A6 — Assessment & Coaching Basics', subtitle:'Retest, SMART goals, peer coaching', study:`<p>Retest to track adaptation, use SMART goals and teach peer coaching with constructive feedback.</p><p><strong>Quiz focus:</strong> SMART, retest interpretation, peer feedback.</p>`, quiz:[ {q:'SMART stands for', opts:['Specific, Measurable, Achievable, Relevant, Time-bound','Simple, Measurable, Accurate, Rapid, Timely','Other','None'], a:0}, {q:'Retesting measures', opts:['Adaptation','Color change','Noise','Attendance'], a:0}, {q:'Peer coaching should be', opts:['Specific & supportive','Harsh','Vague','None'], a:0}, {q:'SMART needs deadline?', opts:['True','False'], a:0}, {q:'Retest interval depends', opts:['Program & measure','Random','Coach mood','Weather'], a:0}, {q:'Constructive feedback is', opts:['Actionable','Vague','Harsh','Silent'], a:0}, {q:'Retest data used to', opts:['Adjust program','Punish','Ignore','None'], a:0}, {q:'Good cue is', opts:['Simple & specific','Long & mixed','Confusing','None'], a:0}, {q:'Peer coaching teachable?', opts:['Yes','No'], a:0}, {q:'SMART example', opts:['Increase vertical jump 5cm in 6 weeks','I will improve','Maybe','Nope'], a:0}] },
+
+  B1:{title:'Week B1 — Periodization & Program Design', subtitle:'Macro/meso/micro', study:`<p>Plan training across macro/meso/micro cycles and schedule deloads; monitor load via RPE & trends.</p><p><strong>Quiz focus:</strong> cycle definitions & load management.</p>`, quiz:[ {q:'Macrocycle covers', opts:['Season/year','A week','An hour','A minute'], a:0}, {q:'Deloads prevent', opts:['Overtraining','Nothing','Only fatigue','Only injuries'], a:0}, {q:'Meso typically', opts:['Weeks to months','Decades','Hours','Seconds'], a:0}, {q:'Load monitoring uses', opts:['RPE & volume trends','Only weight','Random','Color'], a:0}, {q:'True/False: periodization one-size-fits-all', opts:['False','True'], a:0}, {q:'Microcycle spans', opts:['One week','One second','One year','A decade'], a:0}, {q:'Recovery planning essential', opts:['Yes','No'], a:0}, {q:'Periodization supports', opts:['Peak performance','Always same intensity','Chaos','None'], a:0}, {q:'Progression considers', opts:['Competition schedule','Nothing','Weather only','Shoe color'], a:0}, {q:'Monitoring helps', opts:['Adjust plan','Ignore athletes','Hide data','Remove training'], a:0}] },
+  B2:{title:'Week B2 — Power & Plyometrics', subtitle:'Progressions & transfer', study:`<p>Progress plyos safely from low-intensity hops to higher jumps with emphasis on landing quality and transfer to sport.</p><p><strong>Quiz focus:</strong> progressions & landing cues.</p>`, quiz:[ {q:'Plyometrics train', opts:['Power','Only flexibility','Only endurance','None'], a:0}, {q:'Landing cue', opts:['Soft knees & hip hinge','Rigid knees','No cue','Hold breath'], a:0}, {q:'Progression must be', opts:['Gradual','Immediate','Random','Unsafe'], a:0}, {q:'Contrast training pairs', opts:['Strength+power','Cardio+stretch','Only aerobic','None'], a:0}, {q:'Low plyo example', opts:['Skips','Max depth jumps','Long run','Static'], a:0}, {q:'Plyo safety for beginners', opts:['False','True'], a:0}, {q:'Power =', opts:['Force x velocity','Only force','Only speed','Energy'], a:0}, {q:'Session includes', opts:['Warm-up & landing work','Only jumps','No warm-up','Only rest'], a:0}, {q:'Transfer is maximized by', opts:['Specificity','Randomness','Never','None'], a:0}, {q:'Landing quality prevents', opts:['Injury','Performance','Nothing','Confusion'], a:0}] },
+  B3:{title:'Week B3 — Injury Prevention & Rehab', subtitle:'Screen & return-to-play', study:`<p>Follow protect→restore→strengthen→return with objective criteria; screen for asymmetries and refer red flags.</p><p><strong>Quiz focus:</strong> rehab phases & screening.</p>`, quiz:[ {q:'Rehab phases', opts:['Protect→Restore→Strengthen→Return','Protect only','No phases','Random'], a:0}, {q:'Red flag example', opts:['Severe swelling','Minor itch','Hunger','None'], a:0}, {q:'Screening finds', opts:['Asymmetries','Colors','Shoe size','None'], a:0}, {q:'Return decisions use', opts:['Objective tests & symptoms','Random','Emotion only','None'], a:0}, {q:'True/False: rehab always solo', opts:['False','True'], a:0}, {q:'Progression depends on', opts:['Tissue healing & function','Time only','Coach mood','None'], a:0}, {q:'Preventive exercises train', opts:['Movement quality','Only strength','Only cardio','None'], a:0}, {q:'Pain always severe?', opts:['False','True'], a:0}, {q:'Communication in rehab', opts:['Clear & timely','Absent','Confusing','Mean'], a:0}, {q:'Objective test example', opts:['Functional performance test','Random walk','Opinion','None'], a:0}] },
+  B4:{title:'Week B4 — Sports Psychology', subtitle:'Routines, imagery & arousal', study:`<p>Use routines, imagery and breathing to regulate arousal; set SMART goals and practice pre-performance steps.</p><p><strong>Quiz focus:</strong> routines & imagery basics.</p>`, quiz:[ {q:'Imagery helps', opts:['Rehearse skills','Replace practice','Only rest','None'], a:0}, {q:'Arousal too high', opts:['Impairs fine skill','Always helps','No effect','None'], a:0}, {q:'Routine components', opts:['Consistent & specific','Random','Vague','Long only'], a:0}, {q:'Breathing regulates', opts:['Arousal','Jump height','Shoe fit','None'], a:0}, {q:'SMART supports', opts:['Clarity & measurability','Confusion','Chaos','None'], a:0}, {q:'Team cohesion helps', opts:['Outcomes','Only trophies','Nothing','None'], a:0}, {q:'Imagery should be', opts:['Realistic & detailed','Vague','Rare','Never'], a:0}, {q:'Routine contains', opts:['Warm-up & cues','Only stretch','Only talk','None'], a:0}, {q:'True/False: arousal same for all', opts:['False','True'], a:0}, {q:'Goal setting is', opts:['Essential','Irrelevant','Bad','None'], a:0}] },
+  B5:{title:'Week B5 — Tactics & Analytics', subtitle:'Decision-making & video', study:`<p>Small-sided games and video + metrics for targeted improvement; interpret metrics in context.</p><p><strong>Quiz focus:</strong> small-sided games & analytics.</p>`, quiz:[ {q:'Small-sided games build', opts:['Decision making','Only speed','Only endurance','None'], a:0}, {q:'Analytics need', opts:['Context','Only numbers','No coach','None'], a:0}, {q:'Video best used with', opts:['Coaching feedback','No interpretation','Only numbers','None'], a:0}, {q:'Tactics include', opts:['Spacing & tempo','Only speed','Only strength','None'], a:0}, {q:'Metrics example', opts:['Sprints, distance, accelerations','Colors','Shoe size','None'], a:0}, {q:'Video review is useful when', opts:['Paired with feedback','Random','Ignored','None'], a:0}, {q:'Decision-making improves by', opts:['Practice under constraints','Only rest','Only tests','None'], a:0}, {q:'Analytics replace coaches?', opts:['False','True'], a:0}, {q:'Tactical drill must be', opts:['Relevant','Random','Useless','None'], a:0}, {q:'Small-sided reduce cognitive load?', opts:['True','False'], a:0}] },
+  B6:{title:'Week B6 — Capstone & Final Prep', subtitle:'Program design & final', study:`<p>Design a 4–6 week evidence-based program and prepare final (closed-book) covering cumulative skills and reasoning.</p><p><strong>Quiz focus:</strong> capstone basics & final prep.</p>`, quiz:[ {q:'Capstone should be', opts:['Evidence-based & SMART','Random','Only opinion','None'], a:0}, {q:'Final mode', opts:['Closed-book','Open-book','No final','Optional'], a:0}, {q:'Evidence includes', opts:['Test data & rationale','No data','Only photos','None'], a:0}, {q:'Presentation should be', opts:['Concise & evidence-based','Long & vague','Only slides','None'], a:0}, {q:'Final assesses', opts:['Applied cumulative knowledge','Only vocab','Only attendance','None'], a:0}, {q:'Peer feedback helps', opts:['Improve clarity','Nothing','Confuse','None'], a:0}, {q:'Submission format', opts:['Written & oral','Only oral','Only video','None'], a:0}, {q:'Final prep best', opts:['Review study guides & practice','Ignore','Only sleep','None'], a:0}, {q:'Capstone useful because', opts:['Applies learning','Wastes time','Irrelevant','None'], a:0}, {q:'True/False: final closed-book strictly enforced in UI', opts:['True','False'], a:0}] }
+};
+
+/* cumulative final exam */
+const FINAL = [
+  {q:'Which system predominates in a ~30s all-out effort?', opts:['ATP-PC','Glycolytic','Oxidative','None'], a:1},
+  {q:'Best test for aerobic endurance:', opts:['20m sprint','Shuttle/beep','Vertical jump','Plank'], a:1},
+  {q:'RPE measures:', opts:['Relative intensity','Exact HR','Shoe size','None'], a:0},
+  {q:'Eccentric phase =', opts:['Lengthening under load','Shortening','Pause','Rest'], a:0},
+  {q:'Good pre-session snack timing is:', opts:['60–90 min before','Right before','Two days prior','Never'], a:0},
+  {q:'Flexion =', opts:['Decreasing angle','Increasing angle','Rotation','None'], a:0},
+  {q:'SMART stands for:', opts:['Specific, Measurable, Achievable, Relevant, Time-bound','Other','None','N/A'], a:0},
+  {q:'Macrocycle =', opts:['Season/year','A week','An hour','A minute'], a:0},
+  {q:'Plyometrics develop:', opts:['Power','Endurance only','Flexibility only','Nothing'], a:0},
+  {q:'Return-to-play must use:', opts:['Objective criteria','Coach feeling','Random','None'], a:0},
+  {q:'Imagery helps with:', opts:['Skill rehearsal','Nothing','Only rest','None'], a:0},
+  {q:'Small-sided games build:', opts:['Decision making','Only fitness','Only speed','None'], a:0},
+  {q:'Analytics require', opts:['Context','Only numbers','No coach','None'], a:0},
+  {q:'Hydration affects:', opts:['Thermoregulation','Only mood','Only strength','None'], a:0},
+  {q:'Progression rule:', opts:['Increase only when form solid','Always add weight','Never change','Random'], a:0},
+  {q:'Rehab phases include:', opts:['Protect→Restore→Strengthen→Return','Nothing','Only protect','No phases'], a:0},
+  {q:'Contrast training pairs', opts:['Strength+power','Only cardio','Only stretch','None'], a:0},
+  {q:'A coaching cue should be', opts:['Concise & actionable','Long & vague','Mean','None'], a:0},
+  {q:'Capstone value =', opts:['Apply learning to plan','Replace tests','None','Random'], a:0},
+  {q:'Final pass threshold (%)', opts:['70','80','60','90'], a:0}
+];
+
+/* ========= state & storage with sensible defaults ========= */
+const DEFAULT_STATE = { progress:{}, notes:{}, current:'A1', finalTaken:false, finalScore:0 };
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      // merge with defaults so missing fields don't break things
+      state = Object.assign({}, DEFAULT_STATE, parsed || {});
+      state.progress = state.progress || {};
+      state.notes = state.notes || {};
+      state.current = state.current || 'A1';
+    }
+  }catch(e){
+    console.warn('loadState error', e);
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+}
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){
+    console.warn('saveState error', e);
+  }
+  renderLists(searchInput.value || '');
+  renderProgressSnapshot();
+}
+
+/* ========= UI refs ========= */
+const listA = document.getElementById('listA'), listB = document.getElementById('listB');
+const mainTitle = document.getElementById('mainTitle'), mainSubtitle = document.getElementById('mainSubtitle');
+const lessonArea = document.getElementById('lessonArea'), quizArea = document.getElementById('quizArea'), finalArea = document.getElementById('finalArea');
+const searchInput = document.getElementById('searchInput');
+const noteBox = document.getElementById('noteBox');
+const saveNote = document.getElementById('saveNote'), clearNote = document.getElementById('clearNote'), downloadNote = document.getElementById('downloadNote');
+const exportProgress = document.getElementById('exportProgress'), importProgress = document.getElementById('importProgress'), importFile = document.getElementById('importFile');
+const printPage = document.getElementById('printPage'), downloadState = document.getElementById('downloadState');
+const lockOverlay = document.getElementById('lockOverlay'), confirmFinalStart = document.getElementById('confirmFinalStart'), cancelFinalStart = document.getElementById('cancelFinalStart');
+const progressSnapshot = document.getElementById('progressSnapshot');
+
+/* helper lists */
+const A_LIST = ['A1','A2','A3','A4','A5','A6'];
+const B_LIST = ['B1','B2','B3','B4','B5','B6'];
+
+/* ========= rendering lists ========= */
+function renderLists(filter=''){
+  listA.innerHTML=''; listB.innerHTML='';
+  A_LIST.forEach(code=> {
+    const data = CURRICULUM[code];
+    if(filter && !((data.title+data.subtitle+stripHtml(data.study)).toLowerCase().includes(filter.toLowerCase()))) return;
+    const div = document.createElement('div'); div.className='week-item'; div.dataset.code=code;
+    if(!isUnlocked(code)) div.classList.add('locked');
+    if(state.current===code) div.classList.add('active');
+    const score = state.progress[code] ? state.progress[code].score : '';
+    div.innerHTML = `<div><strong>${code}</strong> ${data.title}</div><div class="kv">${score!==''?score+'%':''}</div>`;
+    div.onclick = ()=> { if(!isUnlocked(code)){ alert('Week locked — complete previous week with >= ' + UNLOCK_THRESHOLD + '% to unlock.'); return; } openWeek(code); };
+    listA.appendChild(div);
+  });
+  B_LIST.forEach(code=> {
+    const data = CURRICULUM[code];
+    if(filter && !((data.title+data.subtitle+stripHtml(data.study)).toLowerCase().includes(filter.toLowerCase()))) return;
+    const div = document.createElement('div'); div.className='week-item'; div.dataset.code=code;
+    if(!isUnlocked(code)) div.classList.add('locked');
+    if(state.current===code) div.classList.add('active');
+    const score = state.progress[code] ? state.progress[code].score : '';
+    div.innerHTML = `<div><strong>${code}</strong> ${data.title}</div><div class="kv">${score!==''?score+'%':''}</div>`;
+    div.onclick = ()=> { if(!isUnlocked(code)){ alert('Module B is locked until Module A weeks are passed and prior B-week is complete.'); return; } openWeek(code); };
+    listB.appendChild(div);
+  });
+}
+
+/* ========= open week ========= */
+function openWeek(code){
+  if(!isUnlocked(code)) return alert('Week locked.');
+  state.current = code; saveState();
+  const d = CURRICULUM[code];
+  mainTitle.textContent = (code.startsWith('A')? 'PE 501 — ':'PE 601 — ') + d.title;
+  mainSubtitle.textContent = d.subtitle;
+  // show study text (open-book)
+  lessonArea.innerHTML = `<div class="reader"><div style="font-weight:800">${d.title}</div>${d.study}
+    <div style="margin-top:8px"><button id="openQuizBtn" class="btn">Open Week Quiz</button></div></div>`;
+  document.getElementById('openQuizBtn').onclick = ()=> showQuiz(code);
+  // prepare quiz area cleared
+  quizArea.innerHTML = '';
+  // notes load
+  noteBox.value = state.notes[code] || '';
+  renderFinalArea();
+  renderLists(searchInput.value || '');
+}
+
+/* ========= show quiz (open-book) ========= */
+function showQuiz(code){
+  const qlist = CURRICULUM[code].quiz;
+  quizArea.innerHTML = `<div style="font-weight:800">Quiz — ${code} (${qlist.length} questions) <span class="kv"> — open-book</span></div><div id="quizContainer"></div>`;
+  const c = document.getElementById('quizContainer');
+  qlist.forEach((q, idx)=>{
+    const box = document.createElement('div'); box.className='quiz';
+    let html = `<div style="font-weight:700">Q${idx+1}. ${escapeHtml(q.q)}</div>`;
+    (q.opts || []).forEach((opt,o)=> {
+      html += `<div style="margin-top:6px"><label><input type="radio" name="q_${idx}" value="${o}"> ${escapeHtml(opt)}</label></div>`;
+    });
+    box.innerHTML = html;
+    c.appendChild(box);
+  });
+  const submit = document.createElement('button'); submit.className='btn'; submit.textContent='Submit Quiz';
+  submit.onclick = ()=> gradeQuiz(code);
+  c.appendChild(submit);
+}
+
+/* grade quiz */
+function gradeQuiz(code){
+  const qlist = CURRICULUM[code].quiz;
+  let correct = 0;
+  qlist.forEach((q, idx)=>{
+    const radios = document.getElementsByName('q_'+idx);
+    let chosen = -1;
+    for(const r of radios){ if(r.checked){ chosen = Number(r.value); break; } }
+    if(chosen === q.a) correct++;
+  });
+  const score = Math.round((correct / qlist.length) * 100);
+  state.progress[code] = { score, timestamp: Date.now() };
+  saveState();
+  alert(`Score: ${score}% (${correct}/${qlist.length})`);
+  openWeek(code);
+}
+
+/* ========= final area (closed-book) ========= */
+function renderFinalArea(){
+  const all = A_LIST.concat(B_LIST);
+  let allOk = true;
+  for(const c of all){ const p = state.progress[c]; if(!p || p.score < UNLOCK_THRESHOLD){ allOk=false; break; } }
+  finalArea.innerHTML = '';
+  const box = document.createElement('div'); box.className='reader';
+  if(!allOk){
+    box.innerHTML = `<div style="font-weight:800">Final — Locked</div><div class="kv">Complete all weeks (A1–B6) with at least ${UNLOCK_THRESHOLD}% to unlock the cumulative final.</div>`;
+  } else {
+    if(state.finalTaken){
+      box.innerHTML = `<div style="font-weight:800">Final — Completed</div><div class="kv">Score: ${state.finalScore}% — ${state.finalScore >= FINAL_PASS ? 'Passed' : 'Not passed'}</div>
+        <div style="margin-top:8px"><button id="retakeFinal" class="btn ghost">Retake Final</button></div>`;
+      document.getElementById('retakeFinal')?.addEventListener('click', ()=> startFinalFlow(true));
+    } else {
+      box.innerHTML = `<div style="font-weight:800">Final — Cumulative (Closed-book)</div><div class="kv">When you begin the final, study materials, notes, printing, and exports will be disabled until you finish.</div>
+        <div style="margin-top:8px"><button id="beginFinal" class="btn">Begin Final</button></div>`;
+      document.getElementById('beginFinal').onclick = ()=> startFinalFlow(false);
+    }
+  }
+  finalArea.appendChild(box);
+}
+
+/* start final: show modal overlay to confirm; on confirm, hide study & notes and lock export/print/navigation */
+function startFinalFlow(isRetake){
+  lockOverlay.style.display = 'flex';
+  // attach one-time handlers
+  confirmFinalStart.onclick = ()=>{
+    lockOverlay.style.display = 'none';
+    enterClosedBookMode();
+    showFinalExam();
+  };
+  cancelFinalStart.onclick = ()=> { lockOverlay.style.display = 'none'; if(isRetake){ state.finalTaken=false; state.finalScore=0; saveState(); renderFinalArea(); } };
+}
+
+/* hide study text, disable notes/printing/export/left navigation by adding an attribute that UI checks */
+let inClosedBook = false;
+let blockedHandlers = {};
+function enterClosedBookMode(){
+  inClosedBook = true;
+  // visually hide lesson area and note box
+  lessonArea.style.display = 'none';
+  noteBox.disabled = true; noteBox.style.opacity = 0.5;
+  // disable many UI controls
+  printPage.disabled = true;
+  downloadState.disabled = true;
+  exportProgress.disabled = true;
+  importProgress.disabled = true;
+  searchInput.disabled = true;
+  saveNote.disabled = true;
+  clearNote.disabled = true;
+  downloadNote.disabled = true;
+  // disable week navigation
+  document.querySelectorAll('.week-item').forEach(x=> x.style.pointerEvents = 'none');
+  // block common print / save / devtools keyboard shortcuts and right-click
+  blockedHandlers.context = (e)=> e.preventDefault();
+  blockedHandlers.keydown = (e)=>{
+    // block Ctrl/Cmd+P, Ctrl/Cmd+S, Ctrl+Shift+I, F12, Ctrl/Cmd+U
+    const mod = e.ctrlKey || e.metaKey;
+    if((mod && e.key.toLowerCase() === 'p') || (mod && e.key.toLowerCase() === 's') || (mod && e.key.toLowerCase() === 'u') || (e.key === 'F12') || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')){
+      e.preventDefault(); e.stopPropagation();
+    }
+  };
+  window.addEventListener('contextmenu', blockedHandlers.context);
+  window.addEventListener('keydown', blockedHandlers.keydown, true);
+}
+function exitClosedBookMode(){
+  inClosedBook = false;
+  lessonArea.style.display = '';
+  noteBox.disabled = false; noteBox.style.opacity = 1;
+  printPage.disabled = false;
+  downloadState.disabled = false;
+  exportProgress.disabled = false;
+  importProgress.disabled = false;
+  searchInput.disabled = false;
+  saveNote.disabled = false;
+  clearNote.disabled = false;
+  downloadNote.disabled = false;
+  document.querySelectorAll('.week-item').forEach(x=> x.style.pointerEvents = '');
+  // remove blocked handlers
+  window.removeEventListener('contextmenu', blockedHandlers.context);
+  window.removeEventListener('keydown', blockedHandlers.keydown, true);
+  blockedHandlers = {};
+}
+
+/* show final exam UI */
+function showFinalExam(){
+  finalArea.innerHTML = `<div style="font-weight:800">Final Exam — Closed-book (20 questions)</div><div id="finalContainer"></div>`;
+  const c = document.getElementById('finalContainer');
+  FINAL.forEach((q, idx)=>{
+    const box = document.createElement('div'); box.className='quiz';
+    let html = `<div style="font-weight:700">Q${idx+1}. ${escapeHtml(q.q)}</div>`;
+    q.opts.forEach((opt,o)=> html+= `<div style="margin-top:6px"><label><input type="radio" name="final_q_${idx}" value="${o}"> ${escapeHtml(opt)}</label></div>`);
+    box.innerHTML = html;
+    c.appendChild(box);
+  });
+  const submit = document.createElement('button'); submit.className='btn'; submit.textContent='Submit Final';
+  submit.onclick = ()=> gradeFinal();
+  const cancel = document.createElement('button'); cancel.className='btn ghost'; cancel.textContent='Cancel Final';
+  cancel.onclick = ()=> { if(confirm('Cancel final? No attempt will be recorded.')) { exitClosedBookMode(); renderFinalArea(); } };
+  c.appendChild(submit); c.appendChild(cancel);
+}
+
+/* grade final exam, then restore UI and record final result */
+function gradeFinal(){
+  let correct=0;
+  FINAL.forEach((q, idx)=>{
+    const radios = document.getElementsByName('final_q_'+idx);
+    let chosen = -1;
+    for(const r of radios) if(r.checked) { chosen = Number(r.value); break; }
+    if(chosen === q.a) correct++;
+  });
+  const score = Math.round((correct / FINAL.length) * 100);
+  state.finalTaken = true; state.finalScore = score;
+  saveState();
+  exitClosedBookMode();
+  alert(`Final submitted — Score: ${score}% (${correct}/${FINAL.length}) — ${score >= FINAL_PASS ? 'PASSED' : 'NOT PASSED'}`);
+  renderFinalArea();
+}
+
+/* ========= unlock logic ========= */
+function isUnlocked(code){
+  if(code === 'A1') return true;
+  if(code.startsWith('A')){
+    const idx = A_LIST.indexOf(code);
+    const prev = A_LIST[idx-1];
+    const p = state.progress[prev];
+    return !!(p && p.score >= UNLOCK_THRESHOLD);
+  } else {
+    // require all A weeks >= threshold to unlock module B series
+    for(const a of A_LIST){ const p = state.progress[a]; if(!p || p.score < UNLOCK_THRESHOLD) return false; }
+    if(code === 'B1') return true;
+    const idx = B_LIST.indexOf(code);
+    const prev = B_LIST[idx-1];
+    const pprev = state.progress[prev];
+    return !!(pprev && pprev.score >= UNLOCK_THRESHOLD);
+  }
+}
+
+/* ========= note functions ========= */
+saveNote.onclick = ()=> { const code = state.current; state.notes[code] = noteBox.value; saveState(); alert('Note saved locally.'); };
+clearNote.onclick = ()=> { if(confirm('Clear notes for this week?')) { const code = state.current; delete state.notes[code]; noteBox.value=''; saveState(); } };
+downloadNote.onclick = ()=> { const code = state.current; const txt = state.notes[code] || ''; const blob = new Blob([txt],{type:'text/plain'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${code}_notes.txt`; a.click(); setTimeout(()=> URL.revokeObjectURL(url), 500); };
+
+/* ========= export/import ========= */
+exportProgress.onclick = ()=> {
+  const blob = new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download='pe11_student_progress.json'; a.click();
+  setTimeout(()=> URL.revokeObjectURL(url), 500);
+};
+importProgress.onclick = ()=> importFile.click();
+importFile.addEventListener('change', async (e)=> { const f = e.target.files[0]; if(!f) return; try{ const txt = await f.text(); const j = JSON.parse(txt); if(j) { state = Object.assign({}, DEFAULT_STATE, j); saveState(); alert('Import loaded.'); openWeek(state.current || 'A1'); } } catch(err){ alert('Import failed: '+err); } e.target.value=''; });
+
+/* print/download state */
+printPage.onclick = ()=> window.print();
+downloadState.onclick = ()=> exportProgress.click();
+
+/* ========= progress snapshot ========= */
+function renderProgressSnapshot(){
+  const all = A_LIST.concat(B_LIST);
+  let out = '';
+  all.forEach(code=> { const p = state.progress[code]; out += `${code}: ${p ? p.score+'%' : '—'}\n`; });
+  out += `Final: ${state.finalTaken ? state.finalScore+'%' : 'Not taken'}`;
+  progressSnapshot.textContent = out;
+}
+
+/* ========= utilities & init ========= */
+function stripHtml(s){ return (s||'').replace(/<[^>]*>/g,''); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+searchInput.addEventListener('input', ()=> renderLists(searchInput.value || ''));
+
+/* init */
+function init(){ loadState(); renderLists(); openWeek(state.current || 'A1'); renderProgressSnapshot(); }
+init();
+</script>
+</body>
+</html>
