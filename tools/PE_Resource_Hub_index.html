@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PLERA PE — Resource Hub (Standalone)</title>
+
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:7px; --gap:14px; --maxw:1111px;
+  --content-font:14px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; padding:0;}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,var(--bg) 0%, #061225 70%);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:24px;
+  min-height:100vh;
+}
+
+.wrapper{
+  width:92%;
+  max-width:var(--maxw);
+  display:grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap:12px;
+  height: calc(100vh - 48px);
+}
+.sidebar, .main, .sidepanel { min-width:0; overflow:auto; height:100%; }
+.sidebar{ background:var(--panel); border-radius:var(--radius); padding:16px; box-shadow:0 7px 24px rgba(2,6,23,0.6); }
+.main{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:16px; box-shadow:0 7px 30px rgba(2,6,23,0.6); display:flex; flex-direction:column; gap:12px; }
+.sidepanel{ background:var(--panel); border-radius:var(--radius); padding:16px; box-shadow:0 8px 30px rgba(2,6,23,0.6); }
+
+.header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:6px}
+.title{font-weight:800;font-size:20px}
+.kv{color:var(--muted);font-size:12px}
+
+.select, .search { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:transparent; color:var(--ink); margin-top:8px; }
+.cat-list{ margin-top:12px; display:flex; flex-direction:column; gap:6px; }
+.resource-card{ background:var(--glass); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.02); display:flex; flex-direction:column; gap:8px; }
+.resource-meta{ display:flex; justify-content:space-between; gap:8px; align-items:center; }
+.resource-title{ font-weight:700; }
+.resource-desc{ color:var(--muted); font-size:13px; }
+.badge{ font-size:12px; padding:4px 8px; border-radius:999px; background:rgba(107,168,255,0.08); color:var(--accent-strong); }
+
+.tool-btn{ display:block; width:100%; padding:10px; margin-top:8px; border-radius:8px; border:0; cursor:pointer; font-weight:700; background:var(--accent); color:#04232a }
+.tool-btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted) }
+
+.note{ width:100%; min-height:120px; background:transparent; color:var(--ink); border:1px solid rgba(255,255,255,0.04); padding:8px; border-radius:8px; resize:vertical; margin-top:8px; }
+
+.search-hint{ color:var(--muted); font-size:13px; margin-top:8px }
+
+@media (max-width:1100px){
+  .wrapper{ grid-template-columns: 1fr; height:auto; }
+  .sidebar{ order:2 }
+  .main{ order:1 }
+  .sidepanel{ order:3 }
+}
+
+@media print {
+  body{ background:transparent }
+  .sidebar,.sidepanel,.controls{ display:none }
+  .main{ box-shadow:none; border-radius:0; padding:0 }
+}
+button:focus, input:focus, textarea:focus { outline:2px solid rgba(107,168,255,0.18); outline-offset:2px; }
+a{ color:var(--accent); text-decoration:underline; }
+</style>
+</head>
+<body>
+  <div class="wrapper" id="app">
+
+    <aside class="sidebar">
+      <div style="font-weight:800; color:var(--accent-strong)">PLERA — PE Resource Hub</div>
+      <div class="kv" style="margin-top:6px">Curated international & national PE resources — sovereign single-file</div>
+
+      <input id="searchInput" class="search" placeholder="Search resources (name, topic, region)..." />
+      <div class="search-hint">Try: "WHO", "SHAPE", "homeschool", "curriculum", "assessment"</div>
+
+      <label style="margin-top:12px" class="kv">Filter by category</label>
+      <select id="categoryFilter" class="select">
+        <option value="all">All categories</option>
+        <option value="international">International Guidance</option>
+        <option value="national_us">United States — Standards</option>
+        <option value="curricula">Free Curricula</option>
+        <option value="assessment">Assessment & Research</option>
+        <option value="homeschool">Homeschool & Legal</option>
+        <option value="multimedia">Multimedia & Tools</option>
+      </select>
+
+      <div style="margin-top:12px">
+        <button id="exportJson" class="tool-btn">Export Resource List (JSON)</button>
+        <button id="printPage" class="tool-btn ghost">Print / Save as PDF</button>
+        <button id="copyList" class="tool-btn ghost">Copy Visible List</button>
+      </div>
+
+      <div style="margin-top:12px" class="kv">This page is fully client-side — nothing leaves your device unless you export or copy. Links open in a new tab.</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title">PE Resource Hub</div>
+          <div class="kv">A sovereign, standalone resource list for www.khaemenesacademy.org/pe</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="showAll" class="tool-btn ghost">Show All</button>
+        </div>
+      </div>
+
+      <div id="results" style="display:flex;flex-direction:column;gap:12px;overflow:auto"></div>
+
+      <div id="noResults" class="kv" style="display:none;margin-top:12px">No resources match your search.</div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:800">Personal Notes</div>
+      <div class="kv" style="margin-top:6px">Save annotations about resources — saved locally to this browser.</div>
+      <textarea id="personalNotes" class="note" placeholder="Teacher or admin notes about the resource hub (saved locally)..."></textarea>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button id="saveNotes" class="tool-btn">Save Notes</button>
+        <button id="clearNotes" class="tool-btn ghost">Clear</button>
+      </div>
+
+      <div style="margin-top:14px">
+        <div style="font-weight:700" class="kv">Quick categories</div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+          <button class="tool-btn ghost quick-cat" data-cat="international">International Guidance</button>
+          <button class="tool-btn ghost quick-cat" data-cat="national_us">U.S. Standards</button>
+          <button class="tool-btn ghost quick-cat" data-cat="curricula">Free Curricula</button>
+          <button class="tool-btn ghost quick-cat" data-cat="homeschool">Homeschool / Legal</button>
+        </div>
+      </div>
+
+      <div style="margin-top:14px" class="kv">
+        Want more countries or state-level links added? Export the JSON and send it to your site admin — they can paste it back in to update the hub.
+      </div>
+    </aside>
+
+  </div>
+
+<script>
+/* ========= Resource data =========
+   Keep this array updated — it's the single source of truth for the page.
+   Each item: {id, category, title, url, description, region}
+*/
+const RESOURCES = [
+  { id:'who', category:'international', title:'WHO — Global Physical Activity Guidelines', url:'https://www.who.int/news-room/fact-sheets/detail/physical-activity', description:'World Health Organization guidance on physical activity & sedentary behaviour for children, adolescents and adults.', region:'International' },
+  { id:'unesco', category:'international', title:'UNESCO — Quality Physical Education', url:'https://www.unesco.org/en/quality-physical-education', description:'Guidelines and charters for quality, inclusive physical education worldwide.', region:'International' },
+  { id:'exercise_is_medicine', category:'international', title:'Exercise Is Medicine / ACSM', url:'https://www.exerciseismedicine.org/', description:'Global initiative linking clinical care and physical activity promotion; useful toolkits and local chapters.', region:'International' },
+  { id:'acsm', category:'assessment', title:'ACSM (American College of Sports Medicine)', url:'https://www.acsm.org/', description:'Research, applied guidelines, and exercise prescription resources suitable for upper-grade curricula.', region:'USA/International' },
+  { id:'shape', category:'national_us', title:'SHAPE America — National PE Standards', url:'https://www.shapeamerica.org/standards', description:'US national standards and grade-level outcomes for K–12 physical education.', region:'USA' },
+  { id:'cdc', category:'national_us', title:'CDC — Physical Activity & Schools', url:'https://www.cdc.gov/physical-activity/strategies/children-schools/index.htm', description:'Toolkits and guidance for school-based physical activity and program implementation.', region:'USA' },
+  { id:'open_physed', category:'curricula', title:'OPEN Phys Ed — Free K–12 Curriculum', url:'https://openphysed.org/', description:'Open-source, standards-aligned PE curriculum modules and teacher resources for K–12.', region:'International/US' },
+  { id:'pecentral', category:'curricula', title:'PE Central — Lessons & Activities', url:'https://www.pecentral.org/', description:'Extensive lesson-plan repository and teacher community with practical activities and assessments.', region:'International' },
+  { id:'spark_pe', category:'curricula', title:'SPARK PE', url:'https://sparkpe.org/', description:'Evidence-based PE programs and lesson packages (some free content available).', region:'International' },
+  { id:'exercise_on_campus', category:'assessment', title:'Exercise Is Medicine — On Campus', url:'https://www.exerciseismedicine.org/support_page/on-campus/', description:'Campus-focused resources to integrate activity promotion into school and college settings.', region:'International/US' },
+  { id:'move_your_way', category:'multimedia', title:'Move Your Way (US) — Activity toolkits', url:'https://health.gov/moveyourway', description:'US federal activity resources and toolkits promoting recommended activity amounts for youth and adults.', region:'USA' },
+  { id:'hslda', category:'homeschool', title:'HSLDA — Home School Legal Defense Association (USA)', url:'https://hslda.org/', description:'Legal guidance and state summaries for homeschooling families in the USA.', region:'USA' },
+  { id:'education_otherwise', category:'homeschool', title:'Education Otherwise (UK)', url:'https://www.educationotherwise.org/', description:'UK charity supporting home educators with legal and practical advice.', region:'UK' },
+  { id:'hea_aus', category:'homeschool', title:'Home Education Association (Australia)', url:'https://www.hea.edu.au/', description:'Australian support and resources for home educators.', region:'Australia' },
+  { id:'hslda_ca', category:'homeschool', title:'HSLDA Canada', url:'https://hslda.ca/', description:'Canadian home education legal resources and support.', region:'Canada' },
+  { id:'youtube_pe', category:'multimedia', title:'YouTube — Demonstration & Edu Channels', url:'https://www.youtube.com', description:'Widely used for demo videos; preview channels before recommending to students.', region:'International' },
+  { id:'pec_assessment', category:'assessment', title:'Field Tests & Fitness Assessment Guides', url:'https://www.pecentral.org/assessment/', description:'Collections of assessment protocols and sample tests (use responsibly and adapt to safety).', region:'International' }
+];
+
+/* ========== UI helpers ========== */
+const resultsEl = document.getElementById('results');
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const exportJsonBtn = document.getElementById('exportJson');
+const printBtn = document.getElementById('printPage');
+const copyListBtn = document.getElementById('copyList');
+const personalNotesEl = document.getElementById('personalNotes');
+const saveNotesBtn = document.getElementById('saveNotes');
+const clearNotesBtn = document.getElementById('clearNotes');
+const showAllBtn = document.getElementById('showAll');
+const quickCats = document.querySelectorAll('.quick-cat');
+
+const NOTES_KEY = 'plera_pe_resources_notes_v1';
+
+/* load notes */
+try { const saved = localStorage.getItem(NOTES_KEY); if(saved) personalNotesEl.value = saved; } catch(e){}
+
+/* render resources based on filters */
+function renderResources(){
+  const q = (searchInput.value || '').trim().toLowerCase();
+  const cat = categoryFilter.value;
+  resultsEl.innerHTML = '';
+  const filtered = RESOURCES.filter(r => {
+    if(cat !== 'all' && r.category !== cat) return false;
+    if(!q) return true;
+    const s = (r.title + ' ' + r.description + ' ' + (r.region||'')).toLowerCase();
+    return s.includes(q) || (r.url || '').toLowerCase().includes(q);
+  });
+  if(filtered.length === 0){ document.getElementById('noResults').style.display = 'block'; } else { document.getElementById('noResults').style.display = 'none'; }
+  filtered.forEach(r => {
+    const card = document.createElement('div'); card.className = 'resource-card';
+    const meta = document.createElement('div'); meta.className = 'resource-meta';
+    meta.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div class="resource-title">${r.title}</div><div class="badge">${r.region}</div></div>
+                      <div><a href="${r.url}" target="_blank" rel="noopener">Open</a></div>`;
+    const desc = document.createElement('div'); desc.className = 'resource-desc'; desc.innerHTML = r.description;
+    card.appendChild(meta);
+    card.appendChild(desc);
+
+    const catRow = document.createElement('div'); catRow.style.display='flex'; catRow.style.justifyContent='space-between'; catRow.style.alignItems='center';
+    catRow.style.marginTop='6px';
+    catRow.innerHTML = `<div class="kv">${categoryPretty(r.category)} • ID: ${r.id}</div>
+                        <div style="display:flex;gap:8px">
+                          <button class="tool-btn ghost small-btn" data-id="${r.id}">Copy Link</button>
+                          <button class="tool-btn ghost small-btn" data-id="open-${r.id}">Notes</button>
+                        </div>`;
+    card.appendChild(catRow);
+
+    resultsEl.appendChild(card);
+  });
+}
+
+/* small helper to present category labels */
+function categoryPretty(key){
+  const map = {
+    international:'International Guidance',
+    national_us:'United States — Standards',
+    curricula:'Free Curricula & Lesson Libraries',
+    assessment:'Assessment & Research',
+    homeschool:'Homeschool & Legal',
+    multimedia:'Multimedia & Tools'
+  };
+  return map[key] || key;
+}
+
+/* events */
+searchInput.addEventListener('input', renderResources);
+categoryFilter.addEventListener('change', renderResources);
+
+exportJsonBtn.addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(RESOURCES, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'plera_pe_resources.json'; a.click();
+});
+
+printBtn.addEventListener('click', ()=> window.print());
+
+copyListBtn.addEventListener('click', async ()=>{
+  // copy visible items as plain text
+  const items = Array.from(resultsEl.querySelectorAll('.resource-card')).map(card => {
+    const title = card.querySelector('.resource-title')?.innerText || '';
+    const link = card.querySelector('a')?.href || '';
+    const desc = card.querySelector('.resource-desc')?.innerText || '';
+    return `${title}\n${desc}\n${link}\n`;
+  }).join('\n\n');
+  if(!items) return alert('Nothing to copy.');
+  try{
+    await navigator.clipboard.writeText(items);
+    alert('Visible list copied to clipboard.');
+  } catch(e){
+    // fallback: open a dialog with the text
+    const w = window.open('', '_blank', 'width=600,height=400');
+    w.document.write(`<pre>${escapeHtml(items)}</pre>`);
+  }
+});
+
+/* save / clear notes */
+saveNotesBtn.addEventListener('click', ()=> {
+  try{ localStorage.setItem(NOTES_KEY, personalNotesEl.value); alert('Notes saved locally.'); } catch(e){ alert('Save failed: ' + e); }
+});
+clearNotesBtn.addEventListener('click', ()=> {
+  if(!confirm('Clear your saved notes?')) return;
+  personalNotesEl.value = '';
+  try{ localStorage.removeItem(NOTES_KEY); alert('Cleared.'); }catch(e){ alert('Error clearing notes'); }
+});
+
+/* quick category buttons */
+quickCats.forEach(btn => btn.addEventListener('click', (e)=>{
+  const cat = e.currentTarget.dataset.cat;
+  categoryFilter.value = cat;
+  renderResources();
+}));
+
+showAllBtn.addEventListener('click', ()=> { categoryFilter.value='all'; searchInput.value=''; renderResources(); });
+
+/* small escape helper */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* initial render */
+renderResources();
+</script>
+</body>
+</html>
