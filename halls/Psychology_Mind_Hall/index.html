@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ARSHIF Psychology & Mind Hall — Comprehensive Course Portal</title>
+<title>ARSHIF Psychology & Mind Hall — Mind Observatory Edition</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="ARSHIF Psychology & Mind Hall — a distinguished Verve N Veda-style psychology course portal and mind observatory for education, reflection, research, ethics, and wellbeing literacy.">
+<meta name="theme-color" content="#f6f0e5">
+
+<!-- Verve N Veda typography family. Gaspacho and Brandon Grotesque remain first in the CSS stacks so licensed/self-hosted copies can be added later. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aboreto&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 #arshif-psych-hall {
   --psy-bg:#050711;
@@ -527,16 +534,778 @@
   #arshif-psych-hall .psy-tabs, #arshif-psych-hall .psy-actions, #arshif-psych-hall .psy-side, #arshif-psych-hall .psy-modal-backdrop, #arshif-psych-hall .psy-dossier { display:none !important; }
   #arshif-psych-hall .psy-view { display:block !important; page-break-after:always; }
 }
+
+
+/* ==========================================================
+   MIND OBSERVATORY REFINEMENT · Verve N Veda Typography
+   Brighter, centered, distinguished psychology hall layer.
+   ========================================================== */
+#arshif-psych-hall{
+  --psy-bg:#f6f0e5;
+  --psy-panel:#fffaf2;
+  --psy-panel2:#f0e5d1;
+  --psy-ink:#1d2730;
+  --psy-soft:#52616d;
+  --psy-muted:#76818a;
+  --psy-gold:#b88b3e;
+  --psy-gold2:#e5c77f;
+  --psy-violet:#7d68a8;
+  --psy-teal:#4c918d;
+  --psy-rose:#b47082;
+  --psy-green:#71946e;
+  --psy-navy:#24384d;
+  --psy-sky:#dfeef0;
+  --psy-line:rgba(63,71,82,.16);
+  --psy-shadow:0 18px 60px rgba(47,54,61,.12);
+  --psy-radius:20px;
+  --display:"Gaspacho","Cormorant Garamond",Baskerville,Georgia,serif;
+  --ceremonial:"Cinzel","Aboreto","Times New Roman",serif;
+  --sans:"Brandon Grotesque","Montserrat","Avenir Next",Avenir,Arial,sans-serif;
+  min-height:100vh;
+  padding:14px;
+  color:var(--psy-ink);
+  background:
+    radial-gradient(circle at 50% -8%,rgba(255,255,255,.95),transparent 32rem),
+    radial-gradient(circle at 10% 16%,rgba(124,104,168,.14),transparent 24rem),
+    radial-gradient(circle at 90% 18%,rgba(76,145,141,.14),transparent 24rem),
+    linear-gradient(145deg,#fbf7ef,#efe2ca 68%,#e5d1ad);
+  font-family:var(--sans);
+  font-weight:400;
+  line-height:1.65;
+}
+#arshif-psych-hall *,
+#arshif-psych-hall *::before,
+#arshif-psych-hall *::after{min-width:0}
+#arshif-psych-hall strong,
+#arshif-psych-hall b{font-weight:600}
+#arshif-psych-hall a{color:#6d557f;text-underline-offset:3px}
+#arshif-psych-hall .psy-shell{
+  max-width:1360px;
+  margin:0 auto;
+  overflow:hidden;
+  border:1px solid rgba(184,139,62,.42);
+  border-radius:20px;
+  background:rgba(255,250,242,.96);
+  box-shadow:0 0 0 3px rgba(255,255,255,.52),0 0 0 5px rgba(184,139,62,.18),var(--psy-shadow);
+}
+#arshif-psych-hall .psy-network{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px 22px;
+  padding:10px 18px;
+  color:#f9efd9;
+  background:linear-gradient(90deg,#293746,#3b3146,#293746);
+  border-bottom:1px solid rgba(229,199,127,.42);
+  text-align:center;
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+#arshif-psych-hall .psy-network span{color:#f8dfac;font-family:var(--ceremonial);font-weight:500}
+#arshif-psych-hall .psy-network nav{display:flex;justify-content:center;flex-wrap:wrap;gap:10px 14px}
+#arshif-psych-hall .psy-network a{color:#fff7e8;text-decoration:none}
+#arshif-psych-hall .psy-network a:hover,#arshif-psych-hall .psy-network a:focus-visible{text-decoration:underline}
+#arshif-psych-hall .psy-hero{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(42px,6vw,72px) 24px clamp(34px,5vw,54px);
+  text-align:center;
+  border-bottom:1px solid rgba(184,139,62,.32);
+  background:
+    radial-gradient(circle at 50% 4%,rgba(255,255,255,.94),transparent 28rem),
+    radial-gradient(circle at 24% 18%,rgba(124,104,168,.16),transparent 18rem),
+    radial-gradient(circle at 78% 16%,rgba(76,145,141,.18),transparent 20rem),
+    linear-gradient(180deg,#fffaf2,#f4ead7 72%,#ecddc2);
+}
+#arshif-psych-hall .psy-hero::before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border:1px solid rgba(184,139,62,.22);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 16%,rgba(184,139,62,.11) 16.4% 16.8%,transparent 17.2% 29%,rgba(124,104,168,.09) 29.3% 29.7%,transparent 30.2% 43%,rgba(76,145,141,.08) 43.2% 43.6%,transparent 44%),
+    linear-gradient(120deg,transparent 0 48%,rgba(184,139,62,.12) 49%,transparent 50% 100%);
+  opacity:.72;
+  pointer-events:none;
+}
+#arshif-psych-hall .psy-hero > *{position:relative;z-index:1}
+#arshif-psych-hall .psy-kicker,
+#arshif-psych-hall .psy-section-title,
+#arshif-psych-hall .psy-side h2,
+#arshif-psych-hall .psy-filter-title,
+#arshif-psych-hall .psy-tab,
+#arshif-psych-hall .psy-stat span{
+  font-family:var(--ceremonial);
+  font-weight:500;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+#arshif-psych-hall .psy-kicker{
+  margin:0 0 14px;
+  color:#7d5e22;
+  font-size:clamp(.7rem,1vw,.86rem);
+}
+#arshif-psych-hall h1{
+  margin:0 auto;
+  max-width:1040px;
+  color:#253746;
+  font-family:var(--display);
+  font-size:clamp(3rem,7vw,7.1rem);
+  font-weight:500;
+  line-height:.88;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+#arshif-psych-hall .psy-subtitle{
+  max-width:900px;
+  margin:22px auto 0;
+  color:#56636d;
+  font-family:var(--display);
+  font-size:clamp(1.12rem,2vw,1.5rem);
+  line-height:1.55;
+  text-align:center;
+}
+#arshif-psych-hall .psy-alert{
+  max-width:960px;
+  margin:24px auto 0;
+  padding:15px 18px;
+  color:#4d3b4a;
+  background:#fff9ef;
+  border:1px solid rgba(180,112,130,.28);
+  border-left:4px solid var(--psy-rose);
+  border-radius:13px;
+  box-shadow:0 8px 24px rgba(91,64,76,.06);
+  text-align:center;
+}
+#arshif-psych-hall .psy-stats{
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  max-width:900px;
+  gap:10px;
+  margin:28px auto 0;
+}
+#arshif-psych-hall .psy-stat{
+  border:1px solid rgba(184,139,62,.26);
+  border-radius:14px;
+  background:rgba(255,255,255,.68);
+  box-shadow:0 8px 20px rgba(44,51,59,.04);
+  text-align:center;
+}
+#arshif-psych-hall .psy-stat strong{
+  color:#6d557f;
+  font-family:var(--display);
+  font-size:clamp(1.75rem,3vw,2.35rem);
+  font-weight:500;
+  line-height:1;
+}
+#arshif-psych-hall .psy-stat span{color:#66717a;font-size:.66rem}
+#arshif-psych-hall .psy-tabs{
+  position:sticky;
+  top:0;
+  z-index:12;
+  justify-content:center;
+  gap:8px;
+  padding:13px 16px;
+  background:rgba(255,250,242,.96);
+  border-bottom:1px solid rgba(184,139,62,.26);
+  backdrop-filter:blur(14px);
+}
+#arshif-psych-hall .psy-tab{
+  min-height:38px;
+  padding:8px 12px;
+  color:#384957;
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.18);
+  border-radius:999px;
+  font-size:.68rem;
+  box-shadow:none;
+}
+#arshif-psych-hall .psy-tab:hover,
+#arshif-psych-hall .psy-tab.active{
+  color:#1f261f;
+  background:linear-gradient(135deg,#f0d790,#d2aa58);
+  border-color:rgba(184,139,62,.54);
+  transform:none;
+}
+#arshif-psych-hall .psy-view{
+  max-width:1240px;
+  margin:0 auto;
+  padding:clamp(18px,3vw,32px);
+  text-align:center;
+}
+#arshif-psych-hall .psy-layout{
+  display:grid;
+  grid-template-columns:minmax(230px,290px) minmax(0,1fr);
+  gap:18px;
+  align-items:start;
+  text-align:center;
+}
+#arshif-psych-hall .psy-layout main{min-width:0}
+#arshif-psych-hall .psy-side,
+#arshif-psych-hall .psy-card,
+#arshif-psych-hall .psy-tool,
+#arshif-psych-hall .psy-panel,
+#arshif-psych-hall .psy-module,
+#arshif-psych-hall .psy-source-card,
+#arshif-psych-hall .psy-glossary-card,
+#arshif-psych-hall .psy-quiz-box{
+  border:1px solid rgba(63,71,82,.14);
+  border-radius:15px;
+  background:rgba(255,253,248,.86);
+  box-shadow:0 10px 28px rgba(53,61,69,.055);
+}
+#arshif-psych-hall .psy-side{
+  position:sticky;
+  top:82px;
+  padding:18px 16px;
+  align-self:start;
+  background:linear-gradient(180deg,#fffaf2,#f0e4cf);
+}
+#arshif-psych-hall .psy-side h2,
+#arshif-psych-hall .psy-section-title{
+  margin:0 auto 14px;
+  color:#6d557f;
+  font-size:clamp(1rem,2vw,1.24rem);
+  text-align:center;
+}
+#arshif-psych-hall .psy-small{
+  max-width:880px;
+  margin:0 auto 18px;
+  color:#64717b;
+  font-size:.92rem;
+  text-align:center;
+}
+#arshif-psych-hall .psy-search,
+#arshif-psych-hall textarea.psy-textarea{
+  width:100%;
+  color:var(--psy-ink);
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.18);
+  border-radius:12px;
+  outline:none;
+}
+#arshif-psych-hall .psy-search:focus,
+#arshif-psych-hall textarea.psy-textarea:focus{
+  border-color:var(--psy-gold);
+  box-shadow:0 0 0 3px rgba(184,139,62,.13);
+}
+#arshif-psych-hall .psy-filter-title{color:#6b7480;font-size:.67rem;text-align:center}
+#arshif-psych-hall .psy-chip-row{justify-content:center}
+#arshif-psych-hall .psy-chip{
+  color:#52616d;
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.15);
+  border-radius:999px;
+  font-family:var(--sans);
+}
+#arshif-psych-hall .psy-chip:hover,
+#arshif-psych-hall .psy-chip.active{
+  color:#1f261f;
+  background:#ead08a;
+  border-color:#c49b49;
+}
+#arshif-psych-hall .psy-countline{color:#77818a;text-align:center}
+#arshif-psych-hall .psy-grid,
+#arshif-psych-hall .psy-source-grid,
+#arshif-psych-hall .psy-glossary-grid,
+#arshif-psych-hall .psy-tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+  gap:14px;
+  width:100%;
+}
+#arshif-psych-hall .psy-course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));
+  gap:14px;
+}
+#arshif-psych-hall .psy-card{
+  min-height:236px;
+  padding:18px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  text-align:center;
+}
+#arshif-psych-hall .psy-card::before{
+  height:4px;
+  background:linear-gradient(90deg,var(--psy-teal),var(--psy-gold2),var(--psy-violet));
+}
+#arshif-psych-hall .psy-badge{
+  color:#6d557f;
+  background:#f5ead5;
+  border:1px solid rgba(184,139,62,.28);
+  justify-content:center;
+  width:auto;
+}
+#arshif-psych-hall .psy-card h3,
+#arshif-psych-hall .psy-module h3,
+#arshif-psych-hall .psy-source-card h3,
+#arshif-psych-hall .psy-glossary-card h3,
+#arshif-psych-hall .psy-tool h3{
+  color:#253746;
+  font-family:var(--display);
+  font-size:clamp(1.35rem,2.4vw,1.8rem);
+  font-weight:500;
+  line-height:1.04;
+  text-align:center;
+}
+#arshif-psych-hall .psy-meta{
+  color:#7a838b;
+  font-family:var(--ceremonial);
+  font-size:.64rem;
+  letter-spacing:.09em;
+  text-align:center;
+}
+#arshif-psych-hall .psy-card p,
+#arshif-psych-hall .psy-module p,
+#arshif-psych-hall .psy-source-card p,
+#arshif-psych-hall .psy-glossary-card p,
+#arshif-psych-hall .psy-tool p,
+#arshif-psych-hall .psy-objectives{
+  color:#5a6872;
+  text-align:center;
+}
+#arshif-psych-hall .psy-objectives{
+  padding-left:0;
+  list-style-position:inside;
+}
+#arshif-psych-hall .psy-actions{justify-content:center;align-items:center}
+#arshif-psych-hall .psy-btn{
+  max-width:100%;
+  color:#293746;
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.18);
+  border-radius:999px;
+  font-family:var(--sans);
+  font-weight:600;
+}
+#arshif-psych-hall .psy-btn:hover{background:#f5ead5;transform:none}
+#arshif-psych-hall .psy-btn.gold{
+  color:#202018;
+  background:linear-gradient(135deg,#f0d790,#c79a48);
+  border-color:#c79a48;
+}
+#arshif-psych-hall .psy-btn.danger{
+  color:#8b475c;
+  border-color:rgba(180,112,130,.38);
+  background:#fff8f8;
+}
+#arshif-psych-hall .psy-module{
+  padding:18px;
+  text-align:center;
+}
+#arshif-psych-hall .psy-module-top{align-items:flex-start;gap:12px}
+#arshif-psych-hall .psy-check{
+  color:#6d557f;
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.18);
+}
+#arshif-psych-hall .psy-check.done{background:#71946e;color:white;border-color:#71946e}
+#arshif-psych-hall .psy-timeline{
+  max-width:960px;
+  margin:0 auto;
+  padding:0;
+  text-align:left;
+}
+#arshif-psych-hall .psy-timeline li{
+  grid-template-columns:minmax(130px,.32fr) minmax(0,1fr);
+  border-bottom:1px solid rgba(63,71,82,.13);
+}
+#arshif-psych-hall .psy-timeline time{color:#7d5e22;font-family:var(--ceremonial);font-weight:500}
+#arshif-psych-hall .psy-timeline span{color:#5a6872}
+#arshif-psych-hall .psy-source-card,
+#arshif-psych-hall .psy-glossary-card,
+#arshif-psych-hall .psy-tool{padding:16px;text-align:center}
+#arshif-psych-hall .psy-output{
+  color:#52616d;
+  background:#fffdf8;
+  border:1px solid rgba(63,71,82,.14);
+  border-radius:12px;
+  text-align:left;
+}
+#arshif-psych-hall .psy-quiz-box{text-align:center;background:#fffdf8}
+#arshif-psych-hall .psy-quiz-question{
+  color:#6d557f;
+  font-family:var(--display);
+  font-size:clamp(1.45rem,3vw,2.1rem);
+  line-height:1.1;
+}
+#arshif-psych-hall .psy-option{
+  color:#293746;
+  background:#fffaf2;
+  border:1px solid rgba(63,71,82,.15);
+  text-align:center;
+}
+#arshif-psych-hall .psy-option.correct{background:#e8f3e6;border-color:#71946e}
+#arshif-psych-hall .psy-option.wrong{background:#f9e8ee;border-color:#b47082}
+#arshif-psych-hall .psy-progressbar{
+  max-width:860px;
+  margin:14px auto 18px;
+  height:10px;
+  border:1px solid rgba(63,71,82,.14);
+  background:#eee3d1;
+}
+#arshif-psych-hall .psy-progressbar span{background:linear-gradient(90deg,#7d68a8,#4c918d,#d2aa58)}
+#arshif-psych-hall .psy-modal-backdrop{background:rgba(37,45,53,.42);backdrop-filter:blur(4px)}
+#arshif-psych-hall .psy-dossier{
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:min(940px,calc(100vw - 28px));
+  max-height:calc(100vh - 50px);
+  background:linear-gradient(135deg,#fffdf8,#f1e4ce);
+  border:1px solid rgba(184,139,62,.42);
+  border-radius:18px;
+  box-shadow:0 28px 90px rgba(42,48,55,.34);
+  color:var(--psy-ink);
+}
+#arshif-psych-hall .psy-dossier-head{
+  background:linear-gradient(90deg,#293746,#3f3750);
+  border-bottom:1px solid rgba(184,139,62,.38);
+}
+#arshif-psych-hall .psy-dossier-head h2{
+  color:#f4daa0;
+  font-family:var(--ceremonial);
+  font-size:1rem;
+}
+#arshif-psych-hall .psy-dossier-body{text-align:left}
+#arshif-psych-hall .psy-dossier-section{
+  background:rgba(255,255,255,.58);
+  border:1px solid rgba(63,71,82,.13);
+}
+#arshif-psych-hall .psy-dossier-section h3{color:#6d557f;font-family:var(--display);font-weight:500}
+#arshif-psych-hall .psy-dossier-section p,
+#arshif-psych-hall .psy-dossier-section li{color:#52616d}
+#arshif-psych-hall .psy-footer{
+  padding:20px 18px;
+  color:#f4e2bf;
+  background:linear-gradient(90deg,#293746,#3b3146,#293746);
+  border-top:1px solid rgba(184,139,62,.42);
+  text-align:center;
+}
+@media(max-width:1100px){
+  #arshif-psych-hall .psy-layout{grid-template-columns:minmax(210px,260px) minmax(0,1fr)}
+}
+@media(max-width:860px){
+  #arshif-psych-hall{padding:8px}
+  #arshif-psych-hall .psy-tabs{position:relative;top:auto}
+  #arshif-psych-hall .psy-layout{grid-template-columns:1fr}
+  #arshif-psych-hall .psy-side{position:relative;top:auto;max-width:none}
+  #arshif-psych-hall .psy-module-top{display:grid;grid-template-columns:1fr;justify-items:center}
+  #arshif-psych-hall .psy-timeline li{grid-template-columns:1fr;text-align:center}
+}
+@media(max-width:560px){
+  #arshif-psych-hall .psy-network nav{gap:8px}
+  #arshif-psych-hall .psy-hero{padding:34px 16px 28px}
+  #arshif-psych-hall .psy-hero::before{inset:10px}
+  #arshif-psych-hall h1{font-size:clamp(2.5rem,15vw,4.4rem);line-height:.92}
+  #arshif-psych-hall .psy-view{padding:14px}
+  #arshif-psych-hall .psy-card{min-height:auto}
+}
+
+
+/* ==========================================================
+   RECTILINEAR ARCHIVE REFINEMENT · v1.1
+   Replaces circular/pill controls with crisp rectangular forms:
+   7px radius + a subtle 1px inset line just inside the border.
+   ========================================================== */
+#arshif-psych-hall{
+  --psy-radius:7px;
+  --psy-inset-line:inset 0 0 0 1px rgba(184,139,62,.18);
+  --psy-inset-line-strong:inset 0 0 0 1px rgba(184,139,62,.30);
+}
+#arshif-psych-hall .psy-shell,
+#arshif-psych-hall .psy-hero,
+#arshif-psych-hall .psy-hero::before,
+#arshif-psych-hall .psy-alert,
+#arshif-psych-hall .psy-stat,
+#arshif-psych-hall .psy-side,
+#arshif-psych-hall .psy-card,
+#arshif-psych-hall .psy-tool,
+#arshif-psych-hall .psy-panel,
+#arshif-psych-hall .psy-module,
+#arshif-psych-hall .psy-source-card,
+#arshif-psych-hall .psy-glossary-card,
+#arshif-psych-hall .psy-quiz-box,
+#arshif-psych-hall .psy-dossier,
+#arshif-psych-hall .psy-dossier-section,
+#arshif-psych-hall .psy-output,
+#arshif-psych-hall .psy-progressbar,
+#arshif-psych-hall .psy-search,
+#arshif-psych-hall textarea.psy-textarea,
+#arshif-psych-hall .psy-option,
+#arshif-psych-hall .psy-tab,
+#arshif-psych-hall .psy-chip,
+#arshif-psych-hall .psy-btn,
+#arshif-psych-hall .psy-badge,
+#arshif-psych-hall .psy-check{
+  border-radius:7px!important;
+}
+#arshif-psych-hall .psy-shell{
+  box-shadow:
+    var(--psy-inset-line-strong),
+    0 0 0 3px rgba(255,255,255,.52),
+    0 0 0 5px rgba(184,139,62,.16),
+    var(--psy-shadow)!important;
+}
+#arshif-psych-hall .psy-hero::before{
+  background:
+    linear-gradient(90deg,transparent 0 13%,rgba(184,139,62,.13) 13.15% 13.35%,transparent 13.5% 86.5%,rgba(184,139,62,.13) 86.65% 86.85%,transparent 87%),
+    linear-gradient(0deg,transparent 0 18%,rgba(124,104,168,.10) 18.15% 18.35%,transparent 18.5% 81.5%,rgba(76,145,141,.10) 81.65% 81.85%,transparent 82%),
+    repeating-linear-gradient(90deg,rgba(184,139,62,.055) 0 1px,transparent 1px 44px),
+    repeating-linear-gradient(0deg,rgba(76,145,141,.045) 0 1px,transparent 1px 44px)!important;
+  opacity:.82!important;
+}
+#arshif-psych-hall .psy-stat,
+#arshif-psych-hall .psy-alert,
+#arshif-psych-hall .psy-side,
+#arshif-psych-hall .psy-card,
+#arshif-psych-hall .psy-tool,
+#arshif-psych-hall .psy-panel,
+#arshif-psych-hall .psy-module,
+#arshif-psych-hall .psy-source-card,
+#arshif-psych-hall .psy-glossary-card,
+#arshif-psych-hall .psy-quiz-box,
+#arshif-psych-hall .psy-dossier-section,
+#arshif-psych-hall .psy-output,
+#arshif-psych-hall .psy-option,
+#arshif-psych-hall .psy-search,
+#arshif-psych-hall textarea.psy-textarea{
+  box-shadow:var(--psy-inset-line),0 8px 20px rgba(53,61,69,.04)!important;
+}
+#arshif-psych-hall .psy-tab,
+#arshif-psych-hall .psy-chip,
+#arshif-psych-hall .psy-btn,
+#arshif-psych-hall .psy-badge,
+#arshif-psych-hall .psy-check{
+  box-shadow:var(--psy-inset-line)!important;
+}
+#arshif-psych-hall .psy-tab,
+#arshif-psych-hall .psy-chip,
+#arshif-psych-hall .psy-btn,
+#arshif-psych-hall .psy-badge{
+  border-radius:7px!important;
+  text-align:center;
+}
+#arshif-psych-hall .psy-tab,
+#arshif-psych-hall .psy-chip,
+#arshif-psych-hall .psy-btn{
+  padding:8px 13px;
+}
+#arshif-psych-hall .psy-badge{
+  padding:5px 9px;
+}
+#arshif-psych-hall .psy-check{
+  width:38px;
+  min-width:38px;
+  height:34px;
+  min-height:34px;
+}
+#arshif-psych-hall .psy-progressbar{
+  overflow:hidden;
+}
+#arshif-psych-hall .psy-progressbar span{
+  border-radius:0!important;
+}
+#arshif-psych-hall .psy-card::before{
+  height:3px;
+  background:linear-gradient(90deg,var(--psy-teal),var(--psy-gold2),var(--psy-violet));
+}
+#arshif-psych-hall .psy-card:hover,
+#arshif-psych-hall .psy-module:hover,
+#arshif-psych-hall .psy-source-card:hover,
+#arshif-psych-hall .psy-glossary-card:hover,
+#arshif-psych-hall .psy-tool:hover{
+  border-color:rgba(184,139,62,.42);
+  box-shadow:var(--psy-inset-line-strong),0 12px 26px rgba(53,61,69,.07)!important;
+}
+#arshif-psych-hall .psy-tab:hover,
+#arshif-psych-hall .psy-tab.active,
+#arshif-psych-hall .psy-chip:hover,
+#arshif-psych-hall .psy-chip.active,
+#arshif-psych-hall .psy-btn:hover,
+#arshif-psych-hall .psy-btn.gold{
+  box-shadow:var(--psy-inset-line-strong)!important;
+}
+#arshif-psych-hall .psy-dossier-head{
+  border-radius:7px 7px 0 0!important;
+}
+
+
+/* ==========================================================
+   NAVIGATION + CATEGORY ORGANIZATION REFINEMENT · v4.4
+   Dropdown matrix menu and department-grouped archive cards.
+   ========================================================== */
+#arshif-psych-hall .psy-network{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  justify-items:center!important;
+  gap:11px!important;
+}
+#arshif-psych-hall .psy-network nav{
+  max-width:1000px;
+}
+#arshif-psych-hall .psy-repo-menu{
+  width:min(100%,760px);
+  display:grid;
+  grid-template-columns:auto minmax(240px,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:9px;
+  border:1px solid rgba(229,199,127,.34);
+  border-radius:7px;
+  background:rgba(255,255,255,.08);
+  box-shadow:var(--psy-inset-line);
+}
+#arshif-psych-hall .psy-repo-menu label{
+  color:#f8dfac;
+  font-family:var(--ceremonial);
+  font-size:.64rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+#arshif-psych-hall .psy-select,
+#arshif-psych-hall .psy-repo-select{
+  width:100%;
+  min-height:40px;
+  border:1px solid rgba(63,71,82,.22);
+  border-radius:7px;
+  color:#314250;
+  background:#fffdf8;
+  padding:8px 12px;
+  font-family:var(--sans);
+  box-shadow:var(--psy-inset-line);
+  outline:none;
+}
+#arshif-psych-hall .psy-repo-menu .psy-btn{
+  min-height:40px;
+  color:#1f261f;
+  background:linear-gradient(135deg,#f0d790,#d2aa58);
+  border-color:rgba(184,139,62,.54);
+  white-space:nowrap;
+}
+#arshif-psych-hall .psy-category-groups{
+  display:grid;
+  gap:28px;
+  text-align:center;
+}
+#arshif-psych-hall .psy-category-group{
+  padding:16px;
+  border:1px solid rgba(63,71,82,.14);
+  border-radius:7px;
+  background:rgba(255,253,248,.58);
+  box-shadow:var(--psy-inset-line),0 8px 20px rgba(53,61,69,.04);
+  scroll-margin-top:106px;
+}
+#arshif-psych-hall .psy-category-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:14px;
+  margin:0 auto 14px;
+  padding:0 0 12px;
+  border-bottom:1px solid rgba(184,139,62,.22);
+  text-align:left;
+}
+#arshif-psych-hall .psy-category-title{
+  margin:0;
+  color:#253746;
+  font-family:var(--display);
+  font-size:clamp(1.8rem,3.4vw,3.15rem);
+  font-weight:500;
+  line-height:.95;
+}
+#arshif-psych-hall .psy-category-count{
+  color:#6d557f;
+  font-family:var(--ceremonial);
+  font-size:.66rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+#arshif-psych-hall .psy-category-empty{
+  padding:20px;
+  color:#66717a;
+  border:1px dashed rgba(63,71,82,.24);
+  border-radius:7px;
+  background:#fffdf8;
+  box-shadow:var(--psy-inset-line);
+}
+#arshif-psych-hall .psy-side .psy-select{
+  margin-top:7px;
+}
+#arshif-psych-hall .psy-side .psy-btn,
+#arshif-psych-hall .psy-side .psy-chip{
+  width:100%;
+  justify-content:center;
+}
+@media(max-width:760px){
+  #arshif-psych-hall .psy-repo-menu{
+    grid-template-columns:1fr;
+  }
+  #arshif-psych-hall .psy-repo-menu label,
+  #arshif-psych-hall .psy-category-head{
+    text-align:center;
+  }
+  #arshif-psych-hall .psy-category-head{
+    grid-template-columns:1fr;
+    justify-items:center;
+  }
+}
+
 </style>
 </head>
 <body>
 <div id="arshif-psych-hall">
   <div class="psy-shell">
+    <div class="psy-network" aria-label="Verve N Veda matrix links">
+      <span>Verve N Veda · ARSHIF Mind Observatory</span>
+      <nav aria-label="Connected matrix destinations">
+        <a href="https://vervenveda.github.io/">VNV Home</a>
+        <a href="https://vervenveda.github.io/Arshif.github.io/">ARSHIF Archives</a>
+        <a href="https://vervenveda.github.io/medicament-hub.github.io/">Medicament Hub</a>
+        <a href="https://vervenveda.github.io/khaemenesacademy.github.io/">Academy</a>
+        <a href="https://vervenveda.github.io/proresource_hub.github.io/Protools/PROSE%E2%84%A2%20editingsuite_index.html">PROSE</a>
+        <a href="https://vervenveda.github.io/PLERASearch.github.io/">PLERA Search</a>
+      </nav>
+      <div class="psy-repo-menu" aria-label="Open another Verve N Veda repository landing page">
+        <label for="repoSelect">Repository menu</label>
+        <select class="psy-repo-select" id="repoSelect">
+          <option value="">Choose another landing page…</option>
+          <option value="https://vervenveda.github.io/">Verve N Veda · Public Gateway</option>
+          <option value="https://vervenveda.github.io/Arshif.github.io/">ARSHIF Archives</option>
+          <option value="https://vervenveda.github.io/medicament-hub.github.io/">Medicament Hub</option>
+          <option value="https://vervenveda.github.io/khaemenesacademy.github.io/">Khaemenes Academy</option>
+          <option value="https://vervenveda.github.io/creche_preschool.github.io/">Crèche Preschool</option>
+          <option value="https://vervenveda.github.io/KinderGarden.github.io/">Kinder Garden</option>
+          <option value="https://vervenveda.github.io/Khaemenes-elementary.github.io/">Khaemenes Elementary</option>
+          <option value="https://vervenveda.github.io/Khaemenes-jrhigh.github.io/">Khaemenes Junior High</option>
+          <option value="https://vervenveda.github.io/Khaemenes-High_github.io/">Khaemenes High School</option>
+          <option value="https://vervenveda.github.io/the_refrain.github.io/">The Refrain Music Hall</option>
+          <option value="https://vervenveda.github.io/theverifier.github.io/">The Verifier News</option>
+          <option value="https://vervenveda.github.io/solanar.github.io/">Solanar Weather</option>
+          <option value="https://vervenveda.github.io/proresource_hub.github.io/">ProReSources Hub</option>
+          <option value="https://vervenveda.github.io/firmament.github.io/">Firmament Law</option>
+          <option value="https://vervenveda.github.io/onenationforall.github.io/">One Nation For All</option>
+          <option value="https://vervenveda.github.io/bazaarart.github.io/">Bazaar Art</option>
+          <option value="https://vervenveda.github.io/arcade.github.io/">Arcade</option>
+          <option value="https://vervenveda.github.io/PLERASearch.github.io/">PLERA Search</option>
+        </select>
+        <button class="psy-btn gold" id="repoGo" type="button">Open</button>
+      </div>
+    </div>
     <header class="psy-hero">
-      <div class="psy-kicker">ARSHIF · Mind Archive · Psychology Course</div>
+      <div class="psy-kicker">ARSHIF · Mind Observatory · Psychology Course</div>
       <h1>Psychology & Mind Hall</h1>
       <p class="psy-subtitle">
-        A comprehensive portal for the study of mind, behavior, development, emotion, memory,
+        A distinguished learning observatory for the study of mind, behavior, development, emotion, memory,
         culture, relationships, healing systems, research methods, ethics, and the mystery of human experience.
       </p>
       <div class="psy-alert">
@@ -570,6 +1339,10 @@
           <h2>Mind Archive</h2>
           <input class="psy-search" id="archiveSearch" placeholder="Search memory, trauma, learning, culture, therapy, cognition..." />
           <div class="psy-filter-group">
+            <label class="psy-filter-title" for="departmentJump">Jump to category</label>
+            <select class="psy-select" id="departmentJump"></select>
+          </div>
+          <div class="psy-filter-group">
             <div class="psy-filter-title">Department</div>
             <div class="psy-chip-row" id="departmentChips"></div>
           </div>
@@ -582,7 +1355,7 @@
         </aside>
         <main>
           <h2 class="psy-section-title">Psychology & Mind Dossiers</h2>
-          <div class="psy-grid" id="dossierGrid"></div>
+          <div class="psy-category-groups" id="dossierGrid"></div>
         </main>
       </div>
     </section>
@@ -689,7 +1462,7 @@
     </section>
 
     <footer class="psy-footer">
-      ARSHIF · Psychology & Mind Hall · Standalone vanilla HTML/CSS/JavaScript. Educational use only.
+      ARSHIF · Psychology & Mind Hall · Mind Observatory Edition · Standalone vanilla HTML/CSS/JavaScript. Educational use only.
     </footer>
   </div>
 
@@ -739,6 +1512,41 @@
     return String(s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
   }
 
+
+  function slugify(s) {
+    return String(s || "category").toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "category";
+  }
+
+  function initRepoMenu() {
+    const select = $("#repoSelect");
+    const go = $("#repoGo");
+    if(!select || !go) return;
+    const openSelected = () => {
+      const url = select.value;
+      if(url) window.open(url, "_blank", "noopener,noreferrer");
+    };
+    go.addEventListener("click", openSelected);
+    select.addEventListener("keydown", e => {
+      if(e.key === "Enter") openSelected();
+    });
+  }
+
+  function renderDepartmentJump() {
+    const jump = $("#departmentJump");
+    if(!jump) return;
+    jump.innerHTML = ['<option value="">Jump to a visible category…</option>'].concat(
+      DATA.departments
+        .filter(dep => DATA.dossiers.some(d => d.department === dep && dossierMatches(d)))
+        .map(dep => `<option value="${escapeHTML(slugify(dep))}">${escapeHTML(dep)}</option>`)
+    ).join("");
+    jump.onchange = () => {
+      if(!jump.value) return;
+      const target = document.getElementById("cat-" + jump.value);
+      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      jump.value = "";
+    };
+  }
+
   function tabInit() {
     $$(".psy-tab").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -770,19 +1578,42 @@
 
   function renderArchive() {
     const list = DATA.dossiers.filter(dossierMatches);
-    $("#archiveCount").textContent = `${list.length} of ${DATA.dossiers.length} dossiers shown.`;
-    $("#dossierGrid").innerHTML = list.map(d => `
-      <article class="psy-card">
-        <span class="psy-badge">${escapeHTML(d.badge)} · ${escapeHTML(d.department)}</span>
-        <h3>${escapeHTML(d.title)}</h3>
-        <div class="psy-meta">${escapeHTML(d.era)}</div>
-        <p>${escapeHTML(d.summary)}</p>
-        <div class="psy-actions">
-          <button class="psy-btn gold" data-open="${escapeHTML(d.id)}">Open Dossier</button>
-          <button class="psy-btn" data-fav="${escapeHTML(d.id)}">${favorites[d.id] ? "★ Favorited" : "☆ Favorite"}</button>
+    $("#archiveCount").textContent = `${list.length} of ${DATA.dossiers.length} dossiers shown, organized by department.`;
+
+    const groups = DATA.departments
+      .map(dep => [dep, list.filter(d => d.department === dep)])
+      .filter(([, items]) => items.length);
+
+    if(!groups.length){
+      $("#dossierGrid").innerHTML = `<div class="psy-category-empty">No dossiers match this search or filter. Clear filters or try another keyword.</div>`;
+      renderDepartmentJump();
+      return;
+    }
+
+    $("#dossierGrid").innerHTML = groups.map(([dep, items]) => `
+      <section class="psy-category-group" id="cat-${escapeHTML(slugify(dep))}">
+        <div class="psy-category-head">
+          <h3 class="psy-category-title">${escapeHTML(dep)}</h3>
+          <span class="psy-category-count">${items.length} ${items.length === 1 ? "dossier" : "dossiers"}</span>
         </div>
-      </article>
+        <div class="psy-grid">
+          ${items.map(d => `
+            <article class="psy-card">
+              <span class="psy-badge">${escapeHTML(d.badge)} · ${escapeHTML(d.department)}</span>
+              <h3>${escapeHTML(d.title)}</h3>
+              <div class="psy-meta">${escapeHTML(d.era)}</div>
+              <p>${escapeHTML(d.summary)}</p>
+              <div class="psy-actions">
+                <button class="psy-btn gold" data-open="${escapeHTML(d.id)}">Open Dossier</button>
+                <button class="psy-btn" data-fav="${escapeHTML(d.id)}">${favorites[d.id] ? "★ Favorited" : "☆ Favorite"}</button>
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </section>
     `).join("");
+
+    renderDepartmentJump();
     $("#dossierGrid").querySelectorAll("[data-open]").forEach(btn => btn.addEventListener("click", () => openDossier(DATA.dossiers.find(d => d.id === btn.dataset.open))));
     $("#dossierGrid").querySelectorAll("[data-fav]").forEach(btn => btn.addEventListener("click", () => {
       favorites[btn.dataset.fav] = !favorites[btn.dataset.fav];
@@ -1041,7 +1872,7 @@
     $("#statDossiers").textContent = DATA.dossiers.length;
     $("#statModules").textContent = DATA.modules.length;
     $("#statDepartments").textContent = DATA.departments.length;
-    tabInit(); renderChips(); renderArchive(); renderCourse(); renderDepartments(); renderTimeline(); renderSources(); renderGlossary(); renderQuiz(); studioInit(); progressInit(); modalDragInit(); updateProgress();
+    tabInit(); initRepoMenu(); renderChips(); renderArchive(); renderCourse(); renderDepartments(); renderTimeline(); renderSources(); renderGlossary(); renderQuiz(); studioInit(); progressInit(); modalDragInit(); updateProgress();
     $("#archiveSearch").addEventListener("input", e => { state.search = e.target.value; renderArchive(); });
     $("#clearFilters").addEventListener("click", () => { state.department="All"; state.era="All"; state.search=""; $("#archiveSearch").value=""; renderChips(); renderArchive(); });
     $("#closeModal").addEventListener("click", closeModal);
