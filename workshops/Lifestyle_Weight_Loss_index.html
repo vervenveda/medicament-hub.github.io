@@ -1,0 +1,1547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Advanced Lifestyle Weight Loss — Khaemenes Academy (Free)</title>
+  <style>
+    :root{
+      --bgA:#0b1220;
+      --bgB:#0f1b33;
+      --card:#0f172a;
+      --card2:#0b1324;
+      --text:#eef2ff;
+      --muted:rgba(238,242,255,.75);
+      --soft:rgba(238,242,255,.12);
+      --soft2:rgba(238,242,255,.08);
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --radius:18px;
+      --radius2:14px;
+      --shadow:0 18px 55px rgba(0,0,0,.45);
+      --minFont:18px;
+      --maxW:1060px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 10%, rgba(125,211,252,.14), transparent 52%),
+                  radial-gradient(circle at 80% 0%, rgba(167,139,250,.14), transparent 45%),
+                  linear-gradient(180deg,var(--bgA),var(--bgB));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      padding:16px;
+    }
+
+    .app{
+      max-width:var(--maxW);
+      margin:0 auto;
+    }
+
+    header{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding:18px 18px 10px;
+      border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow);
+    }
+    .title h1{
+      margin:0;
+      font-size: clamp(24px, 3.2vw, 38px);
+      letter-spacing:.02em;
+      line-height:1.1;
+    }
+    .title .sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height:1.35;
+      max-width: 68ch;
+    }
+
+    .badgeRow{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-end;
+      min-width: 240px;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:700;
+      font-size: 13px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .pill small{
+      font-weight:700;
+      text-transform:none;
+      letter-spacing:0;
+      color:var(--muted);
+    }
+
+    .topSticky{
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+      margin-top: 12px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(15,23,42,.92), rgba(15,23,42,.78));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      padding: 14px 14px 12px;
+    }
+
+    .posture{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .posture .statement{
+      flex:1;
+      min-width:260px;
+      color: var(--text);
+      font-size: 14px;
+      line-height:1.45;
+    }
+    .posture .statement b{
+      color: var(--accent);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-weight: 800;
+      color:#06121d;
+      background: var(--accent);
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      transition: transform .05s ease, filter .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      font-size: 14px;
+      white-space:nowrap;
+    }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn.secondary{
+      background: transparent;
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:none;
+    }
+    .btn.ghost{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:none;
+    }
+    .btn.warn{
+      background: var(--warn);
+      color:#1b1403;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media(max-width: 940px){
+      .grid{ grid-template-columns: 1fr; }
+      .badgeRow{ align-items:flex-start; }
+    }
+
+    .nav{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .navHeader{
+      padding: 14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .navHeader .kicker{
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+    .navHeader .progress{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      flex:1;
+      min-width: 140px;
+    }
+    .bar > i{
+      display:block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius:999px;
+    }
+    .progress small{ color: var(--muted); font-weight:700; }
+
+    .navList{
+      padding: 10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .weekBtn{
+      width:100%;
+      text-align:left;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor:pointer;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .weekBtn:hover{ background: rgba(255,255,255,.06); }
+    .weekBtn.active{
+      border-color: rgba(125,211,252,.55);
+      background: rgba(125,211,252,.12);
+      box-shadow: 0 12px 30px rgba(0,0,0,.22);
+    }
+    .weekBtn .left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width: 0;
+    }
+    .weekBtn .wk{
+      font-weight:900;
+      letter-spacing:.04em;
+      font-size: 14px;
+      white-space:nowrap;
+    }
+    .weekBtn .ttl{
+      font-size: 13px;
+      color: var(--muted);
+      line-height:1.25;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width: 210px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .chip.done{ border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.10); }
+
+    .main{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      position:relative;
+    }
+    .mainHeader{
+      padding: 16px 16px 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .mainHeader h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:.02em;
+    }
+    .mainHeader .meta{
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.35;
+      max-width: 70ch;
+    }
+    .mainBody{
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .card{
+      background: rgba(11,19,36,.55);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius2);
+      padding: 14px;
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing:.01em;
+    }
+    .card p, .card li{
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+    .card p{ margin: 8px 0; }
+    .card ul{ margin: 8px 0 0; padding-left: 18px; }
+
+    .flow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media(max-width:760px){ .flow{ grid-template-columns:1fr; } }
+    .flow .step{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 12px;
+    }
+    .flow .step b{ color: var(--accent); }
+
+    .quizQ{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .quizQ .qTitle{
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .choices{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 8px;
+    }
+    .choiceBtn{
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .choiceBtn:hover{ background: rgba(255,255,255,.08); }
+    .choiceBtn.correct{ background: rgba(52,211,153,.16); border-color: rgba(52,211,153,.35); }
+    .choiceBtn.incorrect{ background: rgba(251,113,133,.14); border-color: rgba(251,113,133,.35); }
+
+    textarea, input, select{
+      width:100%;
+      background: rgba(2,6,23,.55);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font: inherit;
+      outline:none;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    label{
+      display:block;
+      color: var(--muted);
+      font-size: 13px;
+      margin: 8px 0 6px;
+      font-weight: 800;
+      letter-spacing:.02em;
+    }
+    .twoCol{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media(max-width:760px){ .twoCol{ grid-template-columns:1fr; } }
+
+    .mini{
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.4;
+    }
+
+    .hr{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 10px 0;
+    }
+
+    .tinyGrid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+    }
+    @media(max-width:840px){ .tinyGrid{ grid-template-columns:1fr; } }
+
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .table th, .table td{
+      padding:10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      vertical-align: top;
+      font-size: 13px;
+      line-height:1.4;
+      color: var(--text);
+    }
+    .table th{ color: var(--muted); text-transform: uppercase; letter-spacing:.08em; font-size: 12px; }
+    .table tr:last-child td{ border-bottom:none; }
+
+    .footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align:right;
+      padding-right: 6px;
+    }
+
+    .toast{
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.65);
+      border:1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      display:none;
+      z-index: 999;
+    }
+    .toast.show{ display:block; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title">
+        <h1>Health is Wealth — Advanced Lifestyle Weight Loss</h1>
+        <div class="sub">
+          A structured, high-education, evidence-guided workshop focused on
+          <b>nutrition quality</b>, <b>behavior change</b>, <b>strength + movement</b>, and <b>maintenance</b>.
+          This entire 8-week course is <b>free</b>, self-paced, and stored locally on your device.
+        </div>
+      </div>
+
+      <div class="badgeRow">
+        <div class="pill">Adult Course <small>Self-paced · Local progress</small></div>
+        <div class="pill">8-Week Series <small>Free · 100% local</small></div>
+      </div>
+    </header>
+
+    <!-- Course Posture Statement (sticky) -->
+    <div class="topSticky" role="region" aria-label="Course posture statement">
+      <div class="posture">
+        <div class="statement">
+          <b>Course Posture Statement:</b>
+          This program teaches lifestyle skills for health and weight management. It is <b>educational</b>, not medical care.
+          If you are pregnant, under 18, managing an eating disorder, or have medical conditions/medications that affect weight,
+          consult a licensed clinician before changing diet or activity. Aim for <b>steady, sustainable progress</b> rather than extremes.
+        </div>
+        <div class="actions">
+          <button class="btn ghost" id="resetBtn" type="button">↺ Reset this course</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="posture" style="align-items:center">
+        <div class="statement" style="max-width:70ch">
+          <b>Today:</b> <span id="todayLabel"></span> · <b>Study streak:</b> <span id="streakLabel">0</span> days
+          <span class="mini">· Tap “Check-in” to log your day (local only).</span>
+        </div>
+        <div class="actions">
+          <button class="btn" id="checkInBtn" type="button">🔥 Check-in today</button>
+          <button class="btn ghost" id="exportBtn" type="button">⬇️ Export Notes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left nav -->
+      <aside class="nav" aria-label="Week navigation">
+        <div class="navHeader">
+          <div class="kicker">Course Weeks</div>
+          <div class="progress">
+            <div class="bar" aria-label="Progress bar"><i id="progressBar"></i></div>
+            <small><span id="progressPct">0%</span> complete</small>
+          </div>
+        </div>
+        <div class="navList" id="weekList"></div>
+
+        <div style="padding: 0 12px 14px;">
+          <div class="card" style="margin-top: 8px;">
+            <h3 style="margin-bottom:6px">Quick tools</h3>
+            <div class="mini">
+              Use the planner and calculator inside each week. Your work saves on your device only (localStorage).
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main" aria-label="Course content">
+        <div class="mainHeader">
+          <div>
+            <h2 id="weekTitle">Week 1</h2>
+            <div class="meta" id="weekMeta"></div>
+          </div>
+          <div class="actions">
+            <button class="btn secondary" id="markDoneBtn" type="button">🏁 Mark week complete</button>
+          </div>
+        </div>
+
+        <div class="mainBody" id="weekBody"></div>
+      </main>
+    </div>
+
+    <div class="footer">Khaemenes Academy™ · All local · No uploads</div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  /* =======================
+     Storage + Utilities
+     ======================= */
+  var STORAGE_KEY = "KHA_WL_COURSE_V1";
+  function nowISODate(){
+    var d = new Date();
+    var yyyy = d.getFullYear();
+    var mm = String(d.getMonth()+1).padStart(2,'0');
+    var dd = String(d.getDate()).padStart(2,'0');
+    return yyyy + "-" + mm + "-" + dd;
+  }
+  function niceDate(){
+    var d = new Date();
+    return d.toLocaleDateString(undefined, {weekday:"long", year:"numeric", month:"long", day:"numeric"});
+  }
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+  function toast(msg){
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(function(){ t.classList.remove("show"); }, 1900);
+  }
+  function safeParse(str, fallback){
+    try{ return JSON.parse(str); }catch(e){ return fallback; }
+  }
+  function getState(){
+    var raw = localStorage.getItem(STORAGE_KEY);
+    var s = safeParse(raw, null);
+    if(!s){
+      s = {
+        currentWeek:1,
+        completed:{},     // {1:true, ...}
+        quiz:{},          // {1:{...}, ...}
+        notes:{},         // {1:"...", ...}
+        planner:{},       // {date:{meals:[], total:{cal:0,prot:0,carb:0,fat:0}}}
+        streak:{ last:null, count:0 },
+        profile:{ sex:"female", age:30, heightCm:165, weightKg:80, activity:"light", goal:"steady" }
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+    }
+    return s;
+  }
+  function setState(s){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  }
+
+  /* =======================
+     Course Data (8 weeks, all free)
+     ======================= */
+  var WEEK_DATA = [
+    {
+      week:1, free:true,
+      title:"Foundations: Truth, Tracking, and a Calm Start",
+      meta:"Set a realistic target, learn what drives change, and build your personal plan.",
+      openingPrayer:
+        "Creator of wisdom and life, grant me clarity, patience, and honesty. Help me choose what strengthens my body and steadies my mind. Let today be guided by peace, not pressure. Amen.",
+      lesson:[
+        {h:"What this course is (and isn’t)", p:[
+          "This is a skills workshop: nutrition fundamentals, behavior tools, movement, sleep, and maintenance.",
+          "It does not replace medical care. If you have conditions or medications affecting appetite/weight, talk to a clinician first."
+        ]},
+        {h:"The core model (simple, not simplistic)", p:[
+          "Sustainable fat loss usually requires a consistent energy deficit supported by habits you can keep.",
+          "Your best plan is the one you can repeat on stressful weeks."
+        ]},
+        {h:"Program comparison (neutral)", p:[
+          "Commercial programs often differ by structure: points (WW), psychology coaching (Noom), meal delivery (Nutrisystem), meal replacements (Optavia), meal frameworks (Mayo Clinic Diet), etc.",
+          "You’re building a flexible, evidence-guided plan you can own, with or without any brand."
+        ]}
+      ],
+      exercises:[
+        "Write your WHY in one sentence (health, mobility, confidence, labs, energy).",
+        "Choose your “minimum viable day”: 1 protein-forward meal + 20-minute walk + bedtime window.",
+        "Pick your tracking style: (A) plate method, (B) portions, (C) calories/macros."
+      ],
+      quiz: [
+        {type:"tf", q:"Slow, steady weight loss is usually easier to maintain than rapid, extreme loss.", a:"true"},
+        {type:"mc", q:"Which is most important for long-term change?", choices:["Perfect meals","Repeatable habits","Never eating treats","Only cardio"], a:1},
+        {type:"mc", q:"A good first-week goal is:", choices:["Lose 10 pounds","Build a plan you can repeat","Skip meals to accelerate results","Train 2 hours daily"], a:1},
+        {type:"mc", q:"What’s the best tracking method?", choices:["Only calories forever","One that you can sustain and that improves awareness","Only fasting","Only supplements"], a:1},
+        {type:"essay", q:"In 5–7 sentences, describe your WHY, your biggest obstacle, and your minimum viable day."}
+      ]
+    },
+    {
+      week:2, free:true,
+      title:"Nutrition Quality: Protein, Fiber, and Fullness",
+      meta:"Build meals that keep you full: protein, fiber, volume, and timing.",
+      openingPrayer:
+        "Creator, teach me wisdom in my choices. Help me nourish my body with what strengthens me and releases excess. Let my appetite be guided by truth, not impulse. Amen.",
+      lesson:[
+        {h:"Satiety basics", p:[
+          "Protein and fiber tend to increase fullness and make a modest deficit easier.",
+          "Aim to include a protein source and a high-fiber plant in most meals."
+        ]},
+        {h:"The Plate Framework", p:[
+          "Use a simple plate: vegetables/fruits + protein + whole-food carbs + healthy fats.",
+          "This course supports both “plate method” and optional calorie tracking."
+        ]}
+      ],
+      exercises:[
+        "Choose 3 go-to proteins and 5 high-fiber plants you actually like.",
+        "Design 2 breakfasts and 2 lunches you can repeat.",
+        "Hydration practice: replace 1 sugary drink with water/unsweetened tea."
+      ],
+      quiz: [
+        {type:"tf", q:"Fiber can help you feel full longer.", a:"true"},
+        {type:"mc", q:"A practical meal anchor is:", choices:["Only fat","Protein + fiber","Candy + coffee","Skipping breakfast always"], a:1},
+        {type:"mc", q:"A realistic strategy is:", choices:["Remove all carbs forever","Choose whole-food carbs and portion them","Only drink shakes","Only eat at night"], a:1},
+        {type:"mc", q:"A good habit is:", choices:["Eating distracted every meal","Planning 2 repeatable meals","Never having snacks","Only following trends"], a:1},
+        {type:"essay", q:"List 3 proteins + 5 plants you’ll use this week. Describe one meal you’ll repeat."}
+      ]
+    },
+    {
+      week:3, free:true,
+      title:"Planning: Meal Templates + Smart Calorie Targets",
+      meta:"Create a weekly template, set an estimate target, and make planning easy.",
+      openingPrayer:
+        "Creator, give me discipline without harshness. Let planning become peace. Help me prepare wisely and follow through with calm strength. Amen.",
+      lesson:[
+        {h:"Targets (estimates, not commandments)", p:[
+          "Use an estimate calorie target only if it helps you. Targets can reduce guesswork.",
+          "Avoid extreme restriction. If in doubt, choose a modest deficit and focus on quality."
+        ]},
+        {h:"Template planning", p:[
+          "Create a weekly structure: 2 breakfasts, 2 lunches, 3 dinners, 2 snacks.",
+          "Build shopping lists from your template. Reduce decisions."
+        ]}
+      ],
+      exercises:[
+        "Build a 7-day meal template (titles only).",
+        "Pre-plan 2 high-protein snacks.",
+        "Do one “environment win”: prep fruit/veg, portion nuts, or cook protein ahead."
+      ],
+      quiz: [
+        {type:"tf", q:"A modest deficit is generally easier to sustain than a very large deficit.", a:"true"},
+        {type:"mc", q:"Meal templates help because they:", choices:["Remove all flexibility","Reduce decision fatigue","Force perfection","Make you skip meals"], a:1},
+        {type:"mc", q:"If tracking calories stresses you out, you should:", choices:["Keep doing it anyway","Use the plate method and focus on habits","Stop eating","Only fast"], a:1},
+        {type:"mc", q:"A helpful prep step is:", choices:["Keeping trigger foods visible","Cooking one protein ahead","Never grocery shopping","Only eating out"], a:1},
+        {type:"essay", q:"Write your 7-day template (titles) and one shopping-list strategy."}
+      ]
+    },
+    {
+      week:4, free:true,
+      title:"Movement that Works: Strength + Steps + Consistency",
+      meta:"Build a simple training routine and a daily movement baseline.",
+      openingPrayer:
+        "Creator, strengthen my body and steady my mind. Help me move with gratitude, not punishment. Give me consistency. Amen.",
+      lesson:[
+        {h:"Why strength matters", p:[
+          "Strength training supports muscle and function while dieting.",
+          "You don’t need fancy equipment—consistency wins."
+        ]},
+        {h:"Steps and NEAT", p:[
+          "Daily movement (walking, chores, stairs) adds up.",
+          "Pick a step baseline you can maintain and slowly build."
+        ]}
+      ],
+      exercises:[
+        "Pick a 2-day strength plan (A/B days) and schedule it.",
+        "Pick a step baseline (start where you are; build gradually).",
+        "Choose one enjoyable cardio option (walk, bike, swim, dance)."
+      ],
+      quiz: [
+        {type:"tf", q:"Strength training can be useful during weight loss.", a:"true"},
+        {type:"mc", q:"The best exercise plan is:", choices:["The most extreme","The one you can repeat","Only cardio forever","Never rest"], a:1},
+        {type:"mc", q:"NEAT stands for:", choices:["New Exercise Anytime","Non-exercise activity (daily movement)","No Eating After Two","None of the above"], a:1},
+        {type:"mc", q:"A strong weekly base includes:", choices:["0 strength days","2+ strength days and regular movement","Only weekends","Only stretching"], a:1},
+        {type:"essay", q:"Write your 2-day strength plan and your step baseline for next week."}
+      ]
+    },
+    {
+      week:5, free:true,
+      title:"Mindset + Behavior: Cravings, Stress, and Your Environment",
+      meta:"Use practical behavior tools: cues, routines, problem solving, and self-compassion.",
+      openingPrayer:
+        "Creator, give me wisdom in my mind and gentleness in my self-talk. Help me choose the next right step. Amen.",
+      lesson:[
+        {h:"Behavior tools that work", p:[
+          "Self-monitoring (even briefly) increases awareness and supports change.",
+          "Problem-solving and environmental design often beat willpower."
+        ]},
+        {h:"Cravings plan", p:[
+          "Build a “craving ladder”: water → walk → protein snack → planned treat.",
+          "Remove friction for good choices; add friction for impulse choices."
+        ]}
+      ],
+      exercises:[
+        "Write your 3 biggest triggers and one plan for each.",
+        "Create a ‘default snack’ that fits your plan.",
+        "Choose one stress tool: breathing, journaling, short walk, early bedtime."
+      ],
+      quiz: [
+        {type:"tf", q:"Willpower is the only thing needed for weight loss.", a:"false"},
+        {type:"mc", q:"A helpful strategy is:", choices:["Ignore triggers","Design your environment","Never eat again","Only rely on motivation"], a:1},
+        {type:"mc", q:"A craving ladder helps by:", choices:["Guaranteeing no cravings","Providing a sequence of choices before overeating","Eliminating all carbs","Forcing perfection"], a:1},
+        {type:"mc", q:"Self-monitoring can help because it:", choices:["Makes you fail","Increases awareness and accountability","Is always required forever","Is dangerous for everyone"], a:1},
+        {type:"essay", q:"List 3 triggers and one response plan for each. Keep it realistic."}
+      ]
+    },
+    {
+      week:6, free:true,
+      title:"Sleep + Recovery: The Underrated Weight-Loss Multiplier",
+      meta:"Sleep, recovery, and stress regulation can make your plan doable.",
+      openingPrayer:
+        "Creator, grant me restful sleep and a calm spirit. Help me recover well so I can live well. Amen.",
+      lesson:[
+        {h:"Why sleep matters", p:[
+          "Poor sleep can increase hunger and reduce patience with your plan.",
+          "Small improvements: consistent wake time, screen limits, calming routine."
+        ]},
+        {h:"Recovery basics", p:[
+          "Train hard, recover harder: protein, hydration, and planned rest.",
+          "If you’re exhausted, lower intensity and protect sleep."
+        ]}
+      ],
+      exercises:[
+        "Pick a bedtime window and a 10-minute wind-down routine.",
+        "Add one recovery meal after training (protein + carbs + produce).",
+        "Schedule one rest day with gentle walking."
+      ],
+      quiz: [
+        {type:"tf", q:"Sleep can affect hunger and consistency.", a:"true"},
+        {type:"mc", q:"A good sleep practice is:", choices:["Random bedtime daily","Consistent wake time","Heavy meals at midnight always","No sunlight ever"], a:1},
+        {type:"mc", q:"Recovery includes:", choices:["Only caffeine","Hydration, protein, rest","No food after workouts","Only stretching"], a:1},
+        {type:"mc", q:"If you feel burned out, you should:", choices:["Quit forever","Reduce intensity and protect sleep","Double workouts","Skip meals"], a:1},
+        {type:"essay", q:"Describe your wind-down routine and one change you’ll keep for 7 days."}
+      ]
+    },
+    {
+      week:7, free:true,
+      title:"Plateaus + Adjustments: What to Do When Progress Slows",
+      meta:"Learn normal fluctuation, measurement strategy, and safe adjustments.",
+      openingPrayer:
+        "Creator, help me stay steady when results feel slow. Teach me patience and wise adjustment. Amen.",
+      lesson:[
+        {h:"What a plateau often is", p:[
+          "Weight can fluctuate from water, stress, salt, and hormones.",
+          "Use multiple measures: waist, photos, strength, energy, consistency."
+        ]},
+        {h:"Safe adjustment options", p:[
+          "Increase steps slightly, tighten portion consistency, add protein/fiber, reduce liquid calories.",
+          "Avoid drastic cuts. Protect training and sleep."
+        ]}
+      ],
+      exercises:[
+        "Choose 2 measures beyond scale (waist + photos or strength).",
+        "Pick one adjustment: +1,000 steps/day OR reduce 1 liquid calorie source/day.",
+        "Do a ‘consistency week’—repeat your template meals."
+      ],
+      quiz: [
+        {type:"tf", q:"Scale weight can fluctuate even when fat loss is happening.", a:"true"},
+        {type:"mc", q:"A good plateau response is:", choices:["Panic and starve","Use multiple measures and make a small adjustment","Quit tracking forever","Only supplements"], a:1},
+        {type:"mc", q:"A safe adjustment is:", choices:["Cut 1,500 calories instantly","Add steps slightly","Skip water","Stop sleeping"], a:1},
+        {type:"mc", q:"Consistency week means:", choices:["Perfection","Repeat reliable meals and routines","No movement","Only fasting"], a:1},
+        {type:"essay", q:"Write your adjustment plan for 7 days and how you will measure progress."}
+      ]
+    },
+    {
+      week:8, free:true,
+      title:"Maintenance + Identity: Keeping the Weight Off",
+      meta:"Transition from ‘diet mode’ to a sustainable lifestyle you can live with.",
+      openingPrayer:
+        "Creator, help me keep what is good. Let my life be ordered, peaceful, and strong. Teach me maintenance with gratitude. Amen.",
+      lesson:[
+        {h:"The maintenance mindset", p:[
+          "Maintenance is a practice: consistent patterns, flexible weekends, and quick course-corrections.",
+          "Build a ‘standard day’ and a ‘special occasion plan’."
+        ]},
+        {h:"Relapse prevention", p:[
+          "Expect life to happen. Use the ‘48-hour reset’: water, protein, steps, sleep.",
+          "Keep your environment aligned with your values."
+        ]}
+      ],
+      exercises:[
+        "Write your ‘standard day’ (meals + movement + bedtime).",
+        "Write your 48-hour reset plan.",
+        "Choose 3 non-scale victories you’re proud of."
+      ],
+      quiz: [
+        {type:"tf", q:"Maintenance requires skills and planning, not luck.", a:"true"},
+        {type:"mc", q:"A useful maintenance tool is:", choices:["Never changing anything","A standard day + reset plan","Only cardio","No protein"], a:1},
+        {type:"mc", q:"A ‘course-correction’ should be:", choices:["Drastic and punishing","Small and calm","Impossible","Only fasting"], a:1},
+        {type:"mc", q:"Non-scale victories include:", choices:["Only weight","Energy, strength, sleep, confidence","Only hunger","None"], a:1},
+        {type:"essay", q:"Write your standard day, reset plan, and your top 3 non-scale victories."}
+      ]
+    }
+  ];
+
+  /* =======================
+     Elements
+     ======================= */
+  var weekListEl = document.getElementById("weekList");
+  var weekTitleEl = document.getElementById("weekTitle");
+  var weekMetaEl = document.getElementById("weekMeta");
+  var weekBodyEl = document.getElementById("weekBody");
+  var progressBar = document.getElementById("progressBar");
+  var progressPct = document.getElementById("progressPct");
+  var markDoneBtn = document.getElementById("markDoneBtn");
+
+  var resetBtn = document.getElementById("resetBtn");
+  var checkInBtn = document.getElementById("checkInBtn");
+  var streakLabel = document.getElementById("streakLabel");
+  var todayLabel = document.getElementById("todayLabel");
+  var exportBtn = document.getElementById("exportBtn");
+
+  todayLabel.textContent = niceDate();
+
+  /* =======================
+     Render Nav
+     ======================= */
+  function renderNav(){
+    var s = getState();
+    weekListEl.innerHTML = "";
+    for(var i=0;i<WEEK_DATA.length;i++){
+      (function(item){
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "weekBtn";
+        if(s.currentWeek === item.week) btn.classList.add("active");
+
+        var left = document.createElement("div");
+        left.className = "left";
+        var wk = document.createElement("div");
+        wk.className = "wk";
+        wk.textContent = "Week " + item.week;
+        var ttl = document.createElement("div");
+        ttl.className = "ttl";
+        ttl.textContent = item.title;
+
+        left.appendChild(wk);
+        left.appendChild(ttl);
+
+        var chip = document.createElement("div");
+        chip.className = "chip";
+        var isDone = !!s.completed[item.week];
+        if(isDone){
+          chip.classList.add("done");
+          chip.textContent = "✓ Done";
+        } else {
+          chip.textContent = "Free";
+        }
+
+        btn.appendChild(left);
+        btn.appendChild(chip);
+
+        btn.addEventListener("click", function(){
+          s = getState();
+          s.currentWeek = item.week;
+          setState(s);
+          renderAll();
+        });
+
+        weekListEl.appendChild(btn);
+      })(WEEK_DATA[i]);
+    }
+  }
+
+  function calcProgress(){
+    var s = getState();
+    var doneCount = 0;
+    for(var i=0;i<WEEK_DATA.length;i++){
+      if(s.completed[WEEK_DATA[i].week]) doneCount++;
+    }
+    var pct = Math.round((doneCount / WEEK_DATA.length) * 100);
+    progressBar.style.width = pct + "%";
+    progressPct.textContent = pct + "%";
+  }
+
+  /* =======================
+     Reset
+     ======================= */
+  resetBtn.addEventListener("click", function(){
+    if(!confirm("Reset progress, quizzes, planner, and streak for this course on this device?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    toast("Course reset.");
+    renderAll();
+  });
+
+  /* =======================
+     Streak
+     ======================= */
+  function renderStreak(){
+    var s = getState();
+    streakLabel.textContent = s.streak.count || 0;
+  }
+
+  checkInBtn.addEventListener("click", function(){
+    var s = getState();
+    var today = nowISODate();
+    if(s.streak.last === today){
+      toast("Already checked in today 🔥");
+      return;
+    }
+    // if yesterday, increment; else reset to 1
+    if(s.streak.last){
+      var last = new Date(s.streak.last + "T00:00:00");
+      var td = new Date(today + "T00:00:00");
+      var diffDays = Math.round((td - last) / (1000*60*60*24));
+      if(diffDays === 1) s.streak.count = (s.streak.count||0) + 1;
+      else s.streak.count = 1;
+    } else {
+      s.streak.count = 1;
+    }
+    s.streak.last = today;
+    setState(s);
+    toast("Check-in saved ✅");
+    renderStreak();
+  });
+
+  /* =======================
+     Calculator (TDEE estimate)
+     ======================= */
+  function calcBMR(sex, weightKg, heightCm, age){
+    // Mifflin-St Jeor
+    var base = (10*weightKg) + (6.25*heightCm) - (5*age);
+    if(sex === "male") return base + 5;
+    return base - 161;
+  }
+  function activityFactor(level){
+    if(level==="sedentary") return 1.2;
+    if(level==="light") return 1.375;
+    if(level==="moderate") return 1.55;
+    if(level==="active") return 1.725;
+    if(level==="very") return 1.9;
+    return 1.375;
+  }
+  function goalDeficit(goal){
+    // gentle / steady / assertive (still conservative)
+    if(goal==="gentle") return 250;
+    if(goal==="steady") return 400;
+    if(goal==="assertive") return 500;
+    return 400;
+  }
+
+  /* =======================
+     Planner
+     ======================= */
+  function getPlannerForDate(s, dateKey){
+    if(!s.planner[dateKey]){
+      s.planner[dateKey] = { meals:[], total:{ cal:0, prot:0, carb:0, fat:0 } };
+    }
+    return s.planner[dateKey];
+  }
+  function recalcPlannerTotals(day){
+    var cal=0, prot=0, carb=0, fat=0;
+    for(var i=0;i<day.meals.length;i++){
+      cal += Number(day.meals[i].cal||0);
+      prot += Number(day.meals[i].prot||0);
+      carb += Number(day.meals[i].carb||0);
+      fat += Number(day.meals[i].fat||0);
+    }
+    day.total = { cal:cal, prot:prot, carb:carb, fat:fat };
+  }
+
+  /* =======================
+     Quiz
+     ======================= */
+  function renderQuiz(item, s){
+    var wrap = document.createElement("div");
+    wrap.className = "card";
+    wrap.innerHTML = "<h3>Homework Quiz (5 questions)</h3><div class='mini'>Auto-saves on this device. Essay answers are saved (not auto-graded).</div>";
+
+    var qState = s.quiz[item.week] || { score:0, answered:{}, essay:{} };
+    s.quiz[item.week] = qState;
+
+    for(var qi=0; qi<item.quiz.length; qi++){
+      (function(q, idx){
+        var qEl = document.createElement("div");
+        qEl.className = "quizQ";
+        qEl.innerHTML = "<div class='qTitle'>Q"+(idx+1)+": "+ escapeHTML(q.q) +"</div>";
+
+        if(q.type === "tf" || q.type === "mc"){
+          var choices = document.createElement("div");
+          choices.className = "choices";
+
+          var opts = (q.type==="tf") ? ["True","False"] : q.choices;
+          for(var ci=0; ci<opts.length; ci++){
+            (function(opt, cidx){
+              var b = document.createElement("button");
+              b.type = "button";
+              b.className = "choiceBtn";
+              b.textContent = opt;
+
+              var answered = qState.answered[idx];
+              if(answered){
+                // lock display if already answered
+                if(answered.pick === cidx){
+                  b.classList.add(answered.correct ? "correct" : "incorrect");
+                }
+                b.disabled = true;
+                b.style.opacity = 0.85;
+                b.style.cursor = "default";
+              }
+
+              b.addEventListener("click", function(){
+                // grade
+                var correctIndex = null;
+                if(q.type==="tf"){
+                  correctIndex = (q.a === "true") ? 0 : 1;
+                } else {
+                  correctIndex = q.a;
+                }
+                var isCorrect = (cidx === correctIndex);
+
+                qState.answered[idx] = { pick:cidx, correct:isCorrect };
+                // recompute score
+                var sc = 0;
+                for(var k in qState.answered){
+                  if(qState.answered[k] && qState.answered[k].correct) sc++;
+                }
+                qState.score = sc;
+
+                setState(s);
+                toast(isCorrect ? "Correct ✅" : "Not quite — keep going");
+                renderAll();
+              });
+
+              choices.appendChild(b);
+            })(opts[ci], ci);
+          }
+          qEl.appendChild(choices);
+
+        } else if(q.type === "essay"){
+          var lab = document.createElement("label");
+          lab.textContent = "Your answer";
+          var ta = document.createElement("textarea");
+          ta.placeholder = "Write your response here...";
+          ta.value = (qState.essay[idx] || "");
+          ta.addEventListener("input", function(){
+            qState.essay[idx] = ta.value;
+            setState(s);
+          });
+          qEl.appendChild(lab);
+          qEl.appendChild(ta);
+        }
+
+        wrap.appendChild(qEl);
+      })(item.quiz[qi], qi);
+    }
+
+    var scoreLine = document.createElement("div");
+    scoreLine.className = "mini";
+    scoreLine.style.marginTop = "10px";
+    scoreLine.innerHTML = "<b>Auto-score:</b> " + (qState.score||0) + " / 4 (essay not auto-graded)";
+    wrap.appendChild(scoreLine);
+
+    return wrap;
+  }
+
+  /* =======================
+     Render Week Content
+     ======================= */
+  function escapeHTML(s){
+    return String(s)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function renderFlowCard(item){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>Class Flow (30 minutes)</h3>";
+
+    var flow = document.createElement("div");
+    flow.className = "flow";
+    flow.innerHTML = [
+      "<div class='step'><b>Opening</b> prayer (2 min)</div>",
+      "<div class='step'><b>Welcome</b> (3 min): set intention</div>",
+      "<div class='step'><b>Read</b> the lesson summary aloud (5 min)</div>",
+      "<div class='step'><b>Observe</b> (5 min): key ideas & repeated themes</div>",
+      "<div class='step'><b>Interpret</b> (7 min): what it means in practice</div>",
+      "<div class='step'><b>Apply</b> (6 min): one action for the week</div>",
+      "<div class='step'><b>Pray</b> (2 min): gratitude + resolve</div>",
+      "<div class='step'><b>Homework</b>: quiz + notes</div>"
+    ].join("");
+
+    var prayer = document.createElement("div");
+    prayer.className = "quizQ";
+    prayer.innerHTML = "<div class='qTitle'>Opening Prayer</div><div class='mini' style='color:var(--text);line-height:1.5'>"+escapeHTML(item.openingPrayer)+"</div>";
+
+    card.appendChild(prayer);
+    card.appendChild(flow);
+    return card;
+  }
+
+  function renderLessonCard(item){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>Lesson</h3>";
+    for(var i=0;i<item.lesson.length;i++){
+      var sec = document.createElement("div");
+      sec.className = "quizQ";
+      sec.innerHTML = "<div class='qTitle'>"+escapeHTML(item.lesson[i].h)+"</div>";
+      var ul = document.createElement("ul");
+      for(var j=0;j<item.lesson[i].p.length;j++){
+        var li = document.createElement("li");
+        li.textContent = item.lesson[i].p[j];
+        ul.appendChild(li);
+      }
+      sec.appendChild(ul);
+      card.appendChild(sec);
+    }
+    return card;
+  }
+
+  function renderExercisesCard(item, s){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>Weekly Actions</h3><div class='mini'>Pick 2–3 actions. Consistency beats intensity.</div>";
+    var ul = document.createElement("ul");
+    for(var i=0;i<item.exercises.length;i++){
+      var li = document.createElement("li");
+      li.textContent = item.exercises[i];
+      ul.appendChild(li);
+    }
+    card.appendChild(ul);
+
+    var notesWrap = document.createElement("div");
+    notesWrap.className = "quizQ";
+    notesWrap.innerHTML = "<div class='qTitle'>Your weekly notes</div>";
+    var ta = document.createElement("textarea");
+    ta.placeholder = "Notes, reflections, obstacles, wins…";
+    ta.value = (s.notes[item.week] || "");
+    ta.addEventListener("input", function(){
+      var st = getState();
+      st.notes[item.week] = ta.value;
+      setState(st);
+    });
+    notesWrap.appendChild(ta);
+    card.appendChild(notesWrap);
+
+    return card;
+  }
+
+  function renderToolsCard(s){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>Tools: Calorie Target + Daily Planner</h3><div class='mini'>Optional. Use only if it helps you. Estimates are not medical advice.</div>";
+
+    var grid = document.createElement("div");
+    grid.className = "tinyGrid";
+
+    // Calculator
+    var calc = document.createElement("div");
+    calc.className = "quizQ";
+    calc.innerHTML = "<div class='qTitle'>Calorie Target (Estimate)</div>";
+
+    var prof = s.profile || { sex:"female", age:30, heightCm:165, weightKg:80, activity:"light", goal:"steady" };
+    s.profile = prof;
+
+    calc.innerHTML +=
+      "<label>Sex</label>" +
+      "<select id='sexSel'><option value='female'>Female</option><option value='male'>Male</option></select>" +
+      "<div class='twoCol'>" +
+      " <div><label>Age</label><input id='ageIn' type='number' min='18' max='120' /></div>" +
+      " <div><label>Height (cm)</label><input id='htIn' type='number' min='120' max='230' /></div>" +
+      "</div>" +
+      "<label>Weight (kg)</label><input id='wtIn' type='number' min='35' max='300' />" +
+      "<label>Activity level</label>" +
+      "<select id='actSel'>" +
+      " <option value='sedentary'>Sedentary (mostly sitting)</option>" +
+      " <option value='light'>Light (some walking)</option>" +
+      " <option value='moderate'>Moderate (3–5 days/wk)</option>" +
+      " <option value='active'>Active (most days)</option>" +
+      " <option value='very'>Very active (hard training/job)</option>" +
+      "</select>" +
+      "<label>Goal pace</label>" +
+      "<select id='goalSel'>" +
+      " <option value='gentle'>Gentle</option>" +
+      " <option value='steady'>Steady</option>" +
+      " <option value='assertive'>Assertive (still conservative)</option>" +
+      "</select>" +
+      "<div class='rowBtns'>" +
+      " <button class='btn' type='button' id='calcBtn'>Calculate</button>" +
+      " <button class='btn secondary' type='button' id='saveProfBtn'>Save</button>" +
+      "</div>" +
+      "<div class='mini' id='calcOut' style='margin-top:10px'></div>";
+
+    // Planner
+    var planner = document.createElement("div");
+    planner.className = "quizQ";
+    planner.innerHTML = "<div class='qTitle'>Daily Planner (Manual Calorie Counter)</div>" +
+      "<div class='mini'>Enter foods manually (or use USDA FoodData Central links). Totals auto-sum.</div>" +
+      "<label>Date</label><input id='dayKey' type='date' />" +
+      "<div class='twoCol'>" +
+      " <div><label>Item</label><input id='mealName' placeholder='e.g., Greek yogurt + berries' /></div>" +
+      " <div><label>Calories</label><input id='mealCal' type='number' min='0' placeholder='e.g., 220' /></div>" +
+      "</div>" +
+      "<div class='twoCol'>" +
+      " <div><label>Protein (g)</label><input id='mealProt' type='number' min='0' placeholder='e.g., 18' /></div>" +
+      " <div><label>Carbs (g)</label><input id='mealCarb' type='number' min='0' placeholder='e.g., 26' /></div>" +
+      "</div>" +
+      "<div class='twoCol'>" +
+      " <div><label>Fat (g)</label><input id='mealFat' type='number' min='0' placeholder='e.g., 6' /></div>" +
+      " <div style='display:flex;align-items:flex-end;gap:10px'><button class='btn' type='button' id='addMealBtn'>+ Add</button><button class='btn secondary' type='button' id='clearDayBtn'>Clear Day</button></div>" +
+      "</div>" +
+      "<div class='hr'></div>" +
+      "<div id='mealList' class='mini'></div>" +
+      "<div class='mini' id='mealTotals' style='margin-top:8px;font-weight:900'></div>";
+
+    grid.appendChild(calc);
+    grid.appendChild(planner);
+    card.appendChild(grid);
+
+    // wire after insertion
+    setTimeout(function(){
+      var st = getState();
+      var sexSel = document.getElementById("sexSel");
+      var ageIn = document.getElementById("ageIn");
+      var htIn = document.getElementById("htIn");
+      var wtIn = document.getElementById("wtIn");
+      var actSel = document.getElementById("actSel");
+      var goalSel = document.getElementById("goalSel");
+      var calcBtn = document.getElementById("calcBtn");
+      var saveProfBtn = document.getElementById("saveProfBtn");
+      var calcOut = document.getElementById("calcOut");
+
+      sexSel.value = st.profile.sex || "female";
+      ageIn.value = st.profile.age || 30;
+      htIn.value = st.profile.heightCm || 165;
+      wtIn.value = st.profile.weightKg || 80;
+      actSel.value = st.profile.activity || "light";
+      goalSel.value = st.profile.goal || "steady";
+
+      function doCalc(){
+        var sex = sexSel.value;
+        var age = clamp(parseInt(ageIn.value,10)||30, 18, 120);
+        var ht = clamp(parseFloat(htIn.value)||165, 120, 230);
+        var wt = clamp(parseFloat(wtIn.value)||80, 35, 300);
+        var af = activityFactor(actSel.value);
+        var bmr = calcBMR(sex, wt, ht, age);
+        var tdee = bmr * af;
+        var deficit = goalDeficit(goalSel.value);
+        var target = tdee - deficit;
+
+        // conservative floor (informational)
+        var floor = (sex==="female") ? 1200 : 1500;
+        var warn = "";
+        if(target < floor){
+          target = floor;
+          warn = " <span style='color:var(--warn)'><b>Note:</b> Target was below a conservative floor; adjusted. If you need a lower-calorie plan, do it with clinical guidance.</span>";
+        }
+
+        calcOut.innerHTML =
+          "<b>Estimated BMR:</b> " + Math.round(bmr) + " kcal/day<br>" +
+          "<b>Estimated TDEE:</b> " + Math.round(tdee) + " kcal/day<br>" +
+          "<b>Suggested target:</b> <span style='color:var(--accent)'><b>" + Math.round(target) + " kcal/day</b></span><br>" +
+          "<span class='mini'>Use this only if it helps. Focus first on protein, fiber, sleep, and movement.</span>" + warn;
+      }
+
+      calcBtn.addEventListener("click", doCalc);
+
+      saveProfBtn.addEventListener("click", function(){
+        st = getState();
+        st.profile.sex = sexSel.value;
+        st.profile.age = clamp(parseInt(ageIn.value,10)||30, 18, 120);
+        st.profile.heightCm = clamp(parseFloat(htIn.value)||165, 120, 230);
+        st.profile.weightKg = clamp(parseFloat(wtIn.value)||80, 35, 300);
+        st.profile.activity = actSel.value;
+        st.profile.goal = goalSel.value;
+        setState(st);
+        toast("Profile saved ✅");
+        doCalc();
+      });
+
+      // Planner wiring
+      var dayKey = document.getElementById("dayKey");
+      var mealName = document.getElementById("mealName");
+      var mealCal = document.getElementById("mealCal");
+      var mealProt = document.getElementById("mealProt");
+      var mealCarb = document.getElementById("mealCarb");
+      var mealFat = document.getElementById("mealFat");
+      var addMealBtn = document.getElementById("addMealBtn");
+      var clearDayBtn = document.getElementById("clearDayBtn");
+      var mealList = document.getElementById("mealList");
+      var mealTotals = document.getElementById("mealTotals");
+
+      dayKey.value = nowISODate();
+
+      function renderDay(){
+        st = getState();
+        var key = dayKey.value || nowISODate();
+        var day = getPlannerForDate(st, key);
+        recalcPlannerTotals(day);
+        setState(st);
+
+        if(day.meals.length === 0){
+          mealList.innerHTML = "<i>No items yet.</i>";
+        } else {
+          var html = "";
+          for(var i=0;i<day.meals.length;i++){
+            html += "<div style='display:flex;gap:10px;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)'>" +
+                    "<div style='min-width:0'><b>" + escapeHTML(day.meals[i].name||"Item") + "</b><div class='mini'>" +
+                    (day.meals[i].cal||0) + " kcal · P " + (day.meals[i].prot||0) + "g · C " + (day.meals[i].carb||0) + "g · F " + (day.meals[i].fat||0) + "g" +
+                    "</div></div>" +
+                    "<button class='choiceBtn' type='button' data-del='"+i+"' style='padding:8px 10px'>Delete</button>" +
+                    "</div>";
+          }
+          mealList.innerHTML = html;
+          var delBtns = mealList.querySelectorAll("[data-del]");
+          for(var j=0;j<delBtns.length;j++){
+            delBtns[j].addEventListener("click", function(e){
+              var idx = parseInt(e.target.getAttribute("data-del"),10);
+              var st2 = getState();
+              var key2 = dayKey.value || nowISODate();
+              var day2 = getPlannerForDate(st2, key2);
+              day2.meals.splice(idx,1);
+              recalcPlannerTotals(day2);
+              setState(st2);
+              renderDay();
+            });
+          }
+        }
+
+        mealTotals.innerHTML =
+          "<b>Totals:</b> " + day.total.cal + " kcal · P " + day.total.prot + "g · C " + day.total.carb + "g · F " + day.total.fat + "g";
+      }
+
+      dayKey.addEventListener("change", renderDay);
+
+      addMealBtn.addEventListener("click", function(){
+        st = getState();
+        var key = dayKey.value || nowISODate();
+        var day = getPlannerForDate(st, key);
+        var name = (mealName.value||"").trim();
+        var cal = parseInt(mealCal.value,10)||0;
+        var prot = parseInt(mealProt.value,10)||0;
+        var carb = parseInt(mealCarb.value,10)||0;
+        var fat = parseInt(mealFat.value,10)||0;
+
+        if(!name){
+          toast("Add an item name first.");
+          mealName.focus();
+          return;
+        }
+        day.meals.push({ name:name, cal:cal, prot:prot, carb:carb, fat:fat });
+        recalcPlannerTotals(day);
+        setState(st);
+
+        mealName.value=""; mealCal.value=""; mealProt.value=""; mealCarb.value=""; mealFat.value="";
+        renderDay();
+        toast("Added ✅");
+      });
+
+      clearDayBtn.addEventListener("click", function(){
+        if(!confirm("Clear all items for this date?")) return;
+        st = getState();
+        var key = dayKey.value || nowISODate();
+        st.planner[key] = { meals:[], total:{ cal:0, prot:0, carb:0, fat:0 } };
+        setState(st);
+        renderDay();
+        toast("Day cleared.");
+      });
+
+      // initial
+      doCalc();
+      renderDay();
+    }, 0);
+
+    return card;
+  }
+
+  function renderResourcesCard(){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>Free Resource Center (Compare + Learn)</h3>" +
+      "<div class='mini'>These links are optional references. Open in a new tab.</div>" +
+      "<table class='table' aria-label='Resource links'>" +
+      "<tr><th>Topic</th><th>Link</th></tr>" +
+      "<tr><td>Healthy weight loss basics</td><td><a class='btn ghost' href='https://www.cdc.gov/healthy-weight-growth/losing-weight/index.html' target='_blank' rel='noopener'>CDC: Steps for Losing Weight</a></td></tr>" +
+      "<tr><td>Choosing a safe program</td><td><a class='btn ghost' href='https://www.niddk.nih.gov/health-information/weight-management/choosing-a-safe-successful-weight-loss-program' target='_blank' rel='noopener'>NIDDK: Safe Program Checklist</a></td></tr>" +
+      "<tr><td>Government nutrition hub</td><td><a class='btn ghost' href='https://www.nutrition.gov/topics/healthy-living-and-weight/strategies-success/interested-losing-weight' target='_blank' rel='noopener'>Nutrition.gov: Losing Weight</a></td></tr>" +
+      "<tr><td>Food calories/nutrients</td><td><a class='btn ghost' href='https://fdc.nal.usda.gov/' target='_blank' rel='noopener'>USDA FoodData Central</a></td></tr>" +
+      "<tr><td>Healthy plate model</td><td><a class='btn ghost' href='https://nutritionsource.hsph.harvard.edu/healthy-eating-plate/' target='_blank' rel='noopener'>Harvard: Healthy Eating Plate</a></td></tr>" +
+      "<tr><td>Physical activity guidance</td><td><a class='btn ghost' href='https://www.cdc.gov/healthy-weight-growth/physical-activity/index.html' target='_blank' rel='noopener'>CDC: Activity & Weight</a></td></tr>" +
+      "</table>";
+    return card;
+  }
+
+  function renderWeek(item){
+    var s = getState();
+
+    weekTitleEl.textContent = "Week " + item.week + " — " + item.title;
+    weekMetaEl.textContent = item.meta;
+
+    // Mark done button (always available)
+    var isDone = !!s.completed[item.week];
+    markDoneBtn.textContent = isDone ? "✅ Week completed" : "🏁 Mark week complete";
+    markDoneBtn.style.opacity = 1;
+    markDoneBtn.disabled = false;
+
+    markDoneBtn.onclick = function(){
+      var st = getState();
+      st.completed[item.week] = true;
+      setState(st);
+      toast("Week marked complete ✅");
+      renderAll();
+    };
+
+    // Body
+    weekBodyEl.innerHTML = "";
+    weekBodyEl.appendChild(renderFlowCard(item));
+    weekBodyEl.appendChild(renderLessonCard(item));
+    weekBodyEl.appendChild(renderExercisesCard(item, s));
+    weekBodyEl.appendChild(renderToolsCard(s));
+    weekBodyEl.appendChild(renderQuiz(item, s));
+    weekBodyEl.appendChild(renderResourcesCard());
+  }
+
+  /* =======================
+     Export Notes (simple)
+     ======================= */
+  exportBtn.addEventListener("click", function(){
+    var s = getState();
+    var lines = [];
+    lines.push("Khaemenes Academy — Advanced Lifestyle Weight Loss (Local Export)");
+    lines.push("Export date: " + niceDate());
+    lines.push("Access: All 8 weeks free on this device");
+    lines.push("Streak: " + (s.streak.count||0) + " days");
+    lines.push("");
+    lines.push("=== WEEK NOTES ===");
+    for(var i=0;i<WEEK_DATA.length;i++){
+      var w = WEEK_DATA[i].week;
+      lines.push("");
+      lines.push("Week " + w + ": " + WEEK_DATA[i].title);
+      lines.push("Completed: " + (s.completed[w] ? "Yes" : "No"));
+      lines.push("Notes:");
+      lines.push((s.notes[w] || "").trim() || "(none)");
+    }
+    lines.push("");
+    lines.push("=== QUIZ SUMMARY ===");
+    for(var j=0;j<WEEK_DATA.length;j++){
+      var ww = WEEK_DATA[j].week;
+      var q = s.quiz[ww];
+      if(q){
+        lines.push("Week " + ww + ": " + (q.score||0) + "/4 (essay saved)");
+      }
+    }
+
+    var blob = new Blob([lines.join("\n")], {type:"text/plain;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "khaemenes_weightloss_export.txt";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+      URL.revokeObjectURL(url);
+      a.remove();
+    }, 250);
+  });
+
+  /* =======================
+     Render All
+     ======================= */
+  function renderAll(){
+    var s = getState();
+    // clamp week
+    s.currentWeek = clamp(s.currentWeek||1, 1, WEEK_DATA.length);
+    setState(s);
+
+    renderNav();
+    calcProgress();
+    renderStreak();
+    renderWeek(WEEK_DATA[s.currentWeek - 1]);
+  }
+
+  // Initial
+  renderAll();
+
+})();
+</script>
+</body>
+</html>
