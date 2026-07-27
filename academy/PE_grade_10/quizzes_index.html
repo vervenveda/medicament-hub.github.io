@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PLERA — 10th Grade P.E. Portal — Portal + Quizzes + Finals</title>
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:12px; --gap:14px; --maxw:1200px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(180deg,var(--bg) 0%, #061225 70%); color:var(--ink);
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:20px;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+.container{width:100%; max-width:var(--maxw); display:grid; grid-template-columns:320px 1fr; gap:var(--gap);}
+.sidebar{background:var(--panel); border-radius:var(--radius); padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.6);}
+.brand{font-weight:900; font-size:18px; color:var(--accent-strong); margin-bottom:6px}
+.meta{font-size:13px; color:var(--muted); margin-bottom:12px}
+.module-select{display:flex; gap:8px; margin-bottom:12px}
+.module-btn{padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); cursor:pointer; background:transparent; color:var(--ink)}
+.module-btn.active{background:linear-gradient(90deg, rgba(107,168,255,0.08), rgba(59,130,246,0.03)); box-shadow:0 6px 18px rgba(59,130,246,0.04)}
+.nav{margin-top:6px}
+.week-btn{display:block; width:100%; text-align:left; padding:10px 12px; margin-bottom:8px; border-radius:10px; background:transparent; color:var(--ink); border:1px solid rgba(255,255,255,0.03); cursor:pointer; position:relative; outline:none}
+.week-btn.locked{opacity:0.6; cursor:not-allowed; border:1px dashed rgba(255,255,255,0.06)}
+.week-btn.active{background:linear-gradient(90deg, rgba(107,168,255,0.10), rgba(59,130,246,0.04));}
+.week-btn:focus{box-shadow:0 0 0 3px rgba(107,168,255,0.08)}
+.lock-icon{position:absolute; right:12px; top:12px; font-size:13px; color:var(--muted)}
+.progress-card{margin-top:16px; background:var(--card); border-radius:10px; padding:12px; font-size:13px; color:var(--muted)}
+.main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:20px; min-height:640px; box-shadow:0 10px 30px rgba(2,6,23,0.6);}
+.h1{font-size:20px; margin:0 0 8px 0; color:var(--ink)}
+.kv{font-size:13px; color:var(--muted)}
+.lesson{background:var(--glass); padding:14px; border-radius:10px; margin-bottom:12px; color:var(--ink)}
+.lesson h3{margin:0 0 8px 0}
+.quiz-guide{background:rgba(111,179,255,0.03); padding:12px; border-radius:8px; margin-bottom:12px; color:var(--muted); font-size:14px}
+.actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
+.btn{background:var(--accent); color:#04232a; padding:8px 12px; border-radius:10px; border:0; cursor:pointer; font-weight:700}
+.btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.05); color:var(--muted)}
+.small{font-size:13px; padding:6px 10px}
+.score{font-weight:800; color:#dff2e0}
+.stars{font-size:18px; color:#ffd166}
+.modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85)); z-index:60; padding:18px}
+.card{background:#071428; padding:18px; width:100%; max-width:980px; border-radius:12px; box-shadow:0 10px 40px rgba(3,7,18,0.6); color:var(--ink)}
+.q{margin-bottom:12px}
+.choices{display:flex; flex-direction:column; gap:8px; margin-top:8px}
+.choice{padding:10px; border-radius:8px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); color:var(--ink); background:transparent; outline:none}
+.choice.selected{outline:2px solid rgba(107,168,255,0.18); background:rgba(59,130,246,0.04)}
+.choice:focus{box-shadow:0 0 0 3px rgba(107,168,255,0.06)}
+.footer{display:flex; justify-content:space-between; align-items:center; margin-top:14px}
+.topbar{display:flex; gap:12px; justify-content:space-between; align-items:center; margin-bottom:8px}
+.controls{display:flex; gap:8px}
+.badge{background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; font-size:13px; color:var(--muted)}
+.footer-row{display:flex; gap:10px; align-items:center; margin-top:12px}
+.export-btn{background:transparent; border:1px solid rgba(255,255,255,0.04); padding:6px 8px; border-radius:8px; color:var(--muted)}
+.center{display:flex; align-items:center; justify-content:center}
+.lock-note{font-size:12px; color:var(--muted); margin-top:8px}
+
+@media (max-width:1000px){ .container{grid-template-columns:1fr;}.sidebar{order:2} }
+@media print {
+  body{padding:0}
+  .container > aside, .export-btn, .controls, .nav, .module-select, .week-btn{display:none !important}
+  .main{box-shadow:none; border-radius:0; background:transparent}
+  .card{background:transparent}
+}
+</style>
+</head>
+<body>
+  <div class="container" id="app">
+    <aside class="sidebar">
+      <div class="brand">PLERA — 10th Grade P.E.</div>
+      <div class="meta">P.E. 301 (A) + P.E. 401 (B) — 12 weeks total · Certificates · Export · Print</div>
+
+      <div class="module-select" id="moduleSelect">
+        <button class="module-btn active" data-module="A">P.E. 301 (A)</button>
+        <button class="module-btn" data-module="B">P.E. 401 (B)</button>
+      </div>
+
+      <div class="nav" id="weekNav" aria-label="Week navigation"></div>
+
+      <div class="progress-card" id="progressCard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Progress</div>
+          <div id="overallPercent">0%</div>
+        </div>
+        <div style="margin-top:8px; font-size:13px;" id="detailedProgress">No quizzes completed yet</div>
+
+        <div class="footer-row" style="margin-top:12px">
+          <button class="export-btn" id="exportBtn" title="Download progress JSON">Export Progress</button>
+          <button class="export-btn" id="downloadHTML" title="Download current portal HTML">Download Portal HTML</button>
+        </div>
+
+        <div class="footer-row" style="margin-top:10px">
+          <button class="export-btn" id="printBtn" title="Print / Save as PDF">Print / Save as PDF</button>
+          <button class="export-btn" id="importBtn" title="Import progress JSON">Import</button>
+        </div>
+
+        <div class="footer-row" style="margin-top:12px">
+          <button id="clearStorage" class="export-btn">Reset Data</button>
+        </div>
+
+        <div class="lock-note" id="lockNote">Weeks unlock after previous week is completed with <strong>≥ 80%</strong>. Module B unlocks after Module A complete + final passed.</div>
+      </div>
+    </aside>
+
+    <main class="main" id="main">
+      <div class="topbar">
+        <div>
+          <div class="h1" id="mainTitle">P.E. 301 — Week A1</div>
+          <div class="kv" id="mainSub">Sport Science & Performance Foundations</div>
+        </div>
+        <div class="controls">
+          <div class="badge" id="starBadge" aria-live="polite">★ —</div>
+          <button class="btn small" id="openQuizBtn">Start Quiz</button>
+          <button class="btn ghost small" id="openFinalBtn">Final Exam</button>
+        </div>
+      </div>
+
+      <div id="lessonContainer"></div>
+      <div id="lessonActions" style="margin-top:8px"></div>
+    </main>
+  </div>
+
+  <!-- QUIZ MODAL -->
+  <div id="quizModal" class="modal" style="display:none" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div>
+          <div style="font-weight:800" id="quizTitle">Quiz</div>
+          <div class="kv" id="quizSub">10 questions</div>
+        </div>
+        <div><button class="btn ghost small" id="closeQuiz">Close</button></div>
+      </div>
+
+      <div id="quizArea" style="margin-top:12px"></div>
+
+      <div class="footer">
+        <div class="kv" id="qProgress">Question 1 / 10</div>
+        <div>
+          <button class="btn ghost small" id="prevQ">Prev</button>
+          <button class="btn small" id="nextQ">Next</button>
+          <button class="btn small" id="submitQuiz" style="display:none">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="importFile" accept="application/json" style="display:none" />
+
+<script>
+/* ================= CONFIG ================= */
+const STORAGE_KEY = 'plera_pe_10th_portal_v1';
+const UNLOCK_THRESHOLD = 80; // must score >= this to unlock next week
+const PASS_THRESHOLD = 0.70; // final exam pass (70%)
+
+/* ================= MODULES / CURRICULUM / QUIZZES (unchanged content) ================= */
+/* (modules, quizzes, finals identical to your original; truncated here in commentary but included in the code block below) */
+/* For readability in this reply I include the full structures exactly as in your provided file. */
+const MODULES = {
+  A: {
+    code: 'A', short: 'P.E. 301 (A)', title: 'P.E. 301 — Sport Science Foundations (Weeks A1–A6)',
+    curriculum: [
+      { id:'A1', title:'Week A1 — Sport Science & Performance Foundations', subtitle:'Energy systems, testing, safety', objectives:['Energy systems (ATP-PC, glycolytic, oxidative)','Purpose of performance testing','Safety & screening before training'], quizGuide: 'Quiz focuses on energy systems, interpreting simple performance tests (timed runs, vertical jump), and important pre-activity screening cues. Study definitions and examples of ATP-PC, glycolytic, and oxidative systems and safe practice principles.', warmup:'Dynamic mobility 8–10 min', activities:['Testing battery: 20m sprint, vertical jump, beep/yo-yo intro','Intro to training log'], cooldown:'Active recovery & mobility', homework:'Start a 2-week training log' },
+      { id:'A2', title:'Week A2 — Advanced Aerobic & Anaerobic Conditioning', subtitle:'Interval progressions, pacing', objectives:['Designing intervals for sport','Aerobic base vs anaerobic power','Measuring effort (RPE & HR)'], quizGuide: 'Quiz will ask about interval structures for various events, pacing strategies, RPE usage, and practical session examples for endurance vs power athletes.', warmup:'Activation drills', activities:['VO2-style intervals & tempo work','Recovery circuits'], cooldown:'Stretch & breathing', homework:'Log two interval sessions' },
+      { id:'A3', title:'Week A3 — Strength Mechanics & Hypertrophy Basics', subtitle:'Programming basics & movement quality', objectives:['Principles of strength progression','Compound movement mechanics','Role of eccentric & tempo control'], quizGuide: 'Expect questions on safe progression, compound movement cues (squat, hinge, press), and how tempo/eccentric control influence strength and hypertrophy.', warmup:'Movement prep', activities:['Technique circuits: squat, hinge, press, pull','Core stabilizing sequence'], cooldown:'Light stretch', homework:'Record form notes & weights' },
+      { id:'A4', title:'Week A4 — Sports Nutrition for Performance', subtitle:'Macros, timing, hydration', objectives:['Nutrition basics for training & recovery','Hydration strategies & timing','Pre/post training fueling'], quizGuide: 'Quiz items include macronutrient roles, simple pre/post workout meal examples, hydration rules for practice and competition, and recognizing basic signs of underfueling.', warmup:'Light mobility', activities:['Nutrition myth-busting session & meal-planning exercise','Hydration lab'], cooldown:'Reflection', homework:'Plan 3 performance meals' },
+      { id:'A5', title:'Week A5 — Biomechanics & Movement Analysis', subtitle:'Motion, joint action, injury mechanisms', objectives:['Basic biomechanics vocabulary','Efficient technique principles','Common movement errors & corrections'], quizGuide: 'Quiz focuses on terminology (flexion, extension, abduction), analyzing a squat and sprint technique cues, and common contributing factors to movement-related injury.', warmup:'Activation & drills', activities:['Video analysis of basic movements','Correction drills'], cooldown:'Mobility', homework:'Submit short video reflection' },
+      { id:'A6', title:'Week A6 — Assessment, Integration & Coaching Basics', subtitle:'Testing retest & peer coaching', objectives:['Interpreting test results','Designing short-term plans','Giving & receiving coaching feedback'], quizGuide: 'Quiz covers interpreting baseline changes, designing a short 2–4 week plan from test data, and peer coaching best practices including constructive feedback language.', warmup:'Combined prep', activities:['Retest key baselines & coach each other','Design mini-programs'], cooldown:'Debrief', homework:'Submit retest comparison' }
+    ]
+  },
+  B: {
+    code: 'B', short: 'P.E. 401 (B)', title: 'P.E. 401 — Performance & Leadership (Weeks B1–B6)',
+    curriculum: [
+      { id:'B1', title:'Week B1 — Periodization & Program Design', subtitle:'Macro/micro cycles & load management', objectives:['Periodization concepts','Balancing load & recovery','Planning microcycles'], quizGuide: 'Quiz will test periodization vocabulary, how to sequence intensity/volume across weeks, and identifying signs of excessive load. Know simple macro/microcycle examples.', warmup:'Joint prep', activities:['Create sample 4-week microcycle','Group review of load plans'], cooldown:'Reflection', homework:'Draft a 4-week block' },
+      { id:'B2', title:'Week B2 — Power & Plyo Progressions', subtitle:'Power development and transfer', objectives:['Plyo progressions','Rate of force development ideas','Transfer to sport skills'], quizGuide: 'Expect questions on the progression of plyometrics, safe dosage, power metrics (rate of force development), and how to pair plyos with strength work for transfer.', warmup:'Activation + hops', activities:['Progressive plyo circuit','Contrast training demo'], cooldown:'Lower limb mobility', homework:'Plyo log entries' },
+      { id:'B3', title:'Week B3 — Injury Prevention & Rehab Principles', subtitle:'Screening, rehab basics, return-to-play', objectives:['Movement screens','Basic rehab progression','Return-to-play decision rules'], quizGuide: 'Quiz will include screening tools, phases of rehab (protect/restore/strengthen/return), and simple return-to-play test components and red flags that need referral.', warmup:'Screen & activation', activities:['Corrective exercise stations','Rehab progression examples'], cooldown:'Education & Q&A', homework:'Compile a prevention checklist' },
+      { id:'B4', title:'Week B4 — Sports Psychology & Performance Readiness', subtitle:'Motivation, arousal, focus', objectives:['Arousal regulation & imagery','Goal-setting & routines','Team cohesion and leadership'], quizGuide: 'Quiz items cover arousal management strategies, basics of imagery and routine creation, SMART goals for sport, and techniques to foster team cohesion.', warmup:'Mindful activation', activities:['Pre-performance routine workshop','Visualization practice'], cooldown:'Reflection', homework:'Write a competition routine' },
+      { id:'B5', title:'Week B5 — Advanced Tactics & Analytics', subtitle:'Decision-making & match analysis', objectives:['Tactical principles','Using simple performance metrics','Video analysis basics'], quizGuide: 'Expect questions on spacing & tempo in tactical play, reading simple metrics (distance covered, sprints), and how to use video clips for tactical learning.', warmup:'Skill & tactic drills', activities:['Small-sided tactical setups','Video debrief'], cooldown:'Group debrief', homework:'Tactical notes submission' },
+      { id:'B6', title:'Week B6 — Capstone Project & Final', subtitle:'Individual program & final exam', objectives:['Synthesize learning into a program','Present evidence-based rationale','Final knowledge check'], quizGuide: 'Final covers cumulative knowledge across Modules B and applied program design. The final exam is closed-book; study all B module guides and your capstone project notes.', warmup:'Combined prep', activities:['Present capstone program & peer feedback','Retest key metrics'], cooldown:'Course synthesis', homework:'Submit final project & take final exam' }
+    ]
+  }
+};
+
+/* ========== QUIZZES (full list exactly as provided originally) ========== */
+/* NOTE: For brevity in this response I will keep the exact quizzes and finals content identical to your original file.
+   In your deployed file these arrays are included (A1..B6 quizzes and finals A/B). */
+const quizzes = {
+  A1: [
+    {q:'Which energy system is primarily used for a 6-second sprint?', choices:['ATP-PC (phosphagen)','Aerobic','Glycolytic','Oxidative'], a:0},
+    {q:'Vertical jump measures primarily:', choices:['Power','Flexibility','Endurance','Balance'], a:0},
+    {q:'A baseline test should be repeated to:', choices:['Track progress','Remove pain','Increase weight','None'], a:0},
+    {q:'Pre-activity screening should check for:', choices:['Recent injuries','Shoe color','Favorite music','None'], a:0},
+    {q:'Which is a characteristic of the oxidative system?', choices:['Long-duration energy','Very short bursts','No oxygen used','Immediate maximal power'], a:0},
+    {q:'Good warm-up includes:', choices:['Dynamic mobility','Sleeping','Static heavy stretching only','Complete rest'], a:0},
+    {q:'A safe testing environment requires:', choices:['Clear space & supervision','Crowding','Loud music only','No supervision'], a:0},
+    {q:'20m sprint is a measure of:', choices:['Speed','Flexibility','Hydration','Diet'], a:0},
+    {q:'Progressive overload means:', choices:['Gradual increase of stimulus','Increase everything instantly','Never change program','Random workouts'], a:0},
+    {q:'Record-keeping in training helps to:', choices:['Inform adjustments and show progress','Hide data','Confuse athlete','None'], a:0}
+  ],
+  A2: [
+    {q:'Interval training alternates:', choices:['High & low intensity periods','Only rest','Only strength','Only skill'], a:0},
+    {q:'RPE is used to measure:', choices:['Perceived exertion','Exact heart rate','Calories','Speed'], a:0},
+    {q:'Tempo runs are best described as:', choices:['Sustained effort at a challenging pace','All-out sprint','Rest session','Static stretching'], a:0},
+    {q:'For beginners, intervals should be:', choices:['Conservative & progressive','Maximal from day one','No rest','100% sprint only'], a:0},
+    {q:'The talk test helps estimate:', choices:['Exercise intensity','Strength','Flexibility','Jump height'], a:0},
+    {q:'Proper interval recovery helps:', choices:['Repeat high-quality efforts','Decrease adaptation','Increase injury risk','None'], a:0},
+    {q:'Aerobic base training emphasizes:', choices:['Longer, lower intensity work','Short sprints only','Skill drills only','No activity'], a:0},
+    {q:'Hydration during long sessions prevents:', choices:['Decreased performance & cramping','Instant strength','No effects','Better eyesight'], a:0},
+    {q:'A session log should include:', choices:['Duration, intensity, notes','Only feelings','Just food','Only time'], a:0},
+    {q:'Interval sessions are useful for:', choices:['Both speed and endurance development','Only flexibility','Only diet','None'], a:0}
+  ],
+  A3: [
+    {q:'Eccentric control refers to:', choices:['Muscle lengthening under load','Muscle shortening','No movement','Breathing only'], a:0},
+    {q:'Compound movements typically include:', choices:['Squat, hinge, press','Only isolation curls','Yoga only','Dance moves'], a:0},
+    {q:'Proper breathing during strength: exhale on', choices:['Exertion','Inhale','Random','No rule'], a:0},
+    {q:'Core stability contributes to:', choices:['Force transfer and injury reduction','Only speed gains','Lose balance','None'], a:0},
+    {q:'Beginner rep ranges often suggested:', choices:['8–15 reps','1 rep only','100 reps','Undefined'], a:0},
+    {q:'Quality of movement matters because:', choices:['It reduces injury and improves gains','It wastes time','Only looks good','None'], a:0},
+    {q:'Progression in weight should be:', choices:['Gradual and technique-first','Huge jumps every session','Never increase','Random'], a:0},
+    {q:'Rest between sets primarily allows for:', choices:['Recovery & quality','Only fatigue','Only warm-up','No purpose'], a:0},
+    {q:'A hinge pattern emphasizes which joint action?', choices:['Hip hinge (posterior chain)','Ankle only','Neck movement','Shoulder only'], a:0},
+    {q:'A coach cue for squats: knees should track over', choices:['Toes','Opposite direction','Never move','Hands'], a:0}
+  ],
+  A4: [
+    {q:'Small-sided games improve:', choices:['Touches & decision-making','Only rest','Only speed','None'], a:0},
+    {q:'Good passing technique includes:', choices:['Using correct surface & follow-through','Throwing the ball hard always','No communication','No practice'], a:0},
+    {q:'Sportsmanship is:', choices:['Respect & fair play','Cheating','Winning at all cost','Yelling'], a:0},
+    {q:'Role clarity in teams helps:', choices:['Reduce confusion & improve tactics','Cause fights','Slow play','None'], a:0},
+    {q:'Spacing on the field relates to:', choices:['Creating passing & attacking options','Only defense','Only individual play','None'], a:0},
+    {q:'Constructive feedback should be:', choices:['Specific & actionable','Vague insults','Public shaming','Ignored'], a:0},
+    {q:'Drill repetition should focus on:', choices:['Quality of technique','Quantity ignoring form','Only speed','None'], a:0},
+    {q:'Small-sided games reduce:', choices:['Field size and increase touches','Fatigue','Learning','None'], a:0},
+    {q:'Warm-up before sport should include:', choices:['Ball control and dynamic drills','Nothing','Static only','Only weightlifting'], a:0},
+    {q:'Debrief after games should include:', choices:['What worked and next steps','Ignore results','Blame others','No reflection'], a:0}
+  ],
+  A5: [
+    {q:'Lifetime activities examples include:', choices:['Swimming and cycling','Only football','Fads','None'], a:0},
+    {q:'For recovery, a balanced meal should contain:', choices:['Protein & carbohydrates (& fats)','Only carbs','Only fats','No food'], a:0},
+    {q:'Active recovery might be:', choices:['A light walk or cycle','High intensity sprint','Max lift','None'], a:0},
+    {q:'Hydration is important because it affects:', choices:['Thermoregulation & performance','Height','Vision','None'], a:0},
+    {q:'Yoga benefits include:', choices:['Flexibility & breath control','Only speed','Only strength','None'], a:0},
+    {q:'Sleep is essential for:', choices:['Recovery & adaptation','Learning only','No effect','Instant strength'], a:0},
+    {q:'Low-impact cardio is good for:', choices:['Joint-friendly conditioning','Only competition','No benefit','Dangerous'], a:0},
+    {q:'A balanced plate after training should prioritize:', choices:['Protein to repair & carbs to restore glycogen','Only sweets','Only drinks','Nothing'], a:0},
+    {q:'Planning lifetime activities helps to:', choices:['Maintain long-term health','Only for athletes','Just trend following','None'], a:0},
+    {q:'Recovery strategies include:', choices:['Stretching, sleep, hydration','Ignore rest','Train constantly','None'], a:0}
+  ],
+  A6: [
+    {q:'Retesting baseline shows:', choices:['Progress & training needs','No change','Only failure','None'], a:0},
+    {q:'Peer coaching helps develop:', choices:['Leadership & communication','Only criticism','No skills','None'], a:0},
+    {q:'When designing short-term plans you should include:', choices:['Clear objectives & progression','No timeline','Random workouts','Only rest'], a:0},
+    {q:'Integration of weekly concepts includes:', choices:['Warm-up, skill, strength, recovery','Only competition','Only sleeping','None'], a:0},
+    {q:'Good reflection includes:', choices:['What worked & next steps','Only complaints','No action','None'], a:0},
+    {q:'SMART goals are:', choices:['Specific, measurable, achievable, relevant, time-bound','Vague','Impossible','None'], a:0},
+    {q:'Retest comparisons should report:', choices:['Absolute values & meaningful change','Only opinions','None','None'], a:0},
+    {q:'Coaching language should be:', choices:['Constructive and clear','Mean and vague','Ignore athlete','None'], a:0},
+    {q:'Mini tournaments help assess:', choices:['Tactical & technical application','Only fitness','Only weight','None'], a:0},
+    {q:'Final steps before module test include:', choices:['Review guides and retest notes','Ignore study','Only training','None'], a:0}
+  ],
+  B1: [
+    {q:'Periodization includes planning across:', choices:['Macro, meso, micro cycles','Only a week','Only a day','No planning'], a:0},
+    {q:'Load management helps prevent:', choices:['Overtraining and injury','Instant improvement','No effect','None'], a:0},
+    {q:'A microcycle is typically:', choices:['1 week long','A whole year','1 day only','A decade'], a:0},
+    {q:'A good periodized plan alternates:', choices:['Intensity and volume','Only intensity','Only rest','No variation'], a:0},
+    {q:'Recovery must be scheduled because:', choices:['Adaptation occurs during recovery','Rest is optional','Only fatigue increases','None'], a:0},
+    {q:'Monitoring athlete readiness can include:', choices:['RPE, sleep, soreness logs','Only weight','Only video','None'], a:0},
+    {q:'Progressive overload in periodization is applied via:', choices:['Adjusting volume/intensity/complexity','Random change','Never changing','Only diet'], a:0},
+    {q:'A mesocycle might be:', choices:['4–8 weeks','1 day','A decade','No length'], a:0},
+    {q:'Training peaks are scheduled for:', choices:['Competition phases','Random days','Only rest','Never'], a:0},
+    {q:'Deload weeks are used to:', choices:['Reduce load to aid recovery','Increase maximal intensity','Ignore athlete','None'], a:0}
+  ],
+  B2: [
+    {q:'Plyometric progression begins with:', choices:['Low-intensity hops & landing practice','Max height box jumps','No warm-up','Only sprints'], a:0},
+    {q:'Power is best developed by combining:', choices:['Strength + speed work','Only endurance','Only stretching','None'], a:0},
+    {q:'Safe landing cues include:', choices:['Soft knees & hip hinge','Locked knees','Rigid torso','None'], a:0},
+    {q:'Contrast training pairs:', choices:['Heavy lift + explosive movement','Only running','Only yoga','None'], a:0},
+    {q:'Plyometric volume should be:', choices:['Low then progressive','Max volume from start','No progress','Random'], a:0},
+    {q:'Rate of force development relates to:', choices:['How quickly force is produced','Only time','Only distance','None'], a:0},
+    {q:'Transfer to sport requires:', choices:['Specificity of movement','Only strength','Only isolation','None'], a:0},
+    {q:'Plyo contraindications include:', choices:['Recent joint pain or uncontrolled hypertension','Good mobility','No risk','None'], a:0},
+    {q:'Quality over quantity means:', choices:['Focus on clean reps & safe landings','Do as many as possible','Ignore form','None'], a:0},
+    {q:'Warm-up for plyos should include:', choices:['Dynamic activation & jumps','Static stretch only','Sleep','None'], a:0}
+  ],
+  B3: [
+    {q:'Movement screens identify:', choices:['Asymmetries and mobility limits','Only speed','Only diet','No value'], a:0},
+    {q:'Rehab progression phases include:', choices:['Protect → restore → strengthen → return','Only strengthen','Only rest','None'], a:0},
+    {q:'Return-to-play decisions should be based on:', choices:['Objective tests & symptom resolution','Only opinion','Only time passed','None'], a:0},
+    {q:'When to refer to medical staff:', choices:['Red flags like severe swelling or loss of function','Minor soreness','Happy feelings','None'], a:0},
+    {q:'Corrective exercises aim to:', choices:['Address deficits & improve movement','Reduce training','Only therapy','None'], a:0},
+    {q:'Load management helps with rehab by:', choices:['Gradually increasing stress','Sudden jump','Ignoring pain','None'], a:0},
+    {q:'Basic rehab requires:', choices:['Consistent progression & monitoring','Random exercises','No monitoring','None'], a:0},
+    {q:'Screening should be performed:', choices:['Before higher intensity training','Never','Only competition','None'], a:0},
+    {q:'Movement quality improvements reduce:', choices:['Injury risk','Only time','None','None'], a:0},
+    {q:'Key rehab metric is:', choices:['Symptom-free functional performance','Only pain score','Mood','None'], a:0}
+  ],
+  B4: [
+    {q:'Arousal regulation helps athletes:', choices:['Perform under pressure','Only relax','Lose focus','None'], a:0},
+    {q:'Imagery practice is used for:', choices:['Mental rehearsal','Only sleep','Only stretching','None'], a:0},
+    {q:'Pre-performance routines increase:', choices:['Consistency & readiness','Only randomness','No effect','None'], a:0},
+    {q:'Team cohesion is fostered by:', choices:['Shared goals and communication','Competition only','Ignoring others','None'], a:0},
+    {q:'SMART goals stand for:', choices:['Specific, measurable, achievable, relevant, time-bound','Vague','Random','None'], a:0},
+    {q:'Motivation strategies can include:', choices:['Goal setting & autonomy support','Threats only','No support','None'], a:0},
+    {q:'Arousal too high can cause:', choices:['Loss of fine motor control','Better precision','No change','None'], a:0},
+    {q:'Focus routines often include:', choices:['Breathing & cue words','Ignoring the task','Only music','None'], a:0},
+    {q:'Self-talk can be:', choices:['Positive & instructional','Always negative','Not allowed','None'], a:0},
+    {q:'Visualization best practice:', choices:['Include senses and emotions','Just look at a picture','No detail','None'], a:0}
+  ],
+  B5: [
+    {q:'Tactical analysis benefits include:', choices:['Improved decision making','Only fitness','No benefit','None'], a:0},
+    {q:'A basic performance metric is:', choices:['Distance covered or number of sprints','Only heart rate','Only mood','None'], a:0},
+    {q:'Video analysis helps identify:', choices:['Technical & tactical patterns','Only attendance','Only food','None'], a:0},
+    {q:'Spacing in team play creates:', choices:['Passing and attacking opportunities','Only defense','Only individual play','None'], a:0},
+    {q:'Small-sided scenarios improve:', choices:['Decision speed under pressure','Only rest','No transfer','None'], a:0},
+    {q:'Simple analytics should be used to:', choices:['Inform practice design','Replace coaching judgment','Not used','None'], a:0},
+    {q:'Tactical drills should focus on:', choices:['Transitions & role clarity','Only individual skill','Only fitness','None'], a:0},
+    {q:'Match analysis should be followed by:', choices:['Actionable drills and feedback','Ignore it','Only talk','None'], a:0},
+    {q:'Metrics must be interpreted in context of:', choices:['Player role & sport demands','Only numbers','Only the coach','None'], a:0},
+    {q:'Effective feedback is:', choices:['Specific and timely','Vague and delayed','Never given','None'], a:0}
+  ],
+  B6: [
+    {q:'Capstone programs should be:', choices:['Evidence-based & progressive','Random','Impossible','None'], a:0},
+    {q:'Final exam is closed-book to:', choices:['Assess retained knowledge','Encourage cheating','Reduce learning','None'], a:0},
+    {q:'Evaluation of program should include:', choices:['Outcomes & justification','Only feeling','No data','None'], a:0},
+    {q:'Peer feedback should be:', choices:['Constructive and specific','Personal attack','Ignored','None'], a:0},
+    {q:'Retest metrics should show:', choices:['Meaningful change & adaptation','No change','Only subjective','None'], a:0},
+    {q:'Capstone presentation should explain:', choices:['Rationale, progression, and metrics','Only exercises','Only diet','None'], a:0},
+    {q:'Final steps before exam include:', choices:['Study module guides & project notes','Never review','Only practice','None'], a:0},
+    {q:'Closed-book warning means:', choices:['No external resource consultation during exam','Open-book allowed','No consequences','None'], a:0},
+    {q:'Project rationales should reference:', choices:['Principles from modules A & B','Only peers','No theory','None'], a:0},
+    {q:'Program success is measured by:', choices:['Goal attainment and test changes','Only attendance','Only mood','None'], a:0}
+  ]
+};
+
+const finals = {
+  A: [
+    {q:'Which energy system is most important for a 400m run?', choices:['Glycolytic','ATP-PC','Pure oxidative','None'], a:0},
+    {q:'A proper warm-up includes:', choices:['Dynamic mobility','No movement','Only heavy lifting','Sleep'], a:0},
+    {q:'VO2-style interval examples include:', choices:['3min hard/2min easy repeats','1 long walk','No rest','Yoga only'], a:0},
+    {q:'Eccentric training is useful for:', choices:['Strength & tendon resilience','Only speed','No benefit','None'], a:0},
+    {q:'Hydration helps with:', choices:['Thermoregulation & performance','Instant muscle gain','No effect','None'], a:0},
+    {q:'A good training log includes:', choices:['Session details & subjective notes','Only calories','Only weight','No info'], a:0},
+    {q:'Compound lifts include:', choices:['Squat & hinge','Only curls','Only sit-ups','None'], a:0},
+    {q:'Primary macronutrient for immediate fuel is:', choices:['Carbohydrate','Protein','Fat','Water'], a:0},
+    {q:'Biomechanics term for moving away from midline is:', choices:['Abduction','Flexion','Rotation','None'], a:0},
+    {q:'Retesting baselines helps:', choices:['Detect improvements & inform programs','Only blame','No change','None'], a:0},
+    {q:'Peer coaching should be:', choices:['Specific & supportive','Critical only','Ignore others','None'], a:0},
+    {q:'A safe test environment needs:', choices:['Clear area & supervision','Loud music','No staff','None'], a:0},
+    {q:'Tempo runs improve:', choices:['Sustained pace endurance','Max strength','Flexibility only','None'], a:0},
+    {q:'Core stability contributes to:', choices:['Posture & force transfer','Only speed','Only endurance','None'], a:0},
+    {q:'Progression principle means:', choices:['Gradual overload','Instaneous max','Never change','Random'], a:0},
+    {q:'Warm-up reduces injury risk by:', choices:['Increasing muscle temp & neuromuscular readiness','Fatiguing athletes','No effect','None'], a:0},
+    {q:'Hydration status can be monitored via:', choices:['Urine color & thirst cues','Only weight','Only mood','None'], a:0},
+    {q:'Dynamic mobility is best before:', choices:['High-intensity movement','Static stretching only','Rest','None'], a:0},
+    {q:'Baseline tests should be used to:', choices:['Inform individualized plans','Judge personal worth','Ignore data','None'], a:0},
+    {q:'Certificate requires:', choices:['Passing final & meeting thresholds','Only attendance','No requirement','None'], a:0}
+  ],
+  B: [
+    {q:'Periodization main purpose is to:', choices:['Organize training for peak performance','Only rest','Only random','None'], a:0},
+    {q:'Deload weeks reduce:', choices:['Training stress for recovery','Performance','Only fun','None'], a:0},
+    {q:'Plyometrics require caution if:', choices:['Recent joint pain exists','Good health','No risk','None'], a:0},
+    {q:'Return-to-play decisions rely on:', choices:['Objective tests & symptom resolution','Only time since injury','Only opinion','None'], a:0},
+    {q:'Imagery training helps with:', choices:['Mental rehearsal & confidence','Only diet','No effect','None'], a:0},
+    {q:'SMART goals include which element?', choices:['Measurable','Vague','Only dreaming','None'], a:0},
+    {q:'Video analysis is useful to:', choices:['Detect technical & tactical patterns','Only fun','Not useful','None'], a:0},
+    {q:'Load progression must consider:', choices:['Technique & readiness','Only weight','Ignore form','None'], a:0},
+    {q:'Arousal too low or too high can:', choices:['Impair performance','Always help','No change','None'], a:0},
+    {q:'Analytics should be interpreted with:', choices:['Context (role & sport)','Only numbers','Always the same','None'], a:0},
+    {q:'Contrast training pairs:', choices:['Heavy and explosive movements','Only cardio','Only rest','None'], a:0},
+    {q:'Rehab phases begin with:', choices:['Protection then restore','Return immediately','No protection','None'], a:0},
+    {q:'Effective feedback is:', choices:['Timely and actionable','Delayed and vague','Never given','None'], a:0},
+    {q:'Tactical spacing improves:', choices:['Passing lanes and options','Confusion','Loss of play','None'], a:0},
+    {q:'Performance metrics examples:', choices:['Sprints, distance covered, jump height','Only weight','Only diet','None'], a:0},
+    {q:'Capstone evaluation should include:', choices:['Rationale and objective outcomes','Only feelings','No data','None'], a:0},
+    {q:'Rate of force development is important for:', choices:['Explosive actions','Only slow endurance','No tasks','None'], a:0},
+    {q:'Plyometric safety includes:', choices:['Progression & landing mechanics','Max volumes first','Ignore warm-up','None'], a:0},
+    {q:'Tactical drills aim to improve:', choices:['Decision-making under pressure','Only fitness','Only skills','None'], a:0},
+    {q:'Full-year certificate requires:', choices:['Passing both module finals & meeting week thresholds','Only showing up','No achievement','None'], a:0}
+  ]
+};
+
+/* ================= STATE & STORAGE ================= */
+let state = {
+  module: 'A', // 'A' or 'B'
+  selectedWeekIndex: 0,
+  progress: {}, // 'A1','A2'... 'final_A','final_B'
+  currentQuiz: null,
+  finalInProgress: false
+};
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) state.progress = JSON.parse(raw);
+    else state.progress = {};
+  }catch(e){ state.progress = {}; }
+}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }
+
+/* ================= DOM ReFS ================= */
+const moduleSelect = document.getElementById('moduleSelect');
+const weekNav = document.getElementById('weekNav');
+const lessonContainer = document.getElementById('lessonContainer');
+const mainTitle = document.getElementById('mainTitle');
+const mainSub = document.getElementById('mainSub');
+const openQuizBtn = document.getElementById('openQuizBtn');
+const openFinalBtn = document.getElementById('openFinalBtn');
+const starBadge = document.getElementById('starBadge');
+const overallPercent = document.getElementById('overallPercent');
+const detailedProgress = document.getElementById('detailedProgress');
+const quizModal = document.getElementById('quizModal');
+const quizArea = document.getElementById('quizArea');
+const quizTitle = document.getElementById('quizTitle');
+const quizSub = document.getElementById('quizSub');
+const qProgress = document.getElementById('qProgress');
+const prevQ = document.getElementById('prevQ');
+const nextQ = document.getElementById('nextQ');
+const submitQuiz = document.getElementById('submitQuiz');
+const closeQuiz = document.getElementById('closeQuiz');
+
+/* ================= HELPERS & LOGIC ================= */
+function calcStars(percent){
+  if(percent >= 90) return 3;
+  if(percent >= 75) return 2;
+  if(percent >= 60) return 1;
+  return 0;
+}
+function currentModule(){ return MODULES[state.module]; }
+function getCurriculum(){ return currentModule().curriculum; }
+function getWeekIdByIndex(idx){ return getCurriculum()[idx].id; }
+function getSelectedWeekId(){ return getWeekIdByIndex(state.selectedWeekIndex); }
+
+function isModuleBUnlocked(){
+  for(let i=0;i<MODULES.A.curriculum.length;i++){
+    const wk = MODULES.A.curriculum[i].id;
+    const p = state.progress[wk];
+    if(!p || typeof p.score !== 'number' || p.score < UNLOCK_THRESHOLD) return false;
+  }
+  const f = state.progress['final_A'];
+  if(!f || !f.passed) return false;
+  return true;
+}
+
+function isWeekUnlocked(moduleCode, idx){
+  if(moduleCode === 'A'){
+    if(idx === 0) return true;
+    const prevId = MODULES.A.curriculum[idx-1].id;
+    const prev = state.progress[prevId];
+    return !!(prev && typeof prev.score === 'number' && prev.score >= UNLOCK_THRESHOLD);
+  } else {
+    if(idx === 0){
+      return isModuleBUnlocked();
+    }
+    const prevId = MODULES.B.curriculum[idx-1].id;
+    const prev = state.progress[prevId];
+    return !!(prev && typeof prev.score === 'number' && prev.score >= UNLOCK_THRESHOLD);
+  }
+}
+
+function allWeeksInModuleMeetThreshold(modCode){
+  const list = MODULES[modCode].curriculum;
+  for(let i=0;i<list.length;i++){
+    const p = state.progress[list[i].id];
+    if(!p || typeof p.score !== 'number' || p.score < UNLOCK_THRESHOLD) return false;
+  }
+  return true;
+}
+
+function moduleFinalPassed(modCode){
+  return state.progress[`final_${modCode}`] && state.progress[`final_${modCode}`].passed;
+}
+
+function allWeeksAveragePercent(){
+  const allIds = MODULES.A.curriculum.concat(MODULES.B.curriculum).map(x=>x.id);
+  let total=0,count=0;
+  for(const id of allIds){
+    if(state.progress[id] && typeof state.progress[id].score === 'number'){
+      total += state.progress[id].score; count++;
+    }
+  }
+  return count? Math.round(total/count):0;
+}
+
+/* ================= RENDERERS ================= */
+function renderModuleButtons(){
+  const buttons = moduleSelect.querySelectorAll('.module-btn');
+  buttons.forEach(btn=>{
+    const m = btn.getAttribute('data-module');
+    btn.classList.toggle('active', m === state.module);
+    if(m === 'B' && !isModuleBUnlocked()){
+      btn.title = 'Module B locked until Module A is completed (all weeks ≥ ' + UNLOCK_THRESHOLD + '% and final passed)';
+    } else {
+      btn.title = '';
+    }
+  });
+}
+
+function renderWeekNav(){
+  weekNav.innerHTML = '';
+  const list = getCurriculum();
+  list.forEach((w, idx)=>{
+    const unlocked = isWeekUnlocked(state.module, idx);
+    const btn = document.createElement('button');
+    btn.className = 'week-btn' + (idx===state.selectedWeekIndex ? ' active' : '') + (unlocked ? '' : ' locked');
+    btn.setAttribute('aria-pressed', String(idx===state.selectedWeekIndex));
+    btn.innerHTML = `<div style="font-weight:700">${w.title}</div><div style="font-size:12px;color:var(--muted)">${w.subtitle}</div>`;
+    if(!unlocked){
+      const lock = document.createElement('span'); lock.className='lock-icon'; lock.innerHTML='🔒';
+      btn.appendChild(lock);
+      btn.onclick = ()=> alert(`This week is locked. Complete previous week at ${UNLOCK_THRESHOLD}% or higher (and unlock Module B if needed).`);
+    } else {
+      btn.onclick = ()=> { state.selectedWeekIndex = idx; renderMain(); };
+    }
+    weekNav.appendChild(btn);
+  });
+}
+
+function renderProgressCard(){
+  const modA = MODULES.A.curriculum.map(x=>x.id);
+  const modB = MODULES.B.curriculum.map(x=>x.id);
+  const lines = [];
+  modA.forEach(id=>{
+    const p = state.progress[id];
+    lines.push(`${id}: ${p && typeof p.score==='number' ? p.score + '%' : '—'}`);
+  });
+  lines.push('---');
+  modB.forEach(id=>{
+    const p = state.progress[id];
+    lines.push(`${id}: ${p && typeof p.score==='number' ? p.score + '%' : '—'}`);
+  });
+  overallPercent.textContent = allWeeksAveragePercent() + '%';
+  detailedProgress.innerHTML = lines.join('<br>');
+  // final summaries
+  let container = document.querySelector('.progress-card');
+  const existingFinalA = document.getElementById('finalSummaryA');
+  const existingFinalB = document.getElementById('finalSummaryB');
+  if(state.progress.final_A){
+    if(!existingFinalA){
+      const el = document.createElement('div'); el.id='finalSummaryA'; el.style.marginTop='10px';
+      el.innerHTML = `<div style="font-size:13px;color:var(--muted);font-weight:700">Final A: ${state.progress.final_A.score}% — ${state.progress.final_A.passed ? 'Passed' : 'Not passed'}</div>`;
+      container.appendChild(el);
+    } else existingFinalA.innerHTML = `<div style="font-size:13px;color:var(--muted);font-weight:700">Final A: ${state.progress.final_A.score}% — ${state.progress.final_A.passed ? 'Passed' : 'Not passed'}</div>`;
+  } else if(existingFinalA) existingFinalA.remove();
+  if(state.progress.final_B){
+    if(!existingFinalB){
+      const el = document.createElement('div'); el.id='finalSummaryB'; el.style.marginTop='6px';
+      el.innerHTML = `<div style="font-size:13px;color:var(--muted);font-weight:700">Final B: ${state.progress.final_B.score}% — ${state.progress.final_B.passed ? 'Passed' : 'Not passed'}</div>`;
+      container.appendChild(el);
+    } else existingFinalB.innerHTML = `<div style="font-size:13px;color:var(--muted);font-weight:700">Final B: ${state.progress.final_B.score}% — ${state.progress.final_B.passed ? 'Passed' : 'Not passed'}</div>`;
+  } else if(existingFinalB) existingFinalB.remove();
+}
+
+function updateStarBadge(){
+  const key = getSelectedWeekId();
+  const p = state.progress[key];
+  if(p && typeof p.score === 'number'){
+    starBadge.textContent = `★ ${p.stars || 0} — ${p.score}%`;
+  } else {
+    starBadge.textContent = '★ —';
+  }
+}
+
+function renderMain(){
+  renderModuleButtons();
+  renderWeekNav();
+  const cur = getCurriculum()[state.selectedWeekIndex];
+  mainTitle.textContent = `${currentModule().short} — ${cur.title}`;
+  mainSub.textContent = cur.subtitle;
+
+  lessonContainer.innerHTML = '';
+  const obj = document.createElement('div'); obj.className='lesson';
+  obj.innerHTML = `<h3>Objectives</h3><ul>${(cur.objectives||['See activities']).map(o=>`<li>${o}</li>`).join('')}</ul>`;
+  lessonContainer.appendChild(obj);
+
+  if(cur.quizGuide){
+    const guide = document.createElement('div'); guide.className='quiz-guide';
+    guide.innerHTML = `<strong>What will be on the quiz</strong><div style="margin-top:8px">${cur.quizGuide}</div>`;
+    lessonContainer.appendChild(guide);
+  }
+
+  const warm = document.createElement('div'); warm.className='lesson';
+  warm.innerHTML = `<h3>Warm-up</h3><div>${cur.warmup || '—'}</div>`;
+  lessonContainer.appendChild(warm);
+
+  const acts = document.createElement('div'); acts.className='lesson';
+  acts.innerHTML = `<h3>Main Activities</h3><ol>${(cur.activities||['—']).map(a=>`<li>${a}</li>`).join('')}</ol>`;
+  lessonContainer.appendChild(acts);
+
+  const cd = document.createElement('div'); cd.className='lesson';
+  cd.innerHTML = `<h3>Cool-down</h3><div>${cur.cooldown || '—'}</div><h3 style="margin-top:10px">Homework</h3><div>${cur.homework || '—'}</div>`;
+  lessonContainer.appendChild(cd);
+
+  const actions = document.getElementById('lessonActions'); actions.innerHTML = '';
+  const unlocked = isWeekUnlocked(state.module, state.selectedWeekIndex);
+  openQuizBtn.disabled = !unlocked;
+  openQuizBtn.classList.toggle('ghost', !unlocked);
+  let finalEnabled = allWeeksInModuleMeetThreshold(state.module);
+  if(state.module === 'B') finalEnabled = finalEnabled && moduleFinalPassed('A');
+  openFinalBtn.disabled = !finalEnabled;
+  openFinalBtn.classList.toggle('ghost', !finalEnabled);
+
+  const p = state.progress[cur.id];
+  if(p){
+    const info = document.createElement('div'); info.className='lesson';
+    info.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>Score:</strong> ${p.score}% — ${'★'.repeat(p.stars||0)}</div>
+      <div><small class="kv">Taken: ${new Date(p.timestamp).toLocaleString()}</small></div>
+    </div>`;
+    actions.appendChild(info);
+  } else {
+    const note = document.createElement('div'); note.className='lesson';
+    if(!unlocked) note.innerHTML = `<div style="color:var(--muted)">This week is locked. Complete the previous week at ${UNLOCK_THRESHOLD}% or higher.</div>`;
+    else note.innerHTML = `<div style="color:var(--muted)">Start the quiz when ready. Weekly quizzes are open-page (you may reference your lesson notes). The final exam is closed-book — you will be asked to confirm before starting.</div>`;
+    actions.appendChild(note);
+  }
+
+  updateStarBadge();
+  renderProgressCard();
+}
+
+/* ================= QUIZ ENGINE ================= */
+function openWeekQuiz(){ startQuiz('week', getSelectedWeekId()); }
+
+function openFinal(){
+  const moduleCode = state.module;
+  let finalEnabled = allWeeksInModuleMeetThreshold(moduleCode);
+  if(moduleCode === 'B') finalEnabled = finalEnabled && moduleFinalPassed('A');
+  if(!finalEnabled) return alert('Final exam locked. Meet week thresholds (and Module A final if applicable).');
+
+  const confirmMsg = `FINAL EXAM — CLOSED BOOK\n\nThis is a closed-book exam for ${MODULES[moduleCode].short}.\nDo not consult study materials or lesson content during this exam. Click OK to begin.`;
+  if(!confirm(confirmMsg)) return;
+
+  document.getElementById('lessonContainer').innerHTML = '<div class="lesson"><strong>Final in progress — lesson content hidden for closed-book integrity.</strong></div>';
+  state.finalInProgress = true;
+  startQuiz('final', moduleCode);
+}
+
+function startQuiz(type, id){
+  // block background scroll
+  document.body.style.overflow = 'hidden';
+
+  if(type === 'week'){
+    const moduleCode = state.module;
+    const idx = state.selectedWeekIndex;
+    if(!isWeekUnlocked(moduleCode, idx)) return alert('This week is locked.');
+    const data = quizzes[id];
+    if(!data) return alert('Quiz data missing for ' + id);
+    state.currentQuiz = { type:'week', id, qIndex:0, answers: Array(data.length).fill(null) };
+    quizTitle.textContent = `Quiz — ${currentModule().short} — ${id}`;
+    quizSub.textContent = `${data.length} questions`;
+  } else {
+    const moduleCode = id;
+    const data = finals[moduleCode];
+    if(!data) { document.body.style.overflow=''; return alert('Final data missing for ' + moduleCode); }
+    state.currentQuiz = { type:'final', id: moduleCode, qIndex:0, answers: Array(data.length).fill(null) };
+    quizTitle.textContent = `Final Exam — ${MODULES[moduleCode].short}`;
+    quizSub.textContent = `${data.length} questions`;
+  }
+  renderQuizQuestion();
+  quizModal.style.display = 'flex';
+  quizModal.setAttribute('aria-hidden','false');
+
+  // close when clicking outside the card
+  quizModal.onclick = (e)=>{ if(e.target === quizModal) closeQuizModal(); };
+}
+
+function closeQuizModal(){ quizModal.style.display = 'none'; quizModal.setAttribute('aria-hidden','true'); state.currentQuiz = null;
+  // restore scrolling
+  document.body.style.overflow = '';
+  if(state.finalInProgress){
+    state.finalInProgress = false;
+    renderMain();
+  }
+}
+closeQuiz.onclick = closeQuizModal;
+window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeQuizModal(); });
+
+function renderQuizQuestion(){
+  const cur = state.currentQuiz;
+  if(!cur) return;
+  const questions = (cur.type==='week') ? quizzes[cur.id] : finals[cur.id];
+  if(!questions){ alert('Quiz questions missing.'); closeQuizModal(); return; }
+  const qi = cur.qIndex;
+  const q = questions[qi];
+  quizArea.innerHTML = `<div class="q"><strong>Q${qi+1}.</strong> ${escapeHtml(q.q)}</div><div class="choices" id="choices"></div>`;
+  const choicesDiv = document.getElementById('choices');
+  q.choices.forEach((c, idx)=>{
+    const el = document.createElement('div');
+    el.className = 'choice' + (cur.answers[qi]===idx ? ' selected' : '');
+    el.setAttribute('tabindex','0');
+    el.innerText = c;
+    el.onclick = ()=>{ cur.answers[qi]=idx; renderQuizQuestion(); };
+    el.onkeydown = (ev)=>{ if(ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); cur.answers[qi]=idx; renderQuizQuestion(); } };
+    choicesDiv.appendChild(el);
+  });
+  qProgress.textContent = `Question ${qi+1} / ${questions.length}`;
+  prevQ.style.display = qi===0 ? 'none' : '';
+  nextQ.style.display = qi === questions.length-1 ? 'none' : '';
+  submitQuiz.style.display = qi === questions.length-1 ? '' : 'none';
+}
+
+prevQ.onclick = ()=>{ if(!state.currentQuiz) return; if(state.currentQuiz.qIndex>0){ state.currentQuiz.qIndex--; renderQuizQuestion(); } };
+nextQ.onclick = ()=>{ if(!state.currentQuiz) return; const questions = (state.currentQuiz.type==='week') ? quizzes[state.currentQuiz.id] : finals[state.currentQuiz.id]; if(state.currentQuiz.qIndex < questions.length-1){ state.currentQuiz.qIndex++; renderQuizQuestion(); } };
+submitQuiz.onclick = ()=>{
+  if(!state.currentQuiz) return;
+  const unanswered = state.currentQuiz.answers.some(a=>a===null);
+  if(unanswered){
+    if(!confirm('Some questions are unanswered. Submit anyway?')) return;
+  }
+  gradeQuiz();
+};
+
+function gradeQuiz(){
+  const cur = state.currentQuiz;
+  const questions = (cur.type==='week') ? quizzes[cur.id] : finals[cur.id];
+  let correct=0;
+  questions.forEach((q, idx)=>{ if(cur.answers[idx] === q.a) correct++; });
+  const pct = Math.round((correct/questions.length)*100);
+  if(cur.type === 'week'){
+    const stars = calcStars(pct);
+    state.progress[cur.id] = { score: pct, stars, correct, total: questions.length, timestamp: Date.now() };
+    saveState(); renderProgressCard(); updateStarBadge();
+    alert(`You scored ${pct}% (${correct}/${questions.length}). Stars: ${stars}`);
+  } else {
+    const moduleCode = cur.id;
+    const passed = (pct/100) >= PASS_THRESHOLD;
+    state.progress[`final_${moduleCode}`] = { score: pct, passed, correct, total: questions.length, timestamp: Date.now() };
+    saveState(); renderProgressCard();
+    if(passed) alert(`Final ${moduleCode} passed — ${pct}%. Module certificate available.`);
+    else alert(`Final ${moduleCode}: ${pct}%. You did not reach the passing threshold (${PASS_THRESHOLD*100}%).`);
+    state.finalInProgress = false;
+  }
+  closeQuizModal();
+  renderMain();
+}
+
+/* ================= EXPORT / IMPORT / OTHER ACTIONS ================= */
+document.getElementById('exportBtn').onclick = ()=>{
+  const payload = { exportedAt: new Date().toISOString(), progress: state.progress };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'plera_pe10_progress.json'; a.click();
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById('importBtn').onclick = ()=> document.getElementById('importFile').click();
+document.getElementById('importFile').onchange = async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  try{
+    const txt = await f.text();
+    const data = JSON.parse(txt);
+    if(data && data.progress){ state.progress = data.progress; saveState(); renderMain(); alert('Progress imported'); }
+    else alert('Invalid file format.');
+  }catch(err){ alert('Import failed: ' + err); }
+  e.target.value = '';
+};
+
+document.getElementById('clearStorage').onclick = ()=>{
+  if(confirm('Reset all stored progress? This cannot be undone.')){ state.progress = {}; saveState(); renderMain(); alert('Data cleared'); }
+};
+
+document.getElementById('printBtn').onclick = ()=> window.print();
+
+document.getElementById('downloadHTML').onclick = ()=>{
+  const html = '<!doctype html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'plera_pe10_portal_snapshot.html'; a.click();
+  URL.revokeObjectURL(url);
+};
+
+/* ================= CERTIFICATE UI ================= */
+function generateCertificatePNG(name, moduleCode, score){
+  const width = 1200, height = 850;
+  const cnv = document.createElement('canvas'); cnv.width = width; cnv.height = height;
+  const ctx = cnv.getContext('2d');
+  ctx.fillStyle = '#071428'; ctx.fillRect(0,0,width,height);
+  ctx.fillStyle = '#071b2a'; ctx.fillRect(60,60,width-120,height-120);
+  ctx.fillStyle = '#e7f2ff'; ctx.font = 'bold 40px Inter, Arial'; ctx.fillText('Certificate of Completion', 120, 150);
+  ctx.fillStyle = '#9fbfe8'; ctx.font = '22px Inter, Arial'; ctx.fillText(`${MODULES[moduleCode].short}`, 120, 195);
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Inter, Arial'; ctx.fillText(name || 'Student Name', 120, 300);
+  ctx.fillStyle = '#9fbfe8'; ctx.font = '20px Inter, Arial'; ctx.fillText(`has successfully completed ${MODULES[moduleCode].short} with a final score of ${score}%`, 120, 340);
+  ctx.fillStyle = '#9fbfe8'; ctx.font = '16px Inter, Arial'; ctx.fillText('Date: ' + new Date().toLocaleDateString(), 120, 420);
+  ctx.fillStyle = '#e7f2ff'; ctx.font = '22px Inter, Arial'; ctx.fillText('Regalus — Course Director', 800, 680);
+  return cnv.toDataURL('image/png');
+}
+
+function createCertificateUI(){
+  const sidebar = document.querySelector('.sidebar');
+  const card = document.createElement('div'); card.style.marginTop='12px';
+  card.innerHTML = `
+    <div style="font-weight:700;margin-bottom:6px">Certificates</div>
+    <div style="font-size:13px;color:var(--muted)">Generate certificate for Module A, Module B, or Full Year (both passed).</div>
+    <div style="margin-top:8px"><input id="certName" placeholder="Student name" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--ink)"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="downloadCertA" class="export-btn">Download Cert A</button>
+      <button id="downloadCertB" class="export-btn">Download Cert B</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="downloadCertFull" class="export-btn">Download Full-Year Cert</button>
+    </div>
+  `;
+  sidebar.appendChild(card);
+
+  document.getElementById('downloadCertA').onclick = ()=>{
+    const final = state.progress.final_A;
+    if(!final || !final.passed){ return alert('You must pass Final A to generate Module A certificate.'); }
+    const name = document.getElementById('certName').value || 'Student Name';
+    const dataUrl = generateCertificatePNG(name, 'A', final.score);
+    const a = document.createElement('a'); a.href = dataUrl; a.download = `${name.replace(/\s+/g,'_')}_PE301_certificate.png`; a.click();
+  };
+  document.getElementById('downloadCertB').onclick = ()=>{
+    const final = state.progress.final_B;
+    if(!final || !final.passed){ return alert('You must pass Final B to generate Module B certificate.'); }
+    const name = document.getElementById('certName').value || 'Student Name';
+    const dataUrl = generateCertificatePNG(name, 'B', final.score);
+    const a = document.createElement('a'); a.href = dataUrl; a.download = `${name.replace(/\s+/g,'_')}_PE401_certificate.png`; a.click();
+  };
+  document.getElementById('downloadCertFull').onclick = ()=>{
+    if(!moduleFinalPassed('A') || !moduleFinalPassed('B')) return alert('Both module finals must be passed to generate a Full-Year certificate.');
+    const score = Math.round((state.progress.final_A.score + state.progress.final_B.score)/2);
+    const name = document.getElementById('certName').value || 'Student Name';
+    const width = 1200, height = 850;
+    const cnv = document.createElement('canvas'); cnv.width = width; cnv.height = height;
+    const ctx = cnv.getContext('2d');
+    ctx.fillStyle = '#071428'; ctx.fillRect(0,0,width,height);
+    ctx.fillStyle = '#071b2a'; ctx.fillRect(60,60,width-120,height-120);
+    ctx.fillStyle = '#e7f2ff'; ctx.font = 'bold 40px Inter, Arial'; ctx.fillText('Certificate of Full-Year Completion', 120, 150);
+    ctx.fillStyle = '#9fbfe8'; ctx.font = '22px Inter, Arial'; ctx.fillText(`P.E. 301 + P.E. 401`, 120, 195);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 34px Inter, Arial'; ctx.fillText(name || 'Student Name', 120, 300);
+    ctx.fillStyle = '#9fbfe8'; ctx.font = '20px Inter, Arial'; ctx.fillText(`has successfully completed the full-year program (P.E. 301 + P.E. 401) with combined score ${score}%`, 120, 340);
+    ctx.fillStyle = '#9fbfe8'; ctx.font = '16px Inter, Arial'; ctx.fillText('Date: ' + new Date().toLocaleDateString(), 120, 420);
+    ctx.fillStyle = '#e7f2ff'; ctx.font = '22px Inter, Arial'; ctx.fillText('Regalus — Course Director', 800, 680);
+    const dataUrl = cnv.toDataURL('image/png');
+    const a = document.createElement('a'); a.href = dataUrl; a.download = `${name.replace(/\s+/g,'_')}_PE_FULLYEAR_certificate.png`; a.click();
+  };
+}
+
+/* ================= UTILITIES ================= */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, (m)=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* ================= INIT ================= */
+function init(){
+  loadState();
+  moduleSelect.querySelectorAll('.module-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      const m = btn.getAttribute('data-module');
+      if(m === 'B' && !isModuleBUnlocked()){
+        if(!confirm('Module B is locked. It unlocks after completing Module A (all weeks ≥ ' + UNLOCK_THRESHOLD + '% and Final A passed). Do you want to view Module A progress instead?')) {
+          return;
+        }
+        state.module = 'A';
+      } else {
+        state.module = m;
+      }
+      state.selectedWeekIndex = 0;
+      renderMain();
+    };
+  });
+
+  state.module = state.module || 'A';
+  state.selectedWeekIndex = state.selectedWeekIndex || 0;
+
+  openQuizBtn.onclick = openWeekQuiz;
+  openFinalBtn.onclick = ()=> openFinal();
+
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeQuizModal(); });
+
+  createCertificateUI();
+  renderMain();
+  renderModuleButtons();
+}
+init();
+</script>
+</body>
+</html>
