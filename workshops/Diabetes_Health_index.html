@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khaemenes Academy | Health is Wealth Portal</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background:#f4f7f6;
+  }
+  .container {
+    max-width: 900px;
+    margin: auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  }
+  h1, h2 {
+    color:#1a4d2e;
+    margin-top:0;
+  }
+  h3, h4 {
+    color:#1a4d2e;
+  }
+  label {
+    display:block;
+    margin-top:10px;
+    font-weight:600;
+  }
+  input, select {
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #c7d4cd;
+    box-sizing:border-box;
+  }
+  button {
+    margin-top:15px;
+    margin-right:6px;
+    padding:10px 15px;
+    background:#1a4d2e;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:600;
+  }
+  button:hover {
+    background:#145c35;
+  }
+  .plan-box {
+    margin-top:20px;
+    padding:15px;
+    background:#eef5f0;
+    border-radius:8px;
+  }
+  .printable {
+    background:white;
+    padding:20px;
+  }
+  .disclaimer {
+    font-size:0.85rem;
+    color:#555;
+    margin-top:10px;
+  }
+  .note {
+    font-size:0.9rem;
+    color:#444;
+    margin-top:8px;
+  }
+  .error {
+    color:#b22222;
+    font-size:0.9rem;
+    margin-top:8px;
+  }
+
+  /* 30-day calendar */
+  .calendar-section {
+    margin-top:20px;
+  }
+  .calendar-section h3 {
+    margin-bottom:8px;
+  }
+  .calendar-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+  }
+  .day-card {
+    border:1px solid #c7d4cd;
+    border-radius:6px;
+    padding:8px 10px;
+    background:#fafdfb;
+    font-size:0.9rem;
+  }
+  .day-card h4 {
+    margin:0 0 6px;
+    font-size:0.95rem;
+    color:#1a4d2e;
+  }
+  .day-card ul {
+    margin:0 0 6px;
+    padding-left:18px;
+  }
+  .day-card ul li {
+    margin-bottom:3px;
+  }
+  .note-label {
+    font-weight:600;
+    margin-top:4px;
+    font-size:0.85rem;
+  }
+  .note-lines {
+    border-top:1px dashed #b5c4ba;
+    margin-top:2px;
+    height:20px;
+  }
+
+  /* Education / info */
+  .education-section {
+    margin-top:24px;
+    background:#f7faf8;
+    border-radius:8px;
+    padding:16px;
+  }
+  .education-section h2 {
+    margin-top:0;
+  }
+  .education-section details {
+    border:1px solid #d2e1d8;
+    border-radius:6px;
+    padding:8px 10px;
+    margin-bottom:8px;
+    background:white;
+  }
+  .education-section summary {
+    cursor:pointer;
+    font-weight:600;
+    color:#18422b;
+  }
+  .education-section p,
+  .education-section li {
+    font-size:0.9rem;
+    line-height:1.5;
+  }
+
+  /* Mini generator card */
+  .mini-box {
+    border:1px solid #c7d4cd;
+    border-radius:8px;
+    padding:12px 14px;
+    background:#fffef7;
+    margin-bottom:16px;
+  }
+  .mini-box h3 {
+    margin-top:0;
+    margin-bottom:6px;
+    color:#1a4d2e;
+  }
+  .mini-box h4 {
+    margin-bottom:4px;
+  }
+  .mini-chips {
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin:4px 0 8px;
+    font-size:0.8rem;
+  }
+  .mini-chip {
+    border-radius:999px;
+    padding:3px 8px;
+    border:1px solid #d3dfd8;
+    background:#f4faf5;
+    color:#1a4d2e;
+  }
+  .mini-chip.alert {
+    border-color:#e59b73;
+    background:#fff4ea;
+  }
+  .mini-chip.safe {
+    border-color:#3b7d4f;
+    background:#e7f6ec;
+  }
+
+  @media print {
+    body * { visibility: hidden; }
+    .printable, .printable * { visibility: visible; }
+    .printable {
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      box-shadow:none;
+    }
+    .calendar-grid {
+      grid-template-columns:repeat(2,1fr); /* more legible on paper */
+    }
+    .day-card {
+      break-inside:avoid;
+      page-break-inside:avoid;
+    }
+    button, form {
+      display:none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Khaemenes Academy</h1>
+  <h2>Health is Wealth | 30-Day Remission Portal</h2>
+
+  <p class="disclaimer">
+    This portal is an educational planning tool only and does not replace medical advice.
+    Please talk with your physician or diabetes care team before making changes to your
+    medications, diet, or exercise.
+  </p>
+
+  <form id="healthForm" onsubmit="return false;">
+    <label>Age</label>
+    <input type="number" id="age" min="10" max="110" required>
+
+    <label>Weight (lbs)</label>
+    <input type="number" id="weight" min="50" max="600" required>
+
+    <label>Activity Level</label>
+    <select id="activity">
+      <option value="low">Low</option>
+      <option value="moderate">Moderate</option>
+      <option value="high">High</option>
+    </select>
+
+    <label>A1C (%)</label>
+    <input type="number" step="0.1" id="a1c" min="4" max="15" required>
+
+    <label>Dietary Preference</label>
+    <select id="diet">
+      <option value="lowcarb">Low Carb</option>
+      <option value="mediterranean">Mediterranean</option>
+      <option value="plant">Whole Food Plant-Based</option>
+    </select>
+
+    <button type="button" onclick="generatePlan()">Generate My 30 Day Plan</button>
+    <button type="button" onclick="refreshPlan()">Refresh Plan</button>
+    <button type="button" onclick="window.print()">Print Plan</button>
+    <button type="button" onclick="shareProgress()">Share Progress</button>
+    <!-- Mini guide button to jump to the full diet template generator portal -->
+    <button type="button" onclick="openDietTemplateGuide()">Diet Template Guide</button>
+
+    <div id="errorBox" class="error"></div>
+    <p class="note">
+      Your inputs are saved locally on this device so you can reuse or refresh your plan each month.
+    </p>
+  </form>
+
+  <!-- Everything inside #output is printable -->
+  <div id="output" class="plan-box printable"></div>
+</div>
+
+<script>
+  const PROFILE_KEY = "health_is_wealth_profile_v1";
+  // Update this URL to the exact anchor for your main Diet Template Generator page
+  const DIET_GUIDE_URL = "https://www.khaemenesacademy.org/health-is-wealth#diet-template";
+
+  function openDietTemplateGuide() {
+    window.open(DIET_GUIDE_URL, "_blank");
+  }
+
+  function loadProfile() {
+    try {
+      const p = JSON.parse(localStorage.getItem(PROFILE_KEY) || "null");
+      if (!p) return;
+      if (p.age) document.getElementById("age").value = p.age;
+      if (p.weight) document.getElementById("weight").value = p.weight;
+      if (p.activity) document.getElementById("activity").value = p.activity;
+      if (p.a1c) document.getElementById("a1c").value = p.a1c;
+      if (p.diet) document.getElementById("diet").value = p.diet;
+    } catch(e) { /* ignore */ }
+  }
+
+  function saveProfile(age, weight, activity, a1c, diet) {
+    const profile = { age, weight, activity, a1c, diet };
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  }
+
+  window.addEventListener("DOMContentLoaded", loadProfile);
+
+  // Mini remission template generator (educational snapshot)
+  function buildMiniTemplate(age, weight, activity, a1c, diet) {
+    let trackLabel, trackDesc;
+
+    if (a1c < 6.5) {
+      trackLabel = "Stability / Prediabetes or Well-Controlled Track";
+      trackDesc =
+        "Focus on protecting the progress you already have: consistent meals, fewer ultra-processed foods, and steady movement so numbers stay in a safe range.";
+    } else if (a1c < 8.5) {
+      trackLabel = "Reset Track";
+      trackDesc =
+        "Focus on tightening daily patterns: simpler plates, fewer sugary drinks and snacks, and regular movement to gently pull sugars back toward goal.";
+    } else {
+      trackLabel = "Higher-Risk Track (Doctor-Supervised)";
+      trackDesc =
+        "Blood sugars are in a range where close medical guidance is essential. Lifestyle change still helps, but medications and monitoring are critical partners.";
+    }
+
+    let movementText;
+    if (activity === "low") {
+      movementText =
+        "Start where you are: 5–10 minute walks once or twice a day, most days of the week. As your body allows and your care team agrees, aim slowly toward about 150 minutes per week of gentle movement (walking, light cycling, chair exercises).";
+    } else if (activity === "moderate") {
+      movementText =
+        "Maintain or build toward roughly 150–180 minutes per week of moderate activity (brisk walking, cycling, swimming) plus 2 light strength sessions. Keep at least one easy day for recovery.";
+    } else {
+      movementText =
+        "You report higher activity. Focus on consistent routines, joint safety, and adding or maintaining 2–3 strength sessions per week if cleared by your care team.";
+    }
+
+    let dietLabel;
+    let dietBullets = [];
+    if (diet === "lowcarb") {
+      dietLabel = "Low-Carb Emphasis";
+      dietBullets = [
+        "Build plates with ½ non-starchy vegetables, ¼ protein, and the remaining space for small portions of higher-fiber carbs (or extra vegetables).",
+        "Remove or greatly reduce soda, juice, sweets, white bread, white rice, and pastries.",
+        "If you snack, choose protein + fiber (for example, nuts + raw vegetables, or yogurt + seeds) instead of chips, candy, or cookies."
+      ];
+    } else if (diet === "mediterranean") {
+      dietLabel = "Mediterranean-Style Pattern";
+      dietBullets = [
+        "Center meals on vegetables, beans or lentils, whole grains, olive oil, nuts/seeds, and, if you eat them, fish or poultry.",
+        "Use whole fruit instead of juice for sweetness and fiber.",
+        "Keep red and processed meats, sweets, and fried foods as rarer “sometimes” choices instead of daily staples."
+      ];
+    } else {
+      dietLabel = "Whole-Food Plant-Based Pattern";
+      dietBullets = [
+        "Build plates around beans, lentils, tofu or tempeh, vegetables, and modest portions of intact whole grains (like oats, quinoa, brown rice).",
+        "Favor whole fruits, vegetables, and legumes over refined starches or sugary plant-based snacks.",
+        "Use nuts, seeds, and avocado as your main fats; treat vegan desserts and processed meat substitutes as “once in a while” extras."
+      ];
+    }
+
+    let safetyNote;
+    if (a1c >= 9) {
+      safetyNote = `
+        <p class="note">
+          <strong>Safety note:</strong> With A1C in this range, never stop or change medications on your own.
+          Use this mini template as a talking point with your diabetes care team so they can adjust treatment
+          safely while you change food and movement.
+        </p>
+      `;
+    } else {
+      safetyNote = `
+        <p class="note">
+          <strong>Reminder:</strong> This template is educational. Do not change insulin or other medications
+          without talking to your doctor or diabetes educator. Bring this snapshot to appointments and adjust
+          together.
+        </p>
+      `;
+    }
+
+    return `
+      <div class="mini-box">
+        <h3>Mini Remission Template (Educational Snapshot)</h3>
+        <div class="mini-chips">
+          <span class="mini-chip">Track: ${trackLabel}</span>
+          <span class="mini-chip">Pattern: ${dietLabel}</span>
+          <span class="mini-chip">Activity: ${activity.charAt(0).toUpperCase() + activity.slice(1)}</span>
+          <span class="mini-chip alert">A1C (self-report): ${a1c.toFixed(1)}%</span>
+        </div>
+        <p class="note">${trackDesc}</p>
+
+        <h4>Food Focus</h4>
+        <ul>
+          ${dietBullets.map(b => `<li>${b}</li>`).join("")}
+        </ul>
+
+        <h4>Movement Focus</h4>
+        <p class="note">${movementText}</p>
+
+        ${safetyNote}
+      </div>
+    `;
+  }
+
+  function generatePlan() {
+    const age = parseInt(document.getElementById("age").value, 10);
+    const weight = parseFloat(document.getElementById("weight").value);
+    const activity = document.getElementById("activity").value;
+    const a1c = parseFloat(document.getElementById("a1c").value);
+    const diet = document.getElementById("diet").value;
+    const errorBox = document.getElementById("errorBox");
+    errorBox.textContent = "";
+
+    if (isNaN(age) || isNaN(weight) || isNaN(a1c)) {
+      errorBox.textContent = "Please fill in all numeric fields.";
+      return;
+    }
+    if (age < 10 || age > 110) {
+      errorBox.textContent = "Please enter an age between 10 and 110.";
+      return;
+    }
+    if (weight < 50 || weight > 600) {
+      errorBox.textContent = "Please enter a starting weight between 50 and 600 lbs.";
+      return;
+    }
+    if (a1c < 4 || a1c > 15) {
+      errorBox.textContent = "Please enter an A1C value between 4.0% and 15.0%.";
+      return;
+    }
+
+    // Save profile so they can reuse each month
+    saveProfile(age, weight, activity, a1c, diet);
+
+    // Approximate calorie deficit based on activity
+    const calorieDeficit =
+      activity === "high" ? 700 :
+      activity === "moderate" ? 500 : 400;
+
+    const projectedWeightLoss = (calorieDeficit * 30) / 3500;
+    const monteCarloWeight = simulateMonteCarlo(weight, calorieDeficit);
+
+    // Gentle projected A1C change – not medical promise
+    const projectedA1C = Math.max(5.5, a1c - (projectedWeightLoss * 0.1));
+
+    const mealPlan = generateMeals(diet);
+    const coreHabits = [
+      "Follow your chosen eating plan as closely as feels sustainable.",
+      "Move your body most days (walking, light cardio, or as cleared by your doctor).",
+      "Drink plenty of water and minimize sugary drinks.",
+      "Check your blood sugar as recommended by your care team.",
+      "Prioritize sleep, stress relief, and gentle self-compassion."
+    ];
+
+    // Build 30-day calendar
+    let calendarHTML = `
+      <div class="calendar-section">
+        <h3>30-Day Habit Calendar</h3>
+        <p style="font-size:0.9rem;color:#444;">
+          Use this calendar to check off your core habits each day and hand-write
+          your blood sugars and notes after printing.
+        </p>
+        <div class="calendar-grid">
+    `;
+    for (let day = 1; day <= 30; day++) {
+      calendarHTML += `
+        <div class="day-card">
+          <h4>Day ${day}</h4>
+          <strong>Core Habits Today:</strong>
+          <ul>
+            ${coreHabits.map(h => `<li>${h}</li>`).join("")}
+          </ul>
+          <div class="note-label">Blood sugar & notes:</div>
+          <div class="note-lines"></div>
+          <div class="note-lines"></div>
+        </div>
+      `;
+    }
+    calendarHTML += `</div></div>`;
+
+    // Educational sections (your long text, structured)
+    const educationHTML = `
+      <div class="education-section">
+        <h2>Understanding Diabetes & Natural Remission (Educational Only)</h2>
+        <p class="disclaimer">
+          This information is educational and not a substitute for medical care.
+          Remission is possible for some people with Type 2 diabetes through major
+          lifestyle changes, but Type 1 diabetes is not curable and requires insulin.
+        </p>
+
+        <details open>
+          <summary>1. What Diabetes Is</summary>
+          <p>
+            Diabetes is a chronic condition where the body cannot properly regulate blood sugar (glucose).
+            Over time, high glucose levels damage blood vessels and organs.
+          </p>
+          <ul>
+            <li><strong>Type 1:</strong> Autoimmune – the pancreas makes little or no insulin.</li>
+            <li><strong>Type 2:</strong> The body does not use insulin effectively (most cases).</li>
+            <li><strong>Gestational diabetes:</strong> Develops during pregnancy.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>2. How Many People Are Affected</summary>
+          <p>
+            In the United States, tens of millions of people live with diabetes, and over 100 million adults
+            have prediabetes, a high-risk state for developing Type 2 diabetes.
+          </p>
+          <ul>
+            <li>Type 2 diabetes accounts for the majority of cases.</li>
+            <li>Millions live with Type 1 diabetes, including adults and youth.</li>
+            <li>Prediabetes and early elevated blood sugars are increasingly seen in adolescents.</li>
+          </ul>
+          <p>
+            Age-adjusted diabetes rates have risen over past decades, making it a major public-health challenge.
+          </p>
+        </details>
+
+        <details>
+          <summary>3. Risk Factors</summary>
+          <ul>
+            <li>Overweight and obesity (especially around the waist).</li>
+            <li>Physical inactivity and unhealthy diet patterns.</li>
+            <li>Older age.</li>
+            <li>Family history and genetics.</li>
+            <li>
+              Race/ethnicity: higher rates among American Indian/Alaska Native, Hispanic,
+              and non-Hispanic Black adults compared with non-Hispanic White adults.
+            </li>
+            <li>Socioeconomic factors and access to healthy food and care.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>4. Complications & Health Impacts</summary>
+          <p>Without good control, diabetes can increase the risk of:</p>
+          <ul>
+            <li>Heart disease and stroke.</li>
+            <li>Kidney disease and possible kidney failure.</li>
+            <li>Vision loss and blindness.</li>
+            <li>Nerve damage and pain.</li>
+            <li>Foot ulcers and lower-limb amputations.</li>
+          </ul>
+          <p>
+            The good news: complications can often be delayed or reduced with healthy lifestyle,
+            blood sugar management, and regular screening.
+          </p>
+        </details>
+
+        <details>
+          <summary>5. Economic & Social Burden</summary>
+          <p>
+            Diabetes is one of the most expensive chronic conditions. People with diabetes
+            often incur much higher medical costs than those without diabetes, and a large
+            share of health-care spending is tied to diabetes and its complications.
+          </p>
+          <p>
+            Beyond money, diabetes affects families, mental health, work, and quality of life.
+          </p>
+        </details>
+
+        <details>
+          <summary>6. Prevention and Management Essentials</summary>
+          <ul>
+            <li><strong>Healthy weight:</strong> Losing even 5–10% of body weight can improve blood sugar.</li>
+            <li><strong>Balanced diet:</strong> Emphasize whole foods, fiber, and fewer ultra-processed foods.</li>
+            <li><strong>Movement:</strong> Regular physical activity improves insulin sensitivity.</li>
+            <li><strong>Monitoring:</strong> Blood sugar checks as recommended by your care team.</li>
+            <li><strong>Medications:</strong> Insulin and other therapies (including GLP-1s) when needed.</li>
+            <li><strong>Screening:</strong> Regular eye, kidney, and foot exams.</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>7. Natural Approaches & Remission (Type 2 Only)</summary>
+          <p>
+            There is no proven natural cure for diabetes, but some people with Type 2 diabetes can reach
+            <strong>remission</strong> — normal blood sugars without medication — through major lifestyle changes.
+          </p>
+          <ul>
+            <li><strong>Significant weight loss:</strong> Often 10–15% of body weight or more.</li>
+            <li>
+              <strong>Structured eating patterns:</strong> Low-carb, Mediterranean, or whole-food
+              plant-based diets with controlled portions and fewer refined carbs.
+            </li>
+            <li><strong>Regular exercise:</strong> Cardio + strength training; muscle acts like a “glucose sponge.”</li>
+            <li><strong>Stress reduction:</strong> Breathing, meditation, and emotional support.</li>
+            <li><strong>Sleep:</strong> 7–9 hours; poor sleep worsens insulin resistance.</li>
+          </ul>
+          <p>
+            Supplements like cinnamon, berberine, magnesium, or alpha-lipoic acid may have modest effects,
+            but they are <strong>not cures</strong> and should not replace prescribed medication.
+          </p>
+          <p>
+            Type 1 diabetes cannot be cured naturally and requires insulin for survival. Never stop
+            medications without medical guidance.
+          </p>
+        </details>
+
+        <details>
+          <summary>8. How Type 2 Remission Works Biologically</summary>
+          <p>Type 2 diabetes is driven by insulin resistance and beta-cell stress in the pancreas.</p>
+          <ul>
+            <li><strong>Liver fat:</strong> Too much fat in the liver makes it release glucose even when insulin is present.</li>
+            <li><strong>Pancreatic fat:</strong> Fat around the pancreas can “silence” beta cells that make insulin.</li>
+            <li><strong>Insulin resistance:</strong> Muscle and liver cells stop responding properly to insulin.</li>
+          </ul>
+          <p>
+            Substantial weight loss can reduce liver and pancreatic fat, restore insulin sensitivity,
+            and revive beta-cell function, allowing blood sugar to normalize. This is remission,
+            not a permanent cure.
+          </p>
+        </details>
+
+        <details>
+          <summary>9. 30-Day Metabolic Reset Blueprint (Type 2, Educational)</summary>
+          <p>
+            This is a structured 30-day metabolic reset concept designed to improve insulin sensitivity
+            and support remission in Type 2 diabetes. It should be adapted and supervised by a doctor.
+          </p>
+          <p><strong>Core daily targets (example):</strong></p>
+          <ul>
+            <li>Carbs: ~50–100g/day (mostly from vegetables and whole foods).</li>
+            <li>Protein: ~0.7–1 g per lb goal body weight.</li>
+            <li>Fiber: 25–35 g/day.</li>
+            <li>Water: ~2–3 liters/day (unless restricted).</li>
+            <li>Steps: ~8,000–10,000/day as able.</li>
+            <li>Sleep: 7–9 hours/night.</li>
+          </ul>
+          <h4>Phase 1 (Days 1–14): Liver Fat Reduction Reset</h4>
+          <ul>
+            <li>Remove sugar, juice, soda, white bread, pasta, ultra-processed foods.</li>
+            <li>No snacking between meals (allow insulin to fall).</li>
+            <li>3 structured meals/day with a 12–14 hour overnight fasting window.</li>
+          </ul>
+          <p><strong>Weekly exercise template example (Weeks 1–2):</strong></p>
+          <ul>
+            <li>Mon – 30 min brisk walk + 10 min light bodyweight exercises.</li>
+            <li>Tue – 20 min cycling or gentle incline walk.</li>
+            <li>Wed – Full-body strength (light weights or bands).</li>
+            <li>Thu – 30 min brisk walk.</li>
+            <li>Fri – Strength training.</li>
+            <li>Sat – 45 min easy long walk.</li>
+            <li>Sun – Stretching + mobility.</li>
+          </ul>
+          <h4>Phase 2 (Days 15–30): Insulin Sensitivity Rebuild</h4>
+          <ul>
+            <li>Keep the food quality high and portions appropriate.</li>
+            <li>Add 2–3 resistance sessions per week.</li>
+            <li>Optionally add 1 interval day (e.g., 1-minute faster, 1-minute easy × 10).</li>
+          </ul>
+          <p>
+            After 30 days, the focus shifts to maintenance, gentle experimentation with whole-food carbs,
+            and keeping weight off to sustain remission.
+          </p>
+        </details>
+
+        <details>
+          <summary>10. Weekly Meal Blueprint & Grocery List</summary>
+          <h4>Weekly Meal Plan (Template)</h4>
+          <p>Carb target: ~60–80g/day (for many Type 2 plans). Adjust with your care team.</p>
+          <p><strong>Monday</strong></p>
+          <ul>
+            <li>Breakfast: Vegetable omelet (spinach, mushrooms, peppers) + ½ avocado.</li>
+            <li>Lunch: Grilled chicken salad (olive oil + vinegar).</li>
+            <li>Dinner: Baked salmon + roasted broccoli + cauliflower mash.</li>
+          </ul>
+          <p><strong>Tuesday</strong></p>
+          <ul>
+            <li>Breakfast: Greek yogurt (unsweetened) + chia seeds + berries.</li>
+            <li>Lunch: Turkey lettuce wraps + sliced cucumbers.</li>
+            <li>Dinner: Beef or tofu stir-fry + zucchini + bell peppers.</li>
+          </ul>
+          <p><strong>Wednesday</strong></p>
+          <ul>
+            <li>Breakfast: Protein smoothie (unsweetened almond milk, protein powder, spinach, nut butter).</li>
+            <li>Lunch: Egg salad over mixed greens.</li>
+            <li>Dinner: Grilled shrimp + asparagus + side salad.</li>
+          </ul>
+          <p><strong>Thursday</strong></p>
+          <ul>
+            <li>Breakfast: 2 boiled eggs + a handful of almonds.</li>
+            <li>Lunch: Tuna salad + olive oil + celery.</li>
+            <li>Dinner: Roasted chicken thighs + Brussels sprouts.</li>
+          </ul>
+          <p><strong>Friday</strong></p>
+          <ul>
+            <li>Breakfast: Cottage cheese + flaxseed + cinnamon.</li>
+            <li>Lunch: Leftover chicken over greens.</li>
+            <li>Dinner: Bunless burger (or veggie burger) + mushrooms + green beans.</li>
+          </ul>
+          <p><strong>Saturday</strong></p>
+          <ul>
+            <li>Breakfast: Vegetable scramble + avocado.</li>
+            <li>Lunch: Salmon (or bean) salad bowl.</li>
+            <li>Dinner: Lean steak or bean chili + roasted cauliflower.</li>
+          </ul>
+          <p><strong>Sunday</strong></p>
+          <ul>
+            <li>Breakfast: Greek yogurt + walnuts.</li>
+            <li>Lunch: Chicken or lentil vegetable soup (no noodles).</li>
+            <li>Dinner: Baked cod or tofu + spinach + side salad.</li>
+          </ul>
+
+          <h4>Grocery List (Core Foods)</h4>
+          <p><strong>Protein:</strong> Eggs, chicken, fish, shrimp, lean beef, Greek yogurt, cottage cheese, tofu, beans, lentils, protein powder.</p>
+          <p><strong>Vegetables:</strong> Spinach, broccoli, cauliflower, zucchini, peppers, Brussels sprouts, asparagus, leafy greens, onions, garlic.</p>
+          <p><strong>Healthy fats:</strong> Olive oil, avocado, nuts, seeds.</p>
+          <p><strong>Other:</strong> Berries, herbs, spices, unsweetened almond milk or similar.</p>
+        </details>
+
+        <details>
+          <summary>11. Mindset, Affirmations & Long-Term Maintenance</summary>
+          <p>
+            Remission does not mean “cured”; the metabolic tendency remains. Think of it as
+            putting the condition into hibernation through daily care.
+          </p>
+          <p><strong>Daily affirmation examples:</strong></p>
+          <ul>
+            <li>"I am restoring my body. My health is my wealth. I am disciplined, powerful, and healing."</li>
+            <li>"Every small choice I make today is an investment in my future self."</li>
+            <li>"I release shame and embrace progress, not perfection."</li>
+            <li>"My body is learning a new rhythm. I am patient and kind with myself."</li>
+          </ul>
+          <p>
+            Long-term, the keys are keeping weight off, staying active, limiting ultra-processed foods,
+            and returning to your plan gently after slips instead of giving up.
+          </p>
+        </details>
+      </div>
+    `;
+
+    const miniTemplate = buildMiniTemplate(age, weight, activity, a1c, diet);
+
+    document.getElementById("output").innerHTML = `
+      ${miniTemplate}
+      <h2>Your 30 Day Personalized Remission Plan</h2>
+      <p><strong>Age:</strong> ${age}</p>
+      <p><strong>Starting Weight:</strong> ${weight.toFixed(1)} lbs</p>
+      <p><strong>Projected Weight After 30 Days:</strong> ${monteCarloWeight.toFixed(1)} lbs
+         <span style="font-size:0.85rem;color:#555">(estimate, not a guarantee)</span></p>
+      <p><strong>Projected A1C After ~90 Days:</strong> ${projectedA1C.toFixed(1)}%
+         <span style="font-size:0.85rem;color:#555">(actual change depends on many medical factors)</span></p>
+
+      <h3>Daily Nutrition Focus</h3>
+      ${mealPlan}
+
+      <h3>Exercise Prescription (general guideline)</h3>
+      <p>150–180 minutes weekly cardio + 2–3 light strength sessions,
+         adjusted to your abilities and your doctor’s advice.</p>
+
+      <h3>Daily Affirmation</h3>
+      <p>"I am restoring my body. My health is my wealth. I am disciplined, powerful, and healing."</p>
+
+      ${calendarHTML}
+
+      <p class="disclaimer">
+        This plan is a reflective starting point for lifestyle changes. It is not a medical protocol.
+        Always work with your healthcare team for medication changes, blood sugar targets,
+        and individualized treatment decisions.
+      </p>
+
+      ${educationHTML}
+    `;
+  }
+
+  function generateMeals(diet) {
+    if (diet === "lowcarb") {
+      return `<ul>
+        <li><strong>Breakfast:</strong> Eggs + avocado + non-starchy veggies.</li>
+        <li><strong>Lunch:</strong> Grilled chicken salad with olive oil dressing.</li>
+        <li><strong>Dinner:</strong> Baked salmon + broccoli + a simple side salad.</li>
+      </ul>`;
+    }
+    if (diet === "mediterranean") {
+      return `<ul>
+        <li><strong>Breakfast:</strong> Greek yogurt + berries + a few nuts.</li>
+        <li><strong>Lunch:</strong> Olive-oil tuna salad with mixed greens.</li>
+        <li><strong>Dinner:</strong> Grilled fish + roasted vegetables + hummus.</li>
+      </ul>`;
+    }
+    // Whole-food plant-based
+    return `<ul>
+      <li><strong>Breakfast:</strong> Steel-cut oats with nuts, seeds, and berries.</li>
+      <li><strong>Lunch:</strong> Lentil or bean bowl with leafy greens and vegetables.</li>
+      <li><strong>Dinner:</strong> Tofu or bean stir-fry over non-fried brown rice or quinoa.</li>
+    </ul>`;
+  }
+
+  function simulateMonteCarlo(startWeight, deficit) {
+    const simulations = 100;
+    const results = [];
+    for (let i = 0; i < simulations; i++) {
+      const dailyVariation = (Math.random() * 200) - 100; // ±100 cal variation
+      const weightLoss = ((deficit + dailyVariation) * 30) / 3500;
+      results.push(startWeight - weightLoss);
+    }
+    return results.reduce((a,b)=>a+b,0) / results.length;
+  }
+
+  function refreshPlan() {
+    generatePlan();
+  }
+
+  function shareProgress() {
+    const age = document.getElementById("age").value || "";
+    const weight = document.getElementById("weight").value || "";
+    const a1c = document.getElementById("a1c").value || "";
+    const text =
+      `I'm working through my personalized 30-Day Diabetes Remission Plan at Khaemenes Academy ` +
+      `(Age ${age || "—"}, Start Weight ${weight || "—"} lbs, A1C ${a1c || "—"}%). ` +
+      `Health is wealth. #HealthIsWealth`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: "Health is Wealth – 30 Day Plan",
+        text,
+        url: window.location.href
+      }).catch(()=>{});
+    } else {
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
+    }
+  }
+</script>
+
+</body>
+</html>
