@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PE — Teacher Guide (9th–12th) — PLERA</title>
+<style>
+:root{
+  --bg:#071428; --panel:#071b2a; --card:#081428; --ink:#e7f2ff; --muted:#bcd3ea;
+  --accent:#6fb3ff; --accent-strong:#3b82f6; --glass:rgba(255,255,255,0.03);
+  --radius:8px; --maxw:1200px; --content-font:15px; --content-line:1.6;
+}
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; padding:0;}
+body{
+  margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,var(--bg) 0%, #061225 70%); color:var(--ink);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  display:flex; align-items:flex-start; justify-content:center; padding:20px; min-height:100vh;
+}
+
+/* grid */
+.wrapper{ width:94%; max-width:var(--maxw); display:grid; grid-template-columns:300px 1fr 300px; gap:12px; height: calc(100vh - 40px); }
+.sidebar, .main, .sidepanel { min-width:0; overflow:auto; height:100%; }
+.sidebar{ background:var(--panel); border-radius:var(--radius); padding:14px; box-shadow:0 8px 30px rgba(2,6,23,0.6) }
+.main{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:16px; box-shadow:0 8px 30px rgba(2,6,23,0.6); display:flex; flex-direction:column; gap:12px; }
+.sidepanel{ background:var(--panel); border-radius:var(--radius); padding:14px; box-shadow:0 8px 30px rgba(2,6,23,0.6) }
+
+/* controls */
+.header{display:flex; justify-content:space-between; align-items:center; gap:12px}
+.title{font-size:20px; font-weight:800}
+.kv{color:var(--muted); font-size:12px}
+
+/* lists */
+.select, .search { width:100%; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--ink) }
+.week-item{ padding:8px; border-radius:8px; margin:6px 0; cursor:pointer; background:transparent; border:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center }
+.week-item.active{ background:linear-gradient(90deg, rgba(107,168,255,0.06), rgba(59,130,246,0.03)); box-shadow:0 6px 14px rgba(3,7,18,0.3) }
+
+/* content */
+.reader{ background:var(--glass); padding:14px; border-radius:8px; color:var(--ink); overflow:auto }
+.section-title{ font-weight:800; margin:6px 0 8px 0 }
+.teacher-note{ background:rgba(255,255,255,0.02); border-left:3px solid var(--accent); padding:10px; border-radius:6px; margin:8px 0 }
+
+/* sidepanel */
+.tool-btn{ display:block; width:100%; padding:8px; margin-bottom:8px; border-radius:8px; border:0; cursor:pointer; font-weight:700; background:var(--accent); color:#04232a }
+
+/* small */
+.small{ font-size:13px; color:var(--muted) }
+
+/* responsive */
+@media (max-width:1100px){
+  .wrapper{ grid-template-columns:1fr; height:auto; }
+  .sidebar{ order:2; height:auto }
+  .main{ order:1 }
+  .sidepanel{ order:3; height:auto }
+}
+
+/* print tweaks */
+@media print{
+  body{ background:transparent }
+  .sidebar, .sidepanel, .controls{ display:none }
+  .main{ box-shadow:none; border-radius:0; padding:0 }
+}
+
+/* Answer Key Overlay */
+#answerOverlay{
+  display:none;
+  position:fixed;
+  right:20px;
+  top:80px;
+  width:360px;
+  max-height:70vh;
+  overflow:auto;
+  background:linear-gradient(180deg,#021a2a, #041527);
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  color:var(--ink);
+  border-radius:10px;
+  padding:12px;
+  z-index:9999;
+}
+#answerOverlay h4{ margin:0 0 8px 0; font-weight:800; color:var(--accent-strong) }
+.answer-row{ display:flex; justify-content:space-between; padding:6px 8px; border-radius:6px; margin-bottom:6px; background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.02); }
+.answer-row.correct { border-left:4px solid var(--accent-strong); }
+.overlay-controls{ display:flex; gap:8px; margin-top:8px; justify-content:center; }
+
+/* Print packet styles for pop-up print window */
+.print-packet{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  color:#0b2130;
+  padding:28px;
+}
+.print-packet h1{ font-size:20px; margin:0 0 6px 0 }
+.print-packet h2{ font-size:16px; margin:12px 0 6px 0 }
+.print-packet .section{ margin-bottom:12px; border-bottom:1px dashed #ddd; padding-bottom:12px; }
+.print-packet .rubric table{ width:100%; border-collapse:collapse; }
+.print-packet .rubric th, .print-packet .rubric td{ border:1px solid #ddd; padding:8px; text-align:left; }
+.print-packet .notes{ height:160px; border:1px dashed #ccc; padding:8px; border-radius:6px; background:#fff }
+@media print{
+  .print-packet{ padding:12px; }
+}
+</style>
+</head>
+<body>
+  <div class="wrapper" id="app">
+    <aside class="sidebar">
+      <div style="font-weight:800; color:var(--accent-strong)">PE — Teacher Guide (9th–12th)</div>
+      <div class="kv" style="margin-top:6px">Open access teaching materials, weekly study content & answer keys</div>
+
+      <label class="small" style="margin-top:12px">Select grade</label>
+      <select id="gradeSelect" class="select" aria-label="Select grade">
+        <option value="9">9th Grade</option>
+        <option value="10">10th Grade</option>
+        <option value="11">11th Grade</option>
+        <option value="12" selected>12th Grade</option>
+      </select>
+
+      <label class="small" style="margin-top:10px">Select module</label>
+      <select id="moduleSelect" class="select" aria-label="Select module">
+        <option value="A">Module A (Weeks 1–6)</option>
+        <option value="B">Module B (Weeks 1–6)</option>
+      </select>
+
+      <input id="searchInput" class="search" placeholder="Filter weeks / topics..." style="margin-top:12px" />
+
+      <div id="weekList" style="margin-top:12px"></div>
+
+      <div style="margin-top:12px; display:flex; gap:8px">
+        <button id="expandAll" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Expand All</button>
+        <button id="collapseAll" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Collapse All</button>
+      </div>
+
+      <div style="margin-top:10px" class="small">Teacher access is open — share this file with staff. Local notes and annotations are saved only in each teacher's browser (no server).</div>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="mainTitle">PE Teacher Guide</div>
+          <div class="kv" id="mainSubtitle">Select grade & week to view study guide and answer keys</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <button id="printBtn" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Print</button>
+          <button id="downloadJson" class="tool-btn">Download JSON</button>
+        </div>
+      </div>
+
+      <div id="contentArea">
+        <div class="reader" id="reader">
+          <div style="font-weight:800" id="weekTitle">Welcome</div>
+          <div class="kv" id="weekSub">Choose a grade and week from the left to view study guide and answer key.</div>
+
+          <div style="margin-top:12px" id="studyText"></div>
+          <div id="teacherNotesContainer"></div>
+
+          <div id="quizFocus" style="margin-top:12px"></div>
+
+          <div id="answerKey" style="margin-top:14px"></div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidepanel">
+      <div style="font-weight:800">Teacher Tools</div>
+
+      <button id="toggleAnswers" class="tool-btn" style="background:var(--accent);color:#04232a;margin-top:12px">Show / Hide Answer Key</button>
+      <button id="answerOverlayBtn" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Answer Key Overlay (Teacher-only)</button>
+
+      <button id="setTeacherPassword" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Set Teacher Password</button>
+      <button id="unlockTeacherMode" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Unlock Teacher Mode</button>
+
+      <button id="copyToClipboard" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Copy Study Text</button>
+      <button id="downloadPdf" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Export Week (Print dialog)</button>
+
+      <div style="margin-top:14px">
+        <div class="small" style="font-weight:700">Teacher checklist</div>
+        <ul class="small">
+          <li>Review weekly study text before class</li>
+          <li>Use quiz focus to brief students</li>
+          <li>Use answer keys only for grading</li>
+          <li>Encourage open-book weekly quizzes; closed-book final</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="small" style="font-weight:700">Local notes (saved to this browser)</div>
+        <textarea id="teacherNoteBox" placeholder="Personal teacher notes for selected week..." style="width:100%;height:120px;border-radius:6px;padding:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--ink)"></textarea>
+        <div style="display:flex; gap:8px; margin-top:8px">
+          <button id="saveTeacherNote" class="tool-btn" style="background:var(--accent);color:#04232a">Save Note</button>
+          <button id="clearTeacherNote" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Clear</button>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="small">Export all teacher resources (JSON)</div>
+        <button id="exportAll" class="tool-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);margin-top:6px">Export All</button>
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="small" style="font-weight:700">Teacher Packet</div>
+        <button id="downloadPacket" class="tool-btn" style="background:var(--accent); color:#04232a; margin-top:6px">Download Teacher Packet (Print)</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Answer Key Overlay -->
+  <div id="answerOverlay" role="dialog" aria-hidden="true">
+    <h4>Answer Key — Overlay</h4>
+    <div id="overlayContent" style="min-height:40px"></div>
+    <div class="overlay-controls">
+      <button id="closeOverlay" class="tool-btn" style="padding:6px 10px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Close</button>
+      <button id="printOverlay" class="tool-btn" style="padding:6px 10px;background:var(--accent);color:#04232a">Print Packet</button>
+    </div>
+  </div>
+
+<script>
+/* =====================
+   Combined curriculum data for grades 9–12.
+   (unchanged from your original structure)
+   ===================== */
+
+const ALL = {
+  "9": {
+    label: "9th Grade",
+    A: [
+      { code: 'A1', title: 'Week 1 — Foundations of Movement', study: `<p>Introduction to movement literacy: locomotion, balance, basic locomotor patterns, safe movement mechanics, dynamic warm-up structure.</p>`, quizFocus: `<ul><li>Locomotor patterns</li><li>Dynamic warm-up components</li><li>Basic biomechanics</li></ul>`, teacherNotes: `<div class="teacher-note"><strong>Teacher tips:</strong> Demonstrate each movement; correct alignment gently; use peer feedback.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code: 'A2', title: 'Week 2 — Cardio Basics & Fitness Testing', study: `<p>Heart rate basics, field tests (mile run / pacer), perceived exertion, safe progression for beginners.</p>`, quizFocus:`<ul><li>RPE interpretation</li><li>Test protocols</li></ul>`, teacherNotes: `<div class="teacher-note">Allow alternative tests for students with limitations; ensure proper cooldown.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code: 'A3', title: 'Week 3 — Strength Fundamentals', study:`<p>Bodyweight strength: squats, lunges, push patterns, core stabilization and technique cues.</p>`, quizFocus:`<ul><li>Technique cues for safety</li><li>Progressions</li></ul>`, teacherNotes:`<div class="teacher-note">Emphasize form over reps. Use regressions for beginners.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code: 'A4', title: 'Week 4 — Flexibility & Mobility', study:`<p>Active mobility, dynamic stretches, difference between static & dynamic stretching and when to use each.</p>`, quizFocus:`<ul><li>Stretch timing</li><li>Safe mobility drills</li></ul>`, teacherNotes:`<div class="teacher-note">Pair students and have them lead mobility circuits.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code: 'A5', title: 'Week 5 — Team Games & Rules', study:`<p>Intro to cooperative team games, sportsmanship, basic rules for 3–4 common sports (soccer, basketball, volleyball).</p>`, quizFocus:`<ul><li>Sportsmanship concepts</li><li>Basic rules</li></ul>`, teacherNotes:`<div class="teacher-note">Rotate roles: referee, coach, player to teach different perspectives.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code: 'A6', title: 'Week 6 — Assessment & Reflection', study:`<p>Review, practical assessments, goal setting and personal fitness plans.</p>`, quizFocus:`<ul><li>Goal components (SMART)</li><li>Self-assessment</li></ul>`, teacherNotes:`<div class="teacher-note">Have students create a 6-week action plan and present briefly.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ],
+    B: [
+      { code:'B1', title:'Week 1 — Movement Skills Applied', study:`<p>Apply movement to sport contexts: change-of-direction, agility ladders, reaction drills.</p>`, quizFocus:`<ul><li>Agility principles</li><li>Reaction drill purpose</li></ul>`, teacherNotes:`<div class="teacher-note">Use cones and timing for fun progress tracking.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B2', title:'Week 2 — Lifelong Fitness Habits', study:`<p>Understanding lifestyle factors — sleep, nutrition basics, stress and movement.</p>`, quizFocus:`<ul><li>Sleep & performance</li><li>Macronutrient basics</li></ul>`, teacherNotes:`<div class="teacher-note">Bring simple nutrition handouts; invite realistic discussions.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B3', title:'Week 3 — Intro to Lifesaving & Safety', study:`<p>Basic pool safety, emergency response awareness, CPR overview (theory only unless certified).</p>`, quizFocus:`<ul><li>Pool safety rules</li><li>Chain of survival basics</li></ul>`, teacherNotes:`<div class="teacher-note">Do not teach hands-on CPR unless instructor is certified; use videos and discussion.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B4', title:'Week 4 — Healthy Relationships & Teamwork', study:`<p>Communication skills, inclusion, leadership within team sport contexts.</p>`, quizFocus:`<ul><li>Conflict resolution basics</li><li>Role of leader vs follower</li></ul>`, teacherNotes:`<div class="teacher-note">Use group tasks that require cooperation to score points.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B5', title:'Week 5 — Pacific Fitness Circuit', study:`<p>Circuit training design and implementation for general fitness.</p>`, quizFocus:`<ul><li>Create a safe circuit</li><li>Work:rest ratios</li></ul>`, teacherNotes:`<div class="teacher-note">Students design micro-circuits in small groups.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B6', title:'Week 6 — Culminating Project & Practical Test', study:`<p>Practical exam and presentation of personal fitness plans; reflection.</p>`, quizFocus:`<ul><li>Knowledge applied in practicals</li></ul>`, teacherNotes:`<div class="teacher-note">Rubrics provided for objective grading.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ]
+  },
+
+  "10": {
+    label:"10th Grade",
+    A: [
+      { code:'A1', title:'Week 1 — Movement Economy & Running Mechanics', study:`<p>Gait mechanics, efficiency, injury-preventing cues.</p>`, quizFocus:`<ul><li>Stride & posture cues</li></ul>`, teacherNotes:`<div class="teacher-note">Use video slow-mo to teach posture.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A2', title:'Week 2 — Strength Progressions & Bands', study:`<p>Introduce resistance band progressions and partner-resisted drills.</p>`, quizFocus:`<ul><li>Band safety</li></ul>`, teacherNotes:`<div class="teacher-note">Demonstrate common mistakes.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A3', title:'Week 3 — Aerobic & Anaerobic Conditioning', study:`<p>Energy systems overview and sample sessions for each system.</p>`, quizFocus:`<ul><li>Differences between systems</li></ul>`, teacherNotes:`<div class="teacher-note">Prescribe session types based on goals.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A4', title:'Week 4 — Injury Prevention & Prehab', study:`<p>Common high-school injuries and prehab strategies: glute, scapular, ankle.</p>`, quizFocus:`<ul><li>Prehab exercises</li></ul>`, teacherNotes:`<div class="teacher-note">Offer modifications for students with histories.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A5', title:'Week 5 — Outdoor Adventure Skills', study:`<p>Orienteering basics, safety, and low-ropes trust activities.</p>`, quizFocus:`<ul><li>Map reading basics</li></ul>`, teacherNotes:`<div class="teacher-note">Use school grounds for orienteering practice.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A6', title:'Week 6 — Assessment & Planning', study:`<p>Fitness testing, goal review, and progression planning.</p>`, quizFocus:`<ul><li>Interpreting test results</li></ul>`, teacherNotes:`<div class="teacher-note">Students set 6-week progression targets.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ],
+    B: [
+      { code:'B1', title:'Week 1 — Sport-specific Skills I', study:`<p>Technical skill focus for chosen team sports; mechanics & drills.</p>`, quizFocus:`<ul><li>Technical checkpoints</li></ul>`, teacherNotes:`<div class="teacher-note">Use small-sided practice to increase touches.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B2', title:'Week 2 — Strength & Power for Youth', study:`<p>Safe progressions for power (plyometrics, med ball throws).</p>`, quizFocus:`<ul><li>Safe plyometric progressions</li></ul>`, teacherNotes:`<div class="teacher-note">Monitor landing mechanics closely.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B3', title:'Week 3 — Nutrition for Performance', study:`<p>Macronutrient timing, hydration strategies for athletes.</p>`, quizFocus:`<ul><li>Fuel for training vs recovery</li></ul>`, teacherNotes:`<div class="teacher-note">Bring simple meal timing examples.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B4', title:'Week 4 — Leadership & Coaching Basics', study:`<p>Student coaching roles, basic session design and feedback.</p>`, quizFocus:`<ul><li>Designing a 15-min session</li></ul>`, teacherNotes:`<div class="teacher-note">Assign student groups to teach mini-sessions.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B5', title:'Week 5 — Performance Psychology Intro', study:`<p>Focus, routines, basic imagery and breathing techniques.</p>`, quizFocus:`<ul><li>Pre-performance routine elements</li></ul>`, teacherNotes:`<div class="teacher-note">Run short guided imagery sessions.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B6', title:'Week 6 — Capstone Practical', study:`<p>Students design and lead a practice session including warm-up, main set and cooldown.</p>`, quizFocus:`<ul><li>Session structure</li></ul>`, teacherNotes:`<div class="teacher-note">Use rubric; peer feedback essential.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ]
+  },
+
+  "11": {
+    label:"11th Grade",
+    A: [
+      { code:'A1', title:'Week 1 — Advanced Movement Screening', study:`<p>Movement screens (FMS-style), identifying asymmetries and corrective exercise planning.</p>`, quizFocus:`<ul><li>Screen components & corrective choices</li></ul>`, teacherNotes:`<div class="teacher-note">Teach correct scoring and safe corrections.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A2', title:'Week 2 — Conditioning Programming', study:`<p>Designing conditioning microcycles for team & individual sports; acute:chronic load basics.</p>`, quizFocus:`<ul><li>Workload planning</li></ul>`, teacherNotes:`<div class="teacher-note">Discuss recovery planning between training days.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A3', title:'Week 3 — Strength Clinic', study:`<p>Advanced lifting technique, spotting, basic programming variables (sets, reps, tempo).</p>`, quizFocus:`<ul><li>Programming variables</li></ul>`, teacherNotes:`<div class="teacher-note">Supervise barbell work strictly; use machines if needed.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A4', title:'Week 4 — Recovery Science', study:`<p>Sleep, HRV basics, periodized recovery strategies and monitoring tools.</p>`, quizFocus:`<ul><li>HRV & readiness basics</li></ul>`, teacherNotes:`<div class="teacher-note">Introduce simple monitoring templates (RPE logs).</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A5', title:'Week 5 — Advanced Nutrition & Supplements', study:`<p>Evidence-based supplement discussion, doping risks and label checking.</p>`, quizFocus:`<ul><li>Safe supplement choices</li></ul>`, teacherNotes:`<div class="teacher-note">Emphasize food-first approach.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A6', title:'Week 6 — Ethics & Safeguarding', study:`<p>Safeguarding principles, consent, bullying prevention and reporting lines.</p>`, quizFocus:`<ul><li>Safeguarding basics</li></ul>`, teacherNotes:`<div class="teacher-note">Cover mandatory reporting responsibilities.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ],
+    B: [
+      { code:'B1', title:'Week 1 — Power Development & Olympic Derivatives', study:`<p>Olympic lift derivatives, safe progressions and transfer to sport.</p>`, quizFocus:`<ul><li>Derivative progression</li></ul>`, teacherNotes:`<div class="teacher-note">Use simplified variations if no platform available.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B2', title:'Week 2 — Return-to-play Principles', study:`<p>Criteria-based return, functional testing and reintegration strategies.</p>`, quizFocus:`<ul><li>Return criteria examples</li></ul>`, teacherNotes:`<div class="teacher-note">Coordinate with school medical staff when possible.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B3', title:'Week 3 — Sports Data & Ethics', study:`<p>Wearables, data privacy, and athlete consent best practices.</p>`, quizFocus:`<ul><li>Consent & data governance</li></ul>`, teacherNotes:`<div class="teacher-note">Create a sample consent form for classroom use.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B4', title:'Week 4 — Performance Psychology', study:`<p>Advanced mental skills training, resilience and pressure management.</p>`, quizFocus:`<ul><li>PST components & practice</li></ul>`, teacherNotes:`<div class="teacher-note">Add scenario-based simulations.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B5', title:'Week 5 — Tactical Periodization', study:`<p>Integrating tactics, representative practice and small-sided games for decision-making.</p>`, quizFocus:`<ul><li>Designing representative practice</li></ul>`, teacherNotes:`<div class="teacher-note">Use video analysis where possible.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B6', title:'Week 6 — Capstone Project', study:`<p>Students design a microcycle plan & defend choices; includes testing & measurement criteria.</p>`, quizFocus:`<ul><li>Capstone components</li></ul>`, teacherNotes:`<div class="teacher-note">Provide rubric and allow peer review.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ]
+  },
+
+  "12": {
+    label:"12th Grade",
+    A: [
+      { code:'A1', title:'Week A1 — Advanced Strength & Power Foundations', study:`<p>Force-velocity relationship, rate of force development (RFD), activation and transfer to sport.</p>`, quizFocus:`<ul><li>RFD basics</li><li>Force-velocity concept</li></ul>`, teacherNotes:`<div class="teacher-note">Use simple field tests to illustrate power differences.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A2', title:'Week A2 — Advanced Periodization & Peaking', study:`<p>Block periodization, tapering strategies, monitoring fatigue and peaking.</p>`, quizFocus:`<ul><li>Block types</li><li>Taper rationale</li></ul>`, teacherNotes:`<div class="teacher-note">Have students map a 6-week block to a hypothetical event.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A3', title:'Week A3 — Advanced Testing & Performance Metrics', study:`<p>Velocity-based training, GPS metrics, force profiling and usage for programming.</p>`, quizFocus:`<ul><li>Metric interpretation</li></ul>`, teacherNotes:`<div class="teacher-note">Discuss limits of data and the need for context.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A4', title:'Week A4 — Recovery, Regeneration & Sleep', study:`<p>Sleep hygiene, HRV basics, active recovery modalities and monitoring readiness.</p>`, quizFocus:`<ul><li>Recovery pillars</li></ul>`, teacherNotes:`<div class="teacher-note">Encourage tracking sleep & perceived readiness.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A5', title:'Week A5 — Advanced Nutrition & Supplement Strategy', study:`<p>Periodized fueling, protein timing, supplement evidence & contamination risks.</p>`, quizFocus:`<ul><li>Fueling around sessions</li></ul>`, teacherNotes:`<div class="teacher-note">Bring examples of label-reading tasks.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'A6', title:'Week A6 — Leadership, Coaching & Ethics', study:`<p>Leadership models, safeguarding, coaching pedagogy and building positive culture.</p>`, quizFocus:`<ul><li>Leadership styles</li></ul>`, teacherNotes:`<div class="teacher-note">Role-play ethical dilemmas for discussion.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ],
+    B: [
+      { code:'B1', title:'Week B1 — High-Performance Power & Olympic Variants', study:`<p>Progressions from pulls to snatch/clean derivatives; coaching cues and transfer.</p>`, quizFocus:`<ul><li>Derivative sequencing</li></ul>`, teacherNotes:`<div class="teacher-note">Use light loads for teaching technique.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B2', title:'Week B2 — Injury Management & Advanced Rehab', study:`<p>Return-to-play criteria, staged progression and reintegration strategies.</p>`, quizFocus:`<ul><li>Return staging</li></ul>`, teacherNotes:`<div class="teacher-note">Coordinate with health staff and use objective tests.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B3', title:'Week B3 — Sports Technology & Data Ethics', study:`<p>Wearables, privacy, consent and data governance in sport contexts.</p>`, quizFocus:`<ul><li>Consent principles</li></ul>`, teacherNotes:`<div class="teacher-note">Create a sample policy for classroom discussion.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B4', title:'Week B4 — Mental Skills for Elite Performance', study:`<p>Resilience training, imagery, routines and stress-inoculation practices.</p>`, quizFocus:`<ul><li>PST tools & practice</li></ul>`, teacherNotes:`<div class="teacher-note">Simulate pressure situations in safe ways.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B5', title:'Week B5 — Tactical Periodization & Match Models', study:`<p>Tactical periodization and representative practice for building decision-making.</p>`, quizFocus:`<ul><li>Representative drills</li></ul>`, teacherNotes:`<div class="teacher-note">Use small-sided games with clear tactical aims.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] },
+      { code:'B6', title:'Week B6 — Capstone Project & Final Prep', study:`<p>Design a season-ready microcycle, testing plan, nutrition & recovery strategy; final exam prep.</p>`, quizFocus:`<ul><li>Capstone components & exam prep</li></ul>`, teacherNotes:`<div class="teacher-note">Provide structured feedback and grading rubric.</div>`, answers:[0,0,0,0,0,0,1,0,0,0] }
+    ],
+    finalAnswers: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] // placeholder final answer key
+  }
+};
+
+/* keep teacher notes per-week saved locally */
+const TEACHER_NOTES_KEY = 'pe_teacher_guide_notes_v1';
+let teacherNotes = {}; try{ teacherNotes = JSON.parse(localStorage.getItem(TEACHER_NOTES_KEY) || '{}'); }catch(e){ teacherNotes = {}; }
+
+/* UI refs */
+const gradeSelect = document.getElementById('gradeSelect'), moduleSelect = document.getElementById('moduleSelect'), searchInput = document.getElementById('searchInput');
+const weekList = document.getElementById('weekList');
+const mainTitle = document.getElementById('mainTitle'), mainSubtitle = document.getElementById('mainSubtitle');
+const weekTitle = document.getElementById('weekTitle'), weekSub = document.getElementById('weekSub'), studyText = document.getElementById('studyText'), teacherNotesContainer = document.getElementById('teacherNotesContainer'), quizFocus = document.getElementById('quizFocus'), answerKey = document.getElementById('answerKey');
+const teacherNoteBox = document.getElementById('teacherNoteBox');
+const printBtn = document.getElementById('printBtn'), downloadJson = document.getElementById('downloadJson');
+const toggleAnswers = document.getElementById('toggleAnswers'), copyToClipboard = document.getElementById('copyToClipboard'), downloadPdf = document.getElementById('downloadPdf');
+const saveTeacherNote = document.getElementById('saveTeacherNote'), clearTeacherNote = document.getElementById('clearTeacherNote');
+const expandAll = document.getElementById('expandAll'), collapseAll = document.getElementById('collapseAll'), exportAll = document.getElementById('exportAll');
+const answerOverlayBtn = document.getElementById('answerOverlayBtn'), answerOverlay = document.getElementById('answerOverlay'), overlayContent = document.getElementById('overlayContent'), closeOverlay = document.getElementById('closeOverlay'), printOverlay = document.getElementById('printOverlay');
+const setTeacherPasswordBtn = document.getElementById('setTeacherPassword'), unlockTeacherModeBtn = document.getElementById('unlockTeacherMode');
+const downloadPacketBtn = document.getElementById('downloadPacket');
+
+/* state */
+let current = { grade:'12', module:'A', weekIndex:0 };
+let answersVisible = true;
+let teacherMode = false; // unlocked state
+const TEACHER_PASS_KEY = 'pe_teacher_pass_v1';
+
+/* helper to build week items */
+function buildWeekList(){
+  const g = current.grade, m = current.module;
+  const weeks = ALL[g][m];
+  weekList.innerHTML = '';
+  const filter = (searchInput.value || '').toLowerCase();
+  weeks.forEach((w, idx)=>{
+    const visible = !filter || (w.title+ w.study + w.teacherNotes + w.quizFocus).toLowerCase().includes(filter);
+    if(!visible) return;
+    const div = document.createElement('div'); div.className = 'week-item'; if(idx===current.weekIndex) div.classList.add('active');
+    div.innerHTML = `<div><strong>${w.code}</strong> — ${w.title}</div><div class="small">Week ${idx+1}</div>`;
+    div.onclick = ()=> { current.weekIndex = idx; renderCurrentWeek(); buildWeekList(); };
+    weekList.appendChild(div);
+  });
+}
+
+/* render details for current selection */
+function renderCurrentWeek(){
+  const g = current.grade, m = current.module;
+  const weeks = ALL[g][m];
+  const w = weeks[current.weekIndex];
+  mainTitle.textContent = `${ALL[g].label} — Module ${m}`;
+  mainSubtitle.textContent = `${w.code} • ${w.title}`;
+  weekTitle.textContent = `${w.code} — ${w.title}`;
+  weekSub.textContent = w.study.replace(/<\/?[^>]+(>|$)/g, '').slice(0,120) + '...';
+  studyText.innerHTML = `<div class="section-title">Study material</div>${w.study}`;
+  teacherNotesContainer.innerHTML = `<div class="section-title">Teacher notes</div>${w.teacherNotes || '<div class="small">No teacher notes provided.</div>'}`;
+  quizFocus.innerHTML = `<div class="section-title">Quiz focus</div>${w.quizFocus || '<div class="small">No quiz focus specified.</div>'}`;
+  const saved = (teacherNotes[g] && teacherNotes[g][m] && teacherNotes[g][m][w.code]) || '';
+  teacherNoteBox.value = saved;
+  renderAnswerKey();
+  updateOverlayContent(); // refresh overlay content to match selection
+}
+
+/* answers display */
+function renderAnswerKey(){
+  const g = current.grade, m = current.module;
+  const w = ALL[g][m][current.weekIndex];
+  if(!w) { answerKey.innerHTML = ''; return; }
+  const ans = w.answers || [];
+  let html = `<div class="section-title">Answer Key — Weekly Quiz (10 items)</div>`;
+  if(!answersVisible) { answerKey.innerHTML = '<div class="small">Answer key hidden. Use "Show / Hide Answer Key" to reveal.</div>'; return; }
+  html += '<ol>';
+  for(let i=0;i<ans.length;i++){
+    const optIndex = ans[i];
+    html += `<li>Q${i+1} — Correct option: <strong>${optionLabel(optIndex)}</strong></li>`;
+  }
+  html += '</ol>';
+  answerKey.innerHTML = html;
+}
+
+/* option label helper (0 -> A) */
+function optionLabel(i){ if(typeof i !== 'number') return 'N/A'; return String.fromCharCode(65 + (i||0)); }
+
+/* wire controls */
+gradeSelect.addEventListener('change', e=>{ current.grade = e.target.value; current.weekIndex = 0; buildWeekList(); renderCurrentWeek(); });
+moduleSelect.addEventListener('change', e=> { current.module = e.target.value; current.weekIndex = 0; buildWeekList(); renderCurrentWeek(); });
+searchInput.addEventListener('input', ()=> buildWeekList());
+
+printBtn.addEventListener('click', ()=> window.print());
+downloadJson.addEventListener('click', ()=> {
+  const blob = new Blob([JSON.stringify(ALL, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pe_teacher_guide_all_grades.json'; a.click();
+});
+
+toggleAnswers.addEventListener('click', ()=> { answersVisible = !answersVisible; renderAnswerKey(); });
+
+copyToClipboard.addEventListener('click', async ()=> {
+  const txt = studyText.innerText || studyText.textContent || '';
+  try{ await navigator.clipboard.writeText(txt); alert('Study text copied to clipboard'); }catch(e){ alert('Copy failed: ' + e); }
+});
+
+downloadPdf.addEventListener('click', ()=> { window.print(); });
+
+saveTeacherNote.addEventListener('click', ()=>{
+  const g = current.grade, m = current.module;
+  const w = ALL[g][m][current.weekIndex];
+  teacherNotes[g] = teacherNotes[g] || {}; teacherNotes[g][m] = teacherNotes[g][m] || {};
+  teacherNotes[g][m][w.code] = teacherNoteBox.value;
+  localStorage.setItem(TEACHER_NOTES_KEY, JSON.stringify(teacherNotes));
+  alert('Teacher note saved locally in this browser.');
+});
+
+clearTeacherNote.addEventListener('click', ()=> {
+  if(!confirm('Clear local teacher note for this week?')) return;
+  const g = current.grade, m = current.module;
+  const w = ALL[g][m][current.weekIndex];
+  if(teacherNotes[g] && teacherNotes[g][m]) delete teacherNotes[g][m][w.code];
+  teacherNoteBox.value = '';
+  localStorage.setItem(TEACHER_NOTES_KEY, JSON.stringify(teacherNotes));
+  alert('Cleared.');
+});
+
+expandAll.addEventListener('click', ()=> { const items = document.querySelectorAll('.week-item'); items.forEach(i=> i.classList.add('active')); });
+collapseAll.addEventListener('click', ()=> { const items = document.querySelectorAll('.week-item'); items.forEach(i=> i.classList.remove('active')); });
+
+exportAll.addEventListener('click', ()=> {
+  const exportObj = { ALL, teacherNotes };
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pe_teacher_guide_export_all.json'; a.click();
+});
+
+/* ========================
+   Teacher Password & Mode
+   ======================== */
+function setTeacherPassword(){
+  const pw = prompt('Create a teacher password (stored locally in this browser). Choose something memorable:');
+  if(!pw){ alert('Password not set.'); return; }
+  try{ localStorage.setItem(TEACHER_PASS_KEY, btoa(String(pw))); alert('Password saved locally. Use "Unlock Teacher Mode" to enter.'); }catch(e){ alert('Failed to save password: ' + e); }
+}
+function checkTeacherPassword(input){
+  const stored = localStorage.getItem(TEACHER_PASS_KEY);
+  if(!stored) return false;
+  return stored === btoa(String(input));
+}
+function enableTeacherMode(){
+  teacherMode = true;
+  answerOverlayBtn.disabled = false;
+  // visual cue: highlight toggleAnswers
+  toggleAnswers.style.boxShadow = '0 6px 18px rgba(59,130,246,0.08)';
+  alert('Teacher Mode enabled. You can now open the Answer Key Overlay and download teacher packet.');
+}
+function promptUnlockTeacherMode(){
+  const stored = localStorage.getItem(TEACHER_PASS_KEY);
+  if(!stored){
+    if(!confirm('No teacher password found. Would you like to create one now?')) return;
+    setTeacherPassword();
+    return;
+  }
+  const attempt = prompt('Enter teacher password to unlock teacher mode:');
+  if(!attempt) return;
+  if(checkTeacherPassword(attempt)){
+    enableTeacherMode();
+  } else {
+    alert('Incorrect password.');
+  }
+}
+setTeacherPasswordBtn.addEventListener('click', setTeacherPassword);
+unlockTeacherModeBtn.addEventListener('click', promptUnlockTeacherMode);
+
+/* ========================
+   Answer Key Overlay Logic
+   ======================== */
+function updateOverlayContent(){
+  // Build overlay content based on current selection and answers
+  const g = current.grade, m = current.module;
+  const w = (ALL[g] && ALL[g][m]) ? ALL[g][m][current.weekIndex] : null;
+  overlayContent.innerHTML = '';
+  if(!w){
+    overlayContent.innerHTML = '<div class="small">No week selected.</div>';
+    return;
+  }
+  const ans = w.answers || [];
+  const title = document.createElement('div'); title.style.fontWeight='700'; title.style.marginBottom='8px';
+  title.textContent = `${w.code} — ${w.title}`;
+  overlayContent.appendChild(title);
+
+  if(!ans.length){
+    overlayContent.innerHTML += '<div class="small">No answer key available for this week.</div>';
+    return;
+  }
+
+  const list = document.createElement('div');
+  for(let i=0;i<ans.length;i++){
+    const optIndex = ans[i];
+    const row = document.createElement('div');
+    row.className = 'answer-row correct';
+    row.innerHTML = `<div>Q${i+1}</div><div><strong>${optionLabel(optIndex)}</strong></div>`;
+    list.appendChild(row);
+  }
+  overlayContent.appendChild(list);
+
+  // teacher quick controls
+  const note = document.createElement('div'); note.style.marginTop='8px'; note.className='small';
+  note.textContent = 'Teacher overlay: view correct answers privately. Close when finished.';
+  overlayContent.appendChild(note);
+}
+
+answerOverlayBtn.addEventListener('click', ()=>{
+  if(!teacherMode){
+    if(!confirm('Answer Key Overlay is teacher-only. Unlock Teacher Mode now?')) { return; }
+    promptUnlockTeacherMode();
+    if(!teacherMode) return;
+  }
+  // toggle
+  const visible = answerOverlay.style.display === 'block';
+  if(visible){
+    answerOverlay.style.display = 'none';
+    answerOverlay.setAttribute('aria-hidden','true');
+  } else {
+    updateOverlayContent();
+    answerOverlay.style.display = 'block';
+    answerOverlay.setAttribute('aria-hidden','false');
+  }
+});
+closeOverlay.addEventListener('click', ()=> { answerOverlay.style.display='none'; answerOverlay.setAttribute('aria-hidden','true'); });
+
+printOverlay.addEventListener('click', ()=>{
+  // Generate same packet content as the teacher packet but focused on overlay week
+  const g = current.grade, m = current.module;
+  const w = (ALL[g] && ALL[g][m]) ? ALL[g][m][current.weekIndex] : null;
+  if(!w) return alert('No week selected.');
+  const html = buildPrintPacketHTML(w, { grade: g, module: m, includeRubric: true });
+  openPrintWindow(html);
+});
+
+/* =========================
+   Teacher Packet (print-friendly)
+   ========================= */
+
+function buildRubricHTML(){
+  return `
+    <div class="section rubric">
+      <h2>Rubric — Weekly Quiz / Practical (Example)</h2>
+      <table>
+        <thead><tr><th>Criteria</th><th>Excellent (4)</th><th>Good (3)</th><th>Fair (2)</th><th>Poor (1)</th></tr></thead>
+        <tbody>
+          <tr><td>Technical Execution</td><td>Consistently correct technique</td><td>Mostly correct with minor cues</td><td>Some errors needing correction</td><td>Unsafe or incorrect</td></tr>
+          <tr><td>Effort & Engagement</td><td>Fully engaged, high effort</td><td>Mostly engaged</td><td>Variable effort</td><td>Minimal effort</td></tr>
+          <tr><td>Understanding & Application</td><td>Applies concepts independently</td><td>Applies with prompts</td><td>Limited application</td><td>Does not apply concepts</td></tr>
+          <tr><td>Safety & Behavior</td><td>Always safe & cooperative</td><td>Mostly safe</td><td>Occasional lapses</td><td>Unsafe behavior</td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function buildGradingTemplateHTML(){
+  return `
+    <div class="section">
+      <h2>Grading Template</h2>
+      <p>Student: _____________________ &nbsp;&nbsp; Date: __/__/____</p>
+      <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+        <thead><tr><th style="border:1px solid #ddd;padding:8px">Item</th><th style="border:1px solid #ddd;padding:8px">Max</th><th style="border:1px solid #ddd;padding:8px">Score</th></tr></thead>
+        <tbody>
+          <tr><td style="border:1px solid #ddd;padding:8px">Quiz (10 items)</td><td style="border:1px solid #ddd;padding:8px">10</td><td style="border:1px solid #ddd;padding:8px">____</td></tr>
+          <tr><td style="border:1px solid #ddd;padding:8px">Skill Execution</td><td style="border:1px solid #ddd;padding:8px">10</td><td style="border:1px solid #ddd;padding:8px">____</td></tr>
+          <tr><td style="border:1px solid #ddd;padding:8px">Participation</td><td style="border:1px solid #ddd;padding:8px">5</td><td style="border:1px solid #ddd;padding:8px">____</td></tr>
+          <tr><td style="border:1px solid #ddd;padding:8px">Reflection / Homework</td><td style="border:1px solid #ddd;padding:8px">5</td><td style="border:1px solid #ddd;padding:8px">____</td></tr>
+          <tr><td style="border:1px solid #ddd;padding:8px"><strong>Total</strong></td><td style="border:1px solid #ddd;padding:8px"><strong>30</strong></td><td style="border:1px solid #ddd;padding:8px">____</td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function buildPrintPacketHTML(weekObj, meta = {}) {
+  const grade = meta.grade || '12';
+  const module = meta.module || 'A';
+  const rubric = buildRubricHTML();
+  const template = buildGradingTemplateHTML();
+  const teacherNotesForWeek = (teacherNotes[grade] && teacherNotes[grade][module] && teacherNotes[grade][module][weekObj.code]) ? teacherNotes[grade][module][weekObj.code] : '';
+  const teacherNotesText = teacherNotesForWeek || '<em>No teacher notes saved for this week.</em>';
+  return `
+    <!doctype html>
+    <html>
+    <head>
+      <meta charset="utf-8"/>
+      <title>Teacher Packet — ${weekObj.code}</title>
+      <style>
+        body{ font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#0b2130; padding:20px; }
+        h1{ font-size:20px; margin-bottom:4px }
+        h2{ font-size:16px; margin-top:12px }
+        .section{ margin-bottom:14px; }
+        .notes{ border:1px dashed #ccc; padding:8px; min-height:120px; background:#fff }
+        .meta{ color:#556; font-size:13px; margin-bottom:10px }
+      </style>
+    </head>
+    <body>
+      <div class="print-packet">
+        <h1>Teacher Packet — ${weekObj.code} — ${weekObj.title}</h1>
+        <div class="meta">Grade: ${grade} | Module: ${module} &nbsp;&nbsp; Generated: ${new Date().toLocaleString()}</div>
+
+        <div class="section">
+          <h2>Study Material</h2>
+          <div>${weekObj.study}</div>
+        </div>
+
+        <div class="section">
+          <h2>Quiz Focus</h2>
+          <div>${weekObj.quizFocus}</div>
+        </div>
+
+        <div class="section">
+          <h2>Teacher Notes</h2>
+          <div class="notes">${teacherNotesText}</div>
+        </div>
+
+        ${rubric}
+        ${template}
+
+        <div class="section">
+          <h2>Teacher Annotations</h2>
+          <div class="notes"></div>
+        </div>
+
+        <div style="margin-top:24px; font-size:12px; color:#556">Generated by PLERA — Teacher Packet (local only)</div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function openPrintWindow(html){
+  const w = window.open('', '_blank', 'noopener');
+  if(!w) return alert('Popup blocked — allow popups to print the packet.');
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  // Give the new window a moment to render before calling print
+  w.focus();
+  setTimeout(()=> {
+    try{ w.print(); } catch(e){ console.warn('Print call failed', e); }
+  }, 300);
+}
+
+downloadPacketBtn.addEventListener('click', ()=>{
+  if(!teacherMode){
+    if(!confirm('Downloadable teacher packet is teacher-only. Unlock teacher mode now?')) return;
+    promptUnlockTeacherMode();
+    if(!teacherMode) return;
+  }
+  const g = current.grade, m = current.module;
+  const w = ALL[g][m][current.weekIndex];
+  const html = buildPrintPacketHTML(w, { grade:g, module:m });
+  openPrintWindow(html);
+});
+
+/* small helper option label used in overlay and answer key */
+function optionLabel(i){ if(typeof i !== 'number') return 'N/A'; return String.fromCharCode(65 + (i||0)); }
+
+/* initial build */
+function init(){
+  // default grade and module (keeps current.weekIndex)
+  buildWeekList(); renderCurrentWeek();
+  // initially disable overlay & packet until teacherMode enabled
+  answerOverlayBtn.disabled = true;
+}
+init();
+
+/* Expose a quick function to clear teacher password if needed (for debugging) */
+window._plera_clear_teacher_pass = function(){ if(confirm('Clear teacher password from this browser?')) { localStorage.removeItem(TEACHER_PASS_KEY); alert('Teacher password cleared.'); } };
+</script>
+</body>
+</html>
