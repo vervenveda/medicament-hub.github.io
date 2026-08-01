@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#2e4b44">
 <meta name="color-scheme" content="light">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';">
 <title>Medicament Hub — Integrative, Holistic & Whole-Person Health</title>
 
 <style>
@@ -2030,6 +2030,368 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
   }
 </style>
 
+
+<style id="medicament-final-refinement">
+  /* Final Medicament system — quiet clinical identity, open typography, uniform cards */
+  :root{--radius:7px}
+
+  body.menu-open{overflow:hidden}
+
+  h1,h2,h3,h4,
+  .brand-copy strong,
+  .menu-panel-title,
+  .footer h3{
+    overflow-wrap:anywhere;
+    text-wrap:balance;
+  }
+
+  h1{
+    line-height:1.01!important;
+    letter-spacing:.012em!important;
+  }
+
+  h2{
+    line-height:1.09!important;
+    letter-spacing:0!important;
+  }
+
+  h3,h4{
+    letter-spacing:.008em;
+  }
+
+  strong,b{
+    font-weight:600!important;
+  }
+
+  .emergency .wrap{
+    min-height:42px;
+    padding:.42rem 0;
+    flex-wrap:wrap;
+    line-height:1.55;
+  }
+
+  .emergency a{
+    display:inline-block;
+    padding-inline:.12rem;
+    white-space:nowrap;
+  }
+
+  .btn,
+  .card a,
+  .program a,
+  .academy a,
+  .help-links a,
+  .resource a,
+  .mobile-panel a{
+    max-width:100%;
+    overflow-wrap:anywhere;
+    white-space:normal;
+    line-height:1.35;
+    text-align:center;
+  }
+
+  .path-grid,
+  .hall-grid,
+  .resource-grid,
+  .safety-grid,
+  .academy-grid,
+  .help-grid,
+  .program-grid{
+    align-items:stretch;
+  }
+
+  .path,
+  .card,
+  .resource,
+  .safety,
+  .academy,
+  .help-card,
+  .program{
+    min-width:0;
+    height:100%;
+    overflow:hidden;
+  }
+
+  .path h3,
+  .card h3,
+  .resource h3,
+  .safety h3,
+  .academy h3,
+  .help-card h3{
+    min-height:2.55em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .path p,
+  .card p,
+  .resource p,
+  .safety p,
+  .academy p,
+  .help-card p{
+    flex:1 1 auto;
+  }
+
+  .card-kind,
+  .program-status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:26px;
+    margin:.9rem auto 0;
+    padding:.28rem .58rem;
+    border:1px solid rgba(65,91,84,.22);
+    border-radius:999px;
+    color:#526a64;
+    background:rgba(255,255,252,.5);
+    font-size:.61rem;
+    letter-spacing:.09em;
+    line-height:1.25;
+    text-transform:uppercase;
+    text-align:center;
+  }
+
+  .card h3{
+    margin:.72rem 0 .5rem;
+  }
+
+  .card a,
+  .academy a{
+    width:100%;
+    min-height:46px;
+    align-self:stretch!important;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:.7rem .8rem;
+  }
+
+  .program-group{
+    margin-top:3rem;
+  }
+
+  .program-group:first-of-type{
+    margin-top:0;
+  }
+
+  .program-group + .program-group{
+    padding-top:3rem;
+    border-top:1px solid rgba(68,100,91,.14);
+  }
+
+  .program-group-head{
+    width:min(100%,860px);
+    margin:0 auto 1.5rem;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:1rem;
+    align-items:start;
+    text-align:left;
+  }
+
+  .program-group-index{
+    width:44px;
+    height:44px;
+    margin:0;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(65,91,84,.28);
+    border-radius:7px;
+    color:#6e785f;
+    background:rgba(255,255,252,.44);
+    font-size:.68rem;
+    letter-spacing:.08em;
+  }
+
+  .program-group-head h3{
+    margin:0;
+    color:#304f47;
+    font-family:var(--display);
+    font-size:clamp(1.65rem,3vw,2.35rem);
+    font-weight:400!important;
+    line-height:1.12;
+  }
+
+  .program-group-head p{
+    margin:.58rem 0 0;
+    color:#5b6a65;
+    font-size:.86rem;
+    line-height:1.75;
+  }
+
+  .program-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+
+  .program{
+    min-height:330px!important;
+    padding:1.25rem!important;
+    border:1px solid rgba(65,91,84,.20)!important;
+    box-shadow:0 12px 28px rgba(39,58,53,.055);
+  }
+
+  .program-mark{
+    flex:0 0 auto;
+  }
+
+  .program-status{
+    margin-top:.82rem;
+  }
+
+  .program-status.experimental{
+    color:#76535a;
+    border-color:rgba(134,84,92,.30);
+    background:rgba(134,84,92,.055);
+  }
+
+  .program h4{
+    min-height:2.65em;
+    margin:.72rem 0 .48rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#304f47;
+    font-family:var(--display);
+    font-size:1.22rem;
+    font-weight:400!important;
+    line-height:1.25;
+  }
+
+  .program p{
+    flex:1 1 auto;
+    margin:0 auto 1rem;
+    color:#5b6a65;
+    font-size:.78rem;
+    line-height:1.72;
+  }
+
+  .program a{
+    width:100%;
+    min-height:46px;
+    margin-top:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:.68rem .78rem;
+    border:1px solid #365a52;
+    border-radius:7px;
+    color:#fff;
+    background:#365a52;
+    font-size:.67rem;
+    text-decoration:none;
+  }
+
+  .program a:hover,
+  .program a:focus-visible{
+    background:#294b44;
+  }
+
+  .experimental-group{
+    padding:2rem!important;
+    border:1px solid rgba(134,84,92,.18)!important;
+    border-radius:7px;
+    background:rgba(134,84,92,.025);
+  }
+
+  .program-safety-note{
+    width:min(100%,920px);
+    margin:2rem auto 0;
+    padding:1rem 1.15rem;
+    border:1px solid rgba(65,91,84,.22);
+    border-left:4px solid #55755f;
+    border-radius:7px;
+    color:#52635e;
+    background:rgba(251,250,245,.74);
+    font-size:.76rem;
+    line-height:1.75;
+    text-align:left;
+  }
+
+  .resource{
+    min-height:300px!important;
+  }
+
+  .resource h3{
+    min-height:2.65em;
+  }
+
+  .resource a{
+    width:100%;
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:.6rem .7rem;
+    border:1px solid rgba(46,111,104,.25);
+    border-radius:7px;
+    background:rgba(255,255,252,.46);
+    text-decoration:none;
+  }
+
+  .academy{
+    min-height:275px!important;
+  }
+
+  .academy h3{
+    min-height:2.6em;
+  }
+
+  .help-links a{
+    min-width:0;
+    flex:1 1 145px;
+  }
+
+  .footer-bottom{
+    line-height:1.6;
+  }
+
+  @media(max-width:1050px){
+    .program-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    }
+  }
+
+  @media(max-width:620px){
+    h1{
+      font-size:clamp(2.75rem,14vw,4.1rem)!important;
+      letter-spacing:.006em!important;
+    }
+
+    .program-group-head{
+      grid-template-columns:1fr;
+      justify-items:center;
+      text-align:center;
+    }
+
+    .program-grid{
+      grid-template-columns:1fr!important;
+    }
+
+    .program{
+      min-height:0!important;
+    }
+
+    .path h3,
+    .card h3,
+    .resource h3,
+    .safety h3,
+    .academy h3,
+    .help-card h3,
+    .program h4{
+      min-height:0;
+    }
+
+    .experimental-group{
+      padding:1.1rem!important;
+    }
+
+    .program-safety-note{
+      text-align:center;
+    }
+  }
+</style>
+
 </head>
 
 <body id="top">
@@ -2038,7 +2400,7 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
 <div class="emergency">
   <div class="wrap">
     <strong>Emergency:</strong>
-    <span>In the United States, call <a href="tel:911">911</a> for immediate danger, <a href="tel:988">988</a> for suicide or crisis support, <br>or <a href="tel:18002221222">Poison Control at 1-800-222-1222</a>.</span>
+    <span>United States: call <a href="tel:911">911</a> for immediate danger · call or text <a href="tel:988">988</a> for suicide or crisis support · call <a href="tel:18002221222">Poison Control at 1-800-222-1222</a>.</span>
   </div>
 </div>
 
@@ -2149,7 +2511,7 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
     <div class="menu-divider" aria-hidden="true"></div>
     <p class="menu-group-label">Connected Landing Pages</p>
 
-    <a class="menu-destination" href="https://vervenveda.github.io/khaemenesacademy.github.io/" target="_blank" rel="noopener noreferrer">
+    <a class="menu-destination" href="https://vervenveda.github.io/Khaemenes_Academy.github.io/" target="_blank" rel="noopener noreferrer">
       <span class="menu-destination-icon" aria-hidden="true">KA</span>
       <span><strong>Khaemenes Academy</strong><small>Sovereign education and lifelong learning</small></span>
       <span class="menu-destination-arrow" aria-hidden="true">↗</span>
@@ -2314,38 +2676,42 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
     <div class="section-head">
       <div>
         <p class="eyebrow">Active Medicament destinations</p>
-        <h2>Your working medical halls.</h2>
+        <h2>Four foundational<br>health-learning halls.</h2>
       </div>
-      <p>The landing page keeps the existing Medicament destinations prominent and easy to reach, without placing unfinished rooms beside active tools.</p>
+      <p>Each destination is educational. None diagnoses, prescribes, replaces emergency care, or creates a professional medical relationship.</p>
     </div>
 
     <div class="hall-grid">
       <article class="card">
-        <span class="card-mark">CH</span>
+        <span class="card-mark" aria-hidden="true">CH</span>
+        <span class="card-kind">Family health education</span>
         <h3>Children’s Medicine Hall</h3>
         <p>Family-centered health literacy, pediatric safety, caregiver questions, medicine awareness, records, and source evaluation.</p>
-        <a href="halls/Childrens_Medicine_Hall/" target="_blank" rel="noopener noreferrer">Open Children’s Hall ↗</a>
+        <a href="halls/Childrens_Medicine_Hall/" target="_blank" rel="noopener noreferrer" aria-label="Open Children’s Medicine Hall">Open Children’s Hall <span aria-hidden="true">↗</span></a>
       </article>
 
       <article class="card">
-        <span class="card-mark">HH</span>
+        <span class="card-mark" aria-hidden="true">HH</span>
+        <span class="card-kind">Comparative health learning</span>
         <h3>Holistic Medicine Hall</h3>
         <p>Whole-person health, lifestyle, mind-body approaches, ethics, informed comparison, coordinated care, and evidence awareness.</p>
-        <a href="halls/%20Holistic_Medicine_Hall/" target="_blank" rel="noopener noreferrer">Open Holistic Hall ↗</a>
+        <a href="halls/%20Holistic_Medicine_Hall/" target="_blank" rel="noopener noreferrer" aria-label="Open Holistic Medicine Hall">Open Holistic Hall <span aria-hidden="true">↗</span></a>
       </article>
 
       <article class="card">
-        <span class="card-mark">TH</span>
+        <span class="card-mark" aria-hidden="true">TH</span>
+        <span class="card-kind">Culture, history & evidence</span>
         <h3>Traditional Medicine Hall</h3>
         <p>Traditional healing systems studied through cultural history, community knowledge, safety, ethics, and current research.</p>
-        <a href="halls/Traditional_Medicine_Hall/" target="_blank" rel="noopener noreferrer">Open Traditional Hall ↗</a>
+        <a href="halls/Traditional_Medicine_Hall/" target="_blank" rel="noopener noreferrer" aria-label="Open Traditional Medicine Hall">Open Traditional Hall <span aria-hidden="true">↗</span></a>
       </article>
 
       <article class="card">
-        <span class="card-mark">EX</span>
+        <span class="card-mark" aria-hidden="true">EX</span>
+        <span class="card-kind">Local-only activity record</span>
         <h3>Universal Exercise Log</h3>
-        <p>A local-first activity and movement tracker for middle-school, high-school, and adult profiles.</p>
-        <a href="tools/Universal_Exercise_Log_Workout_Tracker_index.html" target="_blank" rel="noopener noreferrer">Open Exercise Tool ↗</a>
+        <p>A private browser-based movement tracker for middle-school, high-school, and adult profiles. It is not a medical-monitoring device.</p>
+        <a href="tools/Universal_Exercise_Log_Workout_Tracker_index.html" target="_blank" rel="noopener noreferrer" aria-label="Open Universal Exercise Log">Open Exercise Tool <span aria-hidden="true">↗</span></a>
       </article>
     </div>
   </div>
@@ -2356,21 +2722,64 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
     <div class="section-head">
       <div>
         <p class="eyebrow">Verified repository programs</p>
-        <h2>Workshops, learning tools, and wellness studios.</h2>
+        <h2>Programs, study halls,<br>and health-literacy tools.</h2>
       </div>
-      <p>These additional working files were located in the current Medicament repository and are now reachable from the landing page.</p>
+      <p>Sixteen additional active destinations are grouped by purpose so visitors can distinguish health education, student study, personal planning, and experimental learning activities.</p>
     </div>
 
-    <div class="program-grid">
-      <article class="program"><span class="program-mark">PM</span><h3>Psychology & Mind Hall</h3><p>A comprehensive psychology and mind-learning portal connected to the mental-well-being pathway.</p><a href="halls/Psychology_Mind_Hall/" target="_blank" rel="noopener noreferrer">Open Mind Hall ↗</a></article>
-      <article class="program"><span class="program-mark">D</span><h3>Diabetes Health Workshop</h3><p>Structured diabetes health education intended to support informed learning and professional conversations.</p><a href="workshops/Diabetes_Health_index.html" target="_blank" rel="noopener noreferrer">Open Workshop ↗</a></article>
-      <article class="program"><span class="program-mark">10</span><h3>10-Week Wellness Program</h3><p>A guided wellness-learning sequence that brings daily habits, reflection, and whole-person context together.</p><a href="workshops/10-Week_Wellness_Program_index.html" target="_blank" rel="noopener noreferrer">Open Program ↗</a></article>
-      <article class="program"><span class="program-mark">LW</span><h3>Lifestyle & Weight Learning</h3><p>An educational lifestyle and weight-management workspace with an emphasis on sustainable habits rather than promises.</p><a href="workshops/Lifestyle_Weight_Loss_index.html" target="_blank" rel="noopener noreferrer">Open Workshop ↗</a></article>
-      <article class="program"><span class="program-mark">PE</span><h3>Physical Education Resource Hub</h3><p>Curated PE standards, curricula, assessment resources, movement guidance, and teacher notes.</p><a href="tools/PE_Resource_Hub_index.html" target="_blank" rel="noopener noreferrer">Open PE Hub ↗</a></article>
-      <article class="program"><span class="program-mark">DG</span><h3>Diet Generator</h3><p>A local educational planning tool for exploring food patterns and organizing personal questions.</p><a href="tools/Diet_Generator_index.html" target="_blank" rel="noopener noreferrer">Open Tool ↗</a></article>
-      <article class="program"><span class="program-mark">DT</span><h3>Diet Template Generator</h3><p>Create reusable meal-planning templates while keeping allergies, access, culture, and professional guidance in view.</p><a href="tools/Diet_Template_Generator_index.html" target="_blank" rel="noopener noreferrer">Open Templates ↗</a></article>
-      <article class="program"><span class="program-mark">Q</span><h3>Health Is Wealth Mini Trivia</h3><p>A lighter health-literacy activity for reviewing concepts, vocabulary, and evidence-aware choices.</p><a href="tools/Health_is_Wealth_Mini_Trivia_index.html" target="_blank" rel="noopener noreferrer">Open Trivia ↗</a></article>
+    <div class="program-group" aria-labelledby="wellnessProgramsTitle">
+      <div class="program-group-head">
+        <p class="program-group-index">01</p>
+        <div>
+          <h3 id="wellnessProgramsTitle">Wellness & Health Education</h3>
+          <p>Educational workshops and planning tools. Personal medical, nutrition, and exercise decisions should be reviewed with an appropriate qualified professional.</p>
+        </div>
+      </div>
+      <div class="program-grid">
+        <article class="program"><span class="program-mark" aria-hidden="true">PM</span><span class="program-status">Educational hall</span><h4>Psychology & Mind Hall</h4><p>A broad psychology and mind-learning portal connected to mental-health literacy and human development.</p><a href="halls/Psychology_Mind_Hall/" target="_blank" rel="noopener noreferrer">Open Mind Hall <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">D</span><span class="program-status">Health education</span><h4>Diabetes Health Workshop</h4><p>Structured diabetes education intended to support informed learning and better questions for a care team—not treatment decisions.</p><a href="workshops/Diabetes_Health_index.html" target="_blank" rel="noopener noreferrer">Open Workshop <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">10</span><span class="program-status">Guided learning</span><h4>10-Week Wellness Program</h4><p>A reflective wellness sequence bringing daily habits, personal context, and whole-person learning together.</p><a href="workshops/10-Week_Wellness_Program_index.html" target="_blank" rel="noopener noreferrer">Open Program <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">LW</span><span class="program-status">Educational only</span><h4>Lifestyle & Weight Learning</h4><p>A lifestyle-learning workspace emphasizing sustainable habits, context, and safety rather than promises or individualized treatment.</p><a href="workshops/Lifestyle_Weight_Loss_index.html" target="_blank" rel="noopener noreferrer">Open Workshop <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">PE</span><span class="program-status">Teacher resource</span><h4>Physical Education Resource Hub</h4><p>PE standards, curricula, assessment resources, movement guidance, and teacher notes in one organized gateway.</p><a href="tools/PE_Resource_Hub_index.html" target="_blank" rel="noopener noreferrer">Open PE Hub <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">DG</span><span class="program-status">Planning template</span><h4>Diet Generator</h4><p>A local educational organizer for exploring food patterns and preparing questions. It does not prescribe a diet or assess medical needs.</p><a href="tools/Diet_Generator_index.html" target="_blank" rel="noopener noreferrer">Open Planner <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">DT</span><span class="program-status">Planning template</span><h4>Diet Template Generator</h4><p>Create reusable meal-planning templates while keeping allergies, access, culture, medicines, and professional guidance in view.</p><a href="tools/Diet_Template_Generator_index.html" target="_blank" rel="noopener noreferrer">Open Templates <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">Q</span><span class="program-status">Learning activity</span><h4>Health Is Wealth Mini Trivia</h4><p>A lighter health-literacy activity for reviewing concepts, vocabulary, and evidence-aware choices.</p><a href="tools/Health_is_Wealth_Mini_Trivia_index.html" target="_blank" rel="noopener noreferrer">Open Trivia <span aria-hidden="true">↗</span></a></article>
+      </div>
     </div>
+
+    <div class="program-group" aria-labelledby="peStudyTitle">
+      <div class="program-group-head">
+        <p class="program-group-index">02</p>
+        <div>
+          <h3 id="peStudyTitle">Physical Education Study Library</h3>
+          <p>Four live high-school readers with chapter navigation, notes, reading controls, and locally stored progress.</p>
+        </div>
+      </div>
+      <div class="program-grid program-grid-four">
+        <article class="program"><span class="program-mark" aria-hidden="true">9</span><span class="program-status">Student study guide</span><h4>Grade 9 P.E. Reader</h4><p>Foundational movement, fitness, safety, training concepts, study notes, and chapter-by-chapter review.</p><a href="academy/PE_grade_9/study_guide_index.html" target="_blank" rel="noopener noreferrer">Open Grade 9 <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">10</span><span class="program-status">Student study guide</span><h4>Grade 10 P.E. Reader</h4><p>Sport science, conditioning, strength mechanics, nutrition, movement analysis, and private study tools.</p><a href="academy/PE_grade_10/study_guide_index.html" target="_blank" rel="noopener noreferrer">Open Grade 10 <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">11</span><span class="program-status">Student study guide</span><h4>Grade 11 P.E. Reader</h4><p>Expanded performance learning with key terms, study guides, practice tasks, review questions, and notes.</p><a href="academy/PE_grade_11/study_guide_index.html" target="_blank" rel="noopener noreferrer">Open Grade 11 <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">12</span><span class="program-status">Student study guide</span><h4>Grade 12 P.E. Reader</h4><p>Advanced performance, recovery, nutrition, leadership, ethics, monitoring, and self-directed study.</p><a href="academy/PE_grade_12/study_guide_index.html" target="_blank" rel="noopener noreferrer">Open Grade 12 <span aria-hidden="true">↗</span></a></article>
+      </div>
+    </div>
+
+    <div class="program-group experimental-group" aria-labelledby="learningActivitiesTitle">
+      <div class="program-group-head">
+        <p class="program-group-index">03</p>
+        <div>
+          <h3 id="learningActivitiesTitle">Mind & Reasoning Practice</h3>
+          <p>Educational prototypes for reflection, reading, and practice. These activities do not measure intelligence, diagnose a condition, or provide a clinical cognitive assessment.</p>
+        </div>
+      </div>
+      <div class="program-grid program-grid-four">
+        <article class="program"><span class="program-mark" aria-hidden="true">NE</span><span class="program-status experimental">Not diagnostic</span><h4>Noetic Elementary Psychology Explorer</h4><p>An age-aware introduction to feelings, behavior, relationships, and psychology concepts for educational exploration.</p><a href="tools/Noetic_Elementary_Psychology_Explorer_index.html" target="_blank" rel="noopener noreferrer">Open Explorer <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">DM</span><span class="program-status experimental">Practice only</span><h4>Noetic Daily Mind Game</h4><p>A local question-and-review activity for daily reasoning practice. Scores are not medical or psychological evaluations.</p><a href="tools/Daily_mind_game_index.html" target="_blank" rel="noopener noreferrer">Open Mind Game <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">QR</span><span class="program-status experimental">Prototype · Not an IQ test</span><h4>Critical Reading Mini Practice</h4><p>A critical-reading prototype whose source file uses “Mini IQ” wording. Its results are practice feedback, not an intelligence score.</p><a href="tools/Quantum_reading_mini_IQ" target="_blank" rel="noopener noreferrer">Open Reading Practice <span aria-hidden="true">↗</span></a></article>
+        <article class="program"><span class="program-mark" aria-hidden="true">RA</span><span class="program-status experimental">Prototype · Not clinical</span><h4>Reasoning Reflection Activity</h4><p>An experimental open-response activity whose generated profile is not validated for diagnosis, ability testing, or clinical decision-making.</p><a href="tools/Quantum_cognitive%20_assessment_index.html" target="_blank" rel="noopener noreferrer">Open Prototype <span aria-hidden="true">↗</span></a></article>
+      </div>
+    </div>
+
+    <p class="program-safety-note"><strong>Important:</strong> Health and learning tools can organize information, but they cannot account for every diagnosis, medicine, allergy, disability, pregnancy, age, injury, or personal circumstance. Stop and seek qualified help whenever a decision could affect health or safety.</p>
   </div>
 </section>
 
@@ -2440,12 +2849,12 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
     </div>
 
     <div class="academy-grid">
-      <article class="academy"><small>Academy subjects</small><h3>Health & Life Science</h3><p>Human biology, health literacy, research habits, scientific reasoning, and age-aware study.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Academy Tools ↗</a></article>
-      <article class="academy"><small>Movement learning</small><h3>Physical Education</h3><p>Movement, mobility, teamwork, strength, reflection, safety, and lifelong activity.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Movement Tools ↗</a></article>
-      <article class="academy"><small>Family pathway</small><h3>Parents & Caregivers</h3><p>Educational support, planning, documentation, family learning, and resource navigation.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#finder" target="_blank" rel="noopener noreferrer">Find a Family Path ↗</a></article>
-      <article class="academy"><small>Student pathway</small><h3>Student Health Learning</h3><p>Student-facing lessons, projects, reflection, notes, and independent research.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#finder" target="_blank" rel="noopener noreferrer">Find a Student Path ↗</a></article>
-      <article class="academy"><small>Educator pathway</small><h3>Teacher & Workshop Tools</h3><p>Curriculum planning, lessons, assessment, accessibility, and classroom support.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Educator Tools ↗</a></article>
-      <article class="academy"><small>Adult learning</small><h3>Lifelong Health Literacy</h3><p>Practical health learning, caregiving, career growth, and self-directed study.</p><a href="https://vervenveda.github.io/khaemenesacademy.github.io/#growth" target="_blank" rel="noopener noreferrer">Open Growth Map ↗</a></article>
+      <article class="academy"><small>Academy subjects</small><h3>Health & Life Science</h3><p>Human biology, health literacy, research habits, scientific reasoning, and age-aware study.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Academy Tools ↗</a></article>
+      <article class="academy"><small>Movement learning</small><h3>Physical Education</h3><p>Movement, mobility, teamwork, strength, reflection, safety, and lifelong activity.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Movement Tools ↗</a></article>
+      <article class="academy"><small>Family pathway</small><h3>Parents & Caregivers</h3><p>Educational support, planning, documentation, family learning, and resource navigation.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#finder" target="_blank" rel="noopener noreferrer">Find a Family Path ↗</a></article>
+      <article class="academy"><small>Student pathway</small><h3>Student Health Learning</h3><p>Student-facing lessons, projects, reflection, notes, and independent research.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#finder" target="_blank" rel="noopener noreferrer">Find a Student Path ↗</a></article>
+      <article class="academy"><small>Educator pathway</small><h3>Teacher & Workshop Tools</h3><p>Curriculum planning, lessons, assessment, accessibility, and classroom support.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#tools" target="_blank" rel="noopener noreferrer">Open Educator Tools ↗</a></article>
+      <article class="academy"><small>Adult learning</small><h3>Lifelong Health Literacy</h3><p>Practical health learning, caregiving, career growth, and self-directed study.</p><a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/#growth" target="_blank" rel="noopener noreferrer">Open Growth Map ↗</a></article>
     </div>
   </div>
 </section>
@@ -2461,7 +2870,7 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
       <h3>Connected Network</h3>
       <div class="footer-links">
         <a href="https://vervenveda.github.io/" target="_blank" rel="noopener noreferrer">Verve N Veda</a>
-        <a href="https://vervenveda.github.io/khaemenesacademy.github.io/" target="_blank" rel="noopener noreferrer">Khaemenes Academy</a>
+        <a href="https://vervenveda.github.io/Khaemenes_Academy.github.io/" target="_blank" rel="noopener noreferrer">Khaemenes Academy</a>
         <a href="https://vervenveda.github.io/PLERASearch.github.io/" target="_blank" rel="noopener noreferrer">PLERA Search</a>
         <a href="https://vervenveda.github.io/theverifier.github.io/" target="_blank" rel="noopener noreferrer">The Verifier</a>
         <a href="https://vervenveda.github.io/proresource_hub.github.io/Protools/PROSE%E2%84%A2%20editingsuite_index.html" target="_blank" rel="noopener noreferrer">PROSE Medical Letters</a>
@@ -2471,7 +2880,7 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
     <div>
       <h3>Project</h3>
       <div class="footer-links">
-        <a href="https://vervenveda.github.io/medicament-hub.github.io/" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        <a href="https://vervenveda.github.io/medicament-hub.github.io/" target="_blank" rel="noopener noreferrer">Medicament Home</a>
         <a href="#help">Insurance & Senior Help</a>
         <a href="#safety">Safety & Evidence</a>
         <a href="#resources">Trusted Sources</a>
@@ -2481,7 +2890,7 @@ h2{font-size:clamp(2.45rem,5vw,4.25rem);letter-spacing:-.02em}
   </div>
   <div class="wrap footer-bottom">
     <span>© <span id="year"></span> Jennifer Kay Pearl · Medicament Hub · Verve N Veda</span>
-    <span>Educational information only · Verify important decisions with qualified professionals</span>
+    <span>Educational information only · Directory reviewed July 31, 2026 · Verify important decisions with qualified professionals</span>
   </div>
 </footer>
 
@@ -2548,7 +2957,7 @@ function renderResources(){
       <small>${escapeHTML(item.category)}</small>
       <h3>${escapeHTML(item.title)}</h3>
       <p>${escapeHTML(item.description)}</p>
-      <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">Open resource ↗</a>
+      <a href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${escapeHTML(item.title)} resource">Open resource <span aria-hidden="true">↗</span></a>
     </article>
   `).join("");
 
@@ -2570,13 +2979,22 @@ const mobilePanel = document.getElementById("mobilePanel");
 const menuClose = document.getElementById("menuClose");
 const menuScrim = document.getElementById("menuScrim");
 
+let menuReturnFocus = null;
+
 function setMenu(open){
   mobilePanel.classList.toggle("open", open);
   menuScrim.classList.toggle("open", open);
   menuButton.setAttribute("aria-expanded", String(open));
   menuButton.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
-  document.body.style.overflow = open ? "hidden" : "";
-  if(open) menuClose.focus();
+  document.body.classList.toggle("menu-open", open);
+
+  if(open){
+    menuReturnFocus = document.activeElement;
+    menuClose.focus();
+  }else if(menuReturnFocus && typeof menuReturnFocus.focus === "function"){
+    menuReturnFocus.focus();
+    menuReturnFocus = null;
+  }
 }
 
 menuButton.addEventListener("click", () => {
@@ -2591,9 +3009,30 @@ mobilePanel.querySelectorAll("a").forEach(link => link.addEventListener("click",
 }));
 
 document.addEventListener("keydown", event => {
-  if(event.key === "Escape" && mobilePanel.classList.contains("open")){
+  if(!mobilePanel.classList.contains("open")) return;
+
+  if(event.key === "Escape"){
+    event.preventDefault();
     setMenu(false);
-    menuButton.focus();
+    return;
+  }
+
+  if(event.key === "Tab"){
+    const focusable = [...mobilePanel.querySelectorAll(
+      'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+    )].filter(element => !element.hasAttribute("hidden"));
+
+    if(!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if(event.shiftKey && document.activeElement === first){
+      event.preventDefault();
+      last.focus();
+    }else if(!event.shiftKey && document.activeElement === last){
+      event.preventDefault();
+      first.focus();
+    }
   }
 });
 
@@ -2610,8 +3049,36 @@ document.addEventListener("click", function(event){
   }catch(_){}
 });
 
+
+function auditMedicament(){
+  const internalCards = document.querySelectorAll("#halls .card, #programs .program");
+  const trustedSources = resources.length;
+  const duplicateIds = [...document.querySelectorAll("[id]")]
+    .map(element => element.id)
+    .filter((id,index,all) => all.indexOf(id) !== index);
+  const blankLinks = [...document.querySelectorAll("a[href]")]
+    .filter(link => !link.getAttribute("href").trim());
+
+  const report = {
+    internalDestinations: internalCards.length,
+    trustedSources,
+    duplicateIds: [...new Set(duplicateIds)],
+    blankLinks: blankLinks.length,
+    reviewed: "2026-07-31"
+  };
+
+  console.info(
+    `Medicament audit: ${report.internalDestinations} internal destinations, ` +
+    `${report.trustedSources} trusted sources, ${report.duplicateIds.length} duplicate IDs, ` +
+    `${report.blankLinks} blank links.`
+  );
+  return report;
+}
+window.auditMedicament = auditMedicament;
+
 document.getElementById("year").textContent = new Date().getFullYear();
 renderResources();
+auditMedicament();
 </script>
 </body>
 </html>
