@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "sourceId": "verve.medicament",
+  "name": "Medicament Hub",
+  "classification": "wellness",
+  "mentorSearchable": true,
+  "audiences": [
+    "high",
+    "higher-learning",
+    "adult",
+    "parent"
+  ],
+  "roles": [
+    "student",
+    "parent",
+    "educator"
+  ],
+  "homepage": "https://vervenveda.com/medicament-hub.github.io/",
+  "repository": "vervenveda/medicament-hub.github.io",
+  "inventoryAuthority": "provisional-root-anchor",
+  "resources": [
+    {
+      "id": "medicament-home",
+      "title": "Medicament Hub",
+      "description": "Safety-first medical education, health literacy, whole-person wellness, public-health research, and family resource gateway.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/",
+      "audiences": [
+        "high",
+        "higher-learning",
+        "adult",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health",
+        "medical-literacy",
+        "wellness",
+        "public-health",
+        "research"
+      ],
+      "skills": [
+        "health-literacy",
+        "source-evaluation",
+        "question-preparation"
+      ],
+      "tags": [
+        "medicament",
+        "health",
+        "medical-literacy",
+        "whole-person-health",
+        "active-expansion"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "hub",
+      "learningValue": "supplemental",
+      "curricularWeight": "supplemental",
+      "requiresFreshnessCheck": true,
+      "dynamicContent": false,
+      "highStakesDomain": "medical"
+    }
+  ],
+  "mentorNotes": "PROVISIONAL FEDERATION ANCHOR. This repository is under active expansion. The root landing page is the only inventory authority exposed by this manifest at this stage. Do not infer that unlisted child apps, courses, tools, or directories are absent, obsolete, or non-recommendable. Replace this provisional inventory with a verified deep manifest after the repository upgrade pass is complete."
+}
