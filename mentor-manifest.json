@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "sourceId": "verve.medicament",
   "name": "Medicament Hub",
   "classification": "wellness",
@@ -17,7 +17,7 @@
   ],
   "homepage": "https://vervenveda.com/medicament-hub.github.io/",
   "repository": "vervenveda/medicament-hub.github.io",
-  "inventoryAuthority": "provisional-root-anchor",
+  "inventoryAuthority": "verified-partial-inventory",
   "resources": [
     {
       "id": "medicament-home",
@@ -55,14 +55,371 @@
         "active-expansion"
       ],
       "mentorEligible": true,
-      "featured": false,
+      "featured": true,
       "resourceType": "hub",
       "learningValue": "supplemental",
       "curricularWeight": "supplemental",
-      "requiresFreshnessCheck": true,
-      "dynamicContent": false,
-      "highStakesDomain": "medical"
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-high-school-health",
+      "title": "High School Health Academy",
+      "description": "Federated Khaemenes High campus for Physical Education, Health & Wellness, teacher resources, readers, and future secondary health/human-performance study.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "health-education",
+        "wellness",
+        "human-performance"
+      ],
+      "skills": [
+        "health-literacy",
+        "fitness-planning",
+        "decision-making",
+        "goal-setting"
+      ],
+      "tags": [
+        "high-school",
+        "health-academy",
+        "physical-education",
+        "wellness"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "academy",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education",
+        "physical-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-pe",
+      "title": "High School Physical Education",
+      "description": "Grades 9\u201312 Physical Education department with a 42-week core portal, grade study guides/quizzes, PLERA reader, teacher guide, and current standards crosswalk.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/physical-education/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "fitness",
+        "movement",
+        "wellness"
+      ],
+      "skills": [
+        "physical-literacy",
+        "fitness-planning",
+        "movement-safety",
+        "goal-setting",
+        "leadership"
+      ],
+      "tags": [
+        "physical-education",
+        "grades-9-12",
+        "42-weeks",
+        "lifetime-fitness"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "department",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "medicament-pe-core",
+      "title": "High School PE \u2014 42 Week Core Portal",
+      "description": "Self-paced PE curriculum with weekly lessons, quizzes, progress tracking, final examination, certificate, and export/import.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/physical-education/core/42-week-portal.html",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "fitness",
+        "movement"
+      ],
+      "skills": [
+        "physical-literacy",
+        "fitness-planning",
+        "safe-participation"
+      ],
+      "tags": [
+        "pe",
+        "42-week",
+        "core-course"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "medicament-pe-reader",
+      "title": "PLERA P.E. Mini Textbook Reader",
+      "description": "Accessible PE101/PE201 reading companion with notes, TTS, print, search, progress, and local export/import.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/physical-education/reader/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "reading"
+      ],
+      "skills": [
+        "study-skills",
+        "health-literacy"
+      ],
+      "tags": [
+        "pe-reader",
+        "tts",
+        "local-storage"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "reader",
+      "learningValue": "support",
+      "curricularWeight": "supplemental",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "medicament-health",
+      "title": "High School Health & Wellness",
+      "description": "Four-grade skills-based Health Education pathway emphasizing reliable information, privacy, communication, decisions, goals, healthy practices, resources, and advocacy.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/health-wellness/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness",
+        "health-literacy"
+      ],
+      "skills": [
+        "resource-evaluation",
+        "communication",
+        "decision-making",
+        "goal-setting",
+        "advocacy"
+      ],
+      "tags": [
+        "health-education",
+        "grades-9-12",
+        "privacy-protective"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "department",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-health-09",
+      "title": "Personal Health Foundations 9",
+      "description": "Health literacy, reliable information, sleep, movement, nutrition, stress, communication, safety, prevention, digital wellness, and healthcare navigation.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/health-wellness/grade-09/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness"
+      ],
+      "skills": [
+        "health-literacy",
+        "decision-making",
+        "communication",
+        "planning"
+      ],
+      "tags": [
+        "grade-9",
+        "health"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-health-10",
+      "title": "Relationships, Safety & Decision-Making 10",
+      "description": "Influences, communication, relationships, consent/boundaries, safety, substance prevention, mental-health literacy, consumer health, and advocacy.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/health-wellness/grade-10/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness"
+      ],
+      "skills": [
+        "health-literacy",
+        "decision-making",
+        "communication",
+        "planning"
+      ],
+      "tags": [
+        "grade-10",
+        "health"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-health-11",
+      "title": "Community Health, Media & Systems 11",
+      "description": "Social determinants, public health, equity/access, epidemiology literacy, environmental/occupational health, healthcare systems, media claims, preparedness, and advocacy.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/health-wellness/grade-11/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness"
+      ],
+      "skills": [
+        "health-literacy",
+        "decision-making",
+        "communication",
+        "planning"
+      ],
+      "tags": [
+        "grade-11",
+        "health"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
+    },
+    {
+      "id": "medicament-health-12",
+      "title": "Lifelong Health & Independent Living 12",
+      "description": "Adult healthcare navigation, privacy, insurance/cost literacy, prevention, movement, food planning, work/recovery, relationships, impairment risk, workplace safety, digital health, and a lifelong plan.",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/health-wellness/grade-12/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness"
+      ],
+      "skills": [
+        "health-literacy",
+        "decision-making",
+        "communication",
+        "planning"
+      ],
+      "tags": [
+        "grade-12",
+        "health"
+      ],
+      "mentorEligible": true,
+      "featured": false,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical",
+      "requiresFreshnessCheck": true
     }
   ],
-  "mentorNotes": "PROVISIONAL FEDERATION ANCHOR. This repository is under active expansion. The root landing page is the only inventory authority exposed by this manifest at this stage. Do not infer that unlisted child apps, courses, tools, or directories are absent, obsolete, or non-recommendable. Replace this provisional inventory with a verified deep manifest after the repository upgrade pass is complete."
+  "mentorNotes": "VERIFIED PARTIAL INVENTORY. Medicament is still expanding. This manifest exposes the verified High School Health Academy plus the Medicament root; it does not claim that unlisted halls or apps are absent. Khaemenes High federates to these resources but does not duplicate Mentor ownership. Health resources are educational and high-stakes medical-information boundaries remain applicable."
 }
