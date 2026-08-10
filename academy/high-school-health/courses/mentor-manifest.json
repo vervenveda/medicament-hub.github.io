@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "sourceId": "verve.medicament.high-school-health.delegate",
+  "name": "Medicament High School Health Academy \u2014 Delegated Inventory",
+  "classification": "wellness",
+  "mentorSearchable": false,
+  "homepage": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/",
+  "repository": "vervenveda/medicament-hub.github.io",
+  "inventoryAuthority": "delegated-to-root",
+  "delegatedTo": "verve.medicament",
+  "resources": [],
+  "mentorNotes": "Do not index this nested file as an independent curriculum authority. The canonical inventory is the repository root mentor-manifest.json with sourceId verve.medicament."
+}
