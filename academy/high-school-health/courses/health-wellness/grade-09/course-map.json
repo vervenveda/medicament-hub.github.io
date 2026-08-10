@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "course_id": "health-09",
+  "title": "Personal Health Foundations 9",
+  "grade": 9,
+  "duration_weeks": 18,
+  "lesson_blocks": 90,
+  "mastery_target": 80,
+  "standards": [
+    "HE1",
+    "HE2",
+    "HE3",
+    "HE4",
+    "HE5",
+    "HE6",
+    "HE7",
+    "HE8"
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Wellness & Health Literacy",
+      "essential_question": "What does health literacy mean, and how do multiple dimensions of wellness interact?"
+    },
+    {
+      "week": 2,
+      "title": "Finding Reliable Health Information",
+      "essential_question": "How can I distinguish valid, reliable health information from weak or misleading claims?"
+    },
+    {
+      "week": 3,
+      "title": "Sleep & Recovery",
+      "essential_question": "How do sleep routines, recovery, and daily schedules affect well-being and learning?"
+    },
+    {
+      "week": 4,
+      "title": "Movement & Sedentary Balance",
+      "essential_question": "How can movement support health without turning wellness into appearance-based judgment?"
+    },
+    {
+      "week": 5,
+      "title": "Nutrition Fundamentals",
+      "essential_question": "How do balanced food patterns, variety, and context support health?"
+    },
+    {
+      "week": 6,
+      "title": "Hydration & Activity Fueling",
+      "essential_question": "How can hydration and regular meals support daily activity and concentration?"
+    },
+    {
+      "week": 7,
+      "title": "Stress Literacy & Coping",
+      "essential_question": "How can I recognize stress and choose healthy coping strategies?"
+    },
+    {
+      "week": 8,
+      "title": "Emotional Health & Help-Seeking",
+      "essential_question": "How do I recognize when a concern deserves support from a trusted adult or qualified professional?"
+    },
+    {
+      "week": 9,
+      "title": "Midterm Skills Review",
+      "essential_question": "Can I apply health-information, decision-making, communication, and goal-setting skills?"
+    },
+    {
+      "week": 10,
+      "title": "Communication & Boundaries",
+      "essential_question": "How can clear communication and boundaries support healthy relationships?"
+    },
+    {
+      "week": 11,
+      "title": "Consent, Respect & Relationship Safety",
+      "essential_question": "How do respect, consent, and the right to change one's mind support personal safety?"
+    },
+    {
+      "week": 12,
+      "title": "Injury Prevention & First-Aid Awareness",
+      "essential_question": "How can I reduce common risks and know when trained emergency help is needed?"
+    },
+    {
+      "week": 13,
+      "title": "Substance-Use Prevention",
+      "essential_question": "How do protective factors, refusal skills, and reliable information reduce substance-related risk?"
+    },
+    {
+      "week": 14,
+      "title": "Digital Wellness & Media Influence",
+      "essential_question": "How do algorithms, advertising, comparison, and screen habits influence health choices?"
+    },
+    {
+      "week": 15,
+      "title": "Hygiene & Infectious-Disease Prevention",
+      "essential_question": "Which everyday practices reduce transmission risk without promoting fear or stigma?"
+    },
+    {
+      "week": 16,
+      "title": "Healthcare Navigation Basics",
+      "essential_question": "How do appointments, preventive services, labels, and trusted professionals fit into personal health care?"
+    },
+    {
+      "week": 17,
+      "title": "Personal Wellness Plan",
+      "essential_question": "How can I create a realistic plan based on my needs, access, interests, and supports?"
+    },
+    {
+      "week": 18,
+      "title": "Final Portfolio & Reflection",
+      "essential_question": "Can I defend a health decision using reliable information, communication, and a realistic action plan?"
+    }
+  ],
+  "privacy_policy": "No required disclosure of private medical, mental-health, trauma, sexuality, family medical history, or substance-use information.",
+  "medical_boundary": "Educational health literacy only; not diagnosis or individualized treatment."
+}

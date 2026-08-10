@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "course_id": "health-11",
+  "title": "Community Health, Media & Systems 11",
+  "grade": 11,
+  "duration_weeks": 18,
+  "lesson_blocks": 90,
+  "mastery_target": 80,
+  "standards": [
+    "HE1",
+    "HE2",
+    "HE3",
+    "HE4",
+    "HE5",
+    "HE6",
+    "HE7",
+    "HE8"
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Social Determinants of Health",
+      "essential_question": "How do housing, education, transportation, income, environment, and access influence health outcomes?"
+    },
+    {
+      "week": 2,
+      "title": "Health Equity & Access",
+      "essential_question": "How can barriers affect communities differently, and what makes a response equitable?"
+    },
+    {
+      "week": 3,
+      "title": "Public Health Foundations",
+      "essential_question": "How do prevention, surveillance, education, policy, and community systems protect populations?"
+    },
+    {
+      "week": 4,
+      "title": "Epidemiology Literacy",
+      "essential_question": "How can rates, risk, correlation, and uncertainty be interpreted without overclaiming?"
+    },
+    {
+      "week": 5,
+      "title": "Environmental Health",
+      "essential_question": "How do air, water, heat, built environments, and exposure pathways affect community health?"
+    },
+    {
+      "week": 6,
+      "title": "Occupational Health & Safety",
+      "essential_question": "What responsibilities help reduce workplace injury and exposure?"
+    },
+    {
+      "week": 7,
+      "title": "Healthcare Systems & Insurance Literacy",
+      "essential_question": "How do primary care, urgent/emergency care, insurance, deductibles, networks, and appeals fit together conceptually?"
+    },
+    {
+      "week": 8,
+      "title": "Medication & Label Literacy",
+      "essential_question": "How can consumers read labels and use prescription/OTC resources responsibly without self-prescribing?"
+    },
+    {
+      "week": 9,
+      "title": "Midterm Skills Review",
+      "essential_question": "Can I connect individual health choices to systems, access, and reliable evidence?"
+    },
+    {
+      "week": 10,
+      "title": "Media, Advertising & Health Claims",
+      "essential_question": "How do persuasive techniques and sponsorship influence health information?"
+    },
+    {
+      "week": 11,
+      "title": "Nutrition & Supplement Claims",
+      "essential_question": "How can nutrition and supplement claims be evaluated without treating marketing as medical evidence?"
+    },
+    {
+      "week": 12,
+      "title": "Fitness & Wellness Claims",
+      "essential_question": "How can training, recovery, and wellness claims be checked against evidence and individual context?"
+    },
+    {
+      "week": 13,
+      "title": "Substance Use as a Public-Health Issue",
+      "essential_question": "How can prevention, treatment access, stigma reduction, and policy affect community outcomes?"
+    },
+    {
+      "week": 14,
+      "title": "Mental-Health Systems & Access",
+      "essential_question": "What roles do schools, community care, qualified professionals, emergency services, and support networks play?"
+    },
+    {
+      "week": 15,
+      "title": "Emergency Preparedness",
+      "essential_question": "How can households and communities prepare for severe weather, disasters, outages, and public-health emergencies?"
+    },
+    {
+      "week": 16,
+      "title": "Community Resource Mapping",
+      "essential_question": "How can a person identify credible local services without exposing private information?"
+    },
+    {
+      "week": 17,
+      "title": "Community Health Advocacy",
+      "essential_question": "How can evidence support a practical community-health improvement proposal?"
+    },
+    {
+      "week": 18,
+      "title": "Final Portfolio & Reflection",
+      "essential_question": "Can I evaluate a health-system problem using evidence, equity, access, and realistic solutions?"
+    }
+  ],
+  "privacy_policy": "No required disclosure of private medical, mental-health, trauma, sexuality, family medical history, or substance-use information.",
+  "medical_boundary": "Educational health literacy only; not diagnosis or individualized treatment."
+}

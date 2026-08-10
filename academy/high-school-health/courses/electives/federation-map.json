@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "model": "federated-source-owned",
+  "electives": [
+    {
+      "category": "Visual Arts & Design",
+      "name": "Bazaar Art",
+      "repo": "vervenveda/bazaarart.github.io",
+      "url": "https://vervenveda.com/bazaarart.github.io/",
+      "status": "active-federated",
+      "description": "Studio art, design, creative pathways, portfolios and art education."
+    },
+    {
+      "category": "Music & Recording Arts",
+      "name": "The Refrain",
+      "repo": "vervenveda/the_refrain.github.io",
+      "url": "https://vervenveda.com/the_refrain.github.io/",
+      "status": "active-federated",
+      "description": "Music education, theory, composition, recording, publishing and performance."
+    },
+    {
+      "category": "Languages & Linguistics",
+      "name": "Polyglot",
+      "repo": "vervenveda/Khaemenes_Linguistics.github.io",
+      "url": "https://vervenveda.com/Khaemenes_Linguistics.github.io/",
+      "status": "active-federated",
+      "description": "Languages, linguistics, pronunciation, writing systems, literature and culture."
+    },
+    {
+      "category": "Atmospheric & Earth Science",
+      "name": "Solanar Observatory",
+      "repo": "vervenveda/solanar.github.io",
+      "url": "https://vervenveda.com/solanar.github.io/",
+      "status": "active-federated",
+      "description": "Weather, climate, forecasting, atmospheric science, Earth systems and research."
+    },
+    {
+      "category": "Law & Legal Studies",
+      "name": "Firmament",
+      "repo": "vervenveda/firmament.github.io",
+      "url": "https://vervenveda.com/firmament.github.io/",
+      "status": "active-federated",
+      "description": "Legal-information literacy, evidence, law, policy and future structured legal study."
+    },
+    {
+      "category": "Health & Medical Studies",
+      "name": "Medicament Hub",
+      "repo": "vervenveda/medicament-hub.github.io",
+      "url": "https://vervenveda.com/medicament-hub.github.io/",
+      "status": "active-federated",
+      "description": "Safety-first health and medical-learning halls and specialist study."
+    },
+    {
+      "category": "Business & Finance",
+      "name": "Finance",
+      "repo": "vervenveda/finance.github.io",
+      "url": "https://vervenveda.com/finance.github.io/",
+      "status": "developing-federated",
+      "description": "Financial literacy, budgeting, business and developing finance pathways."
+    },
+    {
+      "category": "Environmental Service Learning",
+      "name": "River-to-Road",
+      "repo": "vervenveda/river_to_road.github.io",
+      "url": "https://vervenveda.com/river_to_road.github.io/",
+      "status": "active-federated",
+      "description": "Environmental stewardship, cleanup, citizen science and service learning."
+    },
+    {
+      "category": "Archive & Research",
+      "name": "ARSHIF",
+      "repo": "vervenveda/Arshif.github.io",
+      "url": "https://vervenveda.com/Arshif.github.io/",
+      "status": "active-federated",
+      "description": "Archive, reading, history, culture, textual study and research discovery."
+    },
+    {
+      "category": "Professional & Technical Tools",
+      "name": "ProResource Hub",
+      "repo": "vervenveda/proresource_hub.github.io",
+      "url": "https://vervenveda.com/proresource_hub.github.io/",
+      "status": "active-federated",
+      "description": "Writing, calculation, CAD, technical and professional tools."
+    },
+    {
+      "category": "Civic Learning",
+      "name": "One Nation For All",
+      "repo": "vervenveda/onenationforall.github.io",
+      "url": "https://vervenveda.com/onenationforall.github.io/",
+      "status": "active-federated",
+      "description": "Civic literacy and public-life educational resources; campaign content remains segregated."
+    },
+    {
+      "category": "Information & Media Literacy",
+      "name": "The Verifier",
+      "repo": "vervenveda/theverifier.github.io",
+      "url": "https://vervenveda.com/theverifier.github.io/",
+      "status": "active-federated",
+      "description": "Current-information research, verification and media/source evaluation."
+    }
+  ]
+}

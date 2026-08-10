@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "checked": "2026-08-09",
+  "pe_2024": {
+    "source": "SHAPE America National Physical Education Standards (2024)",
+    "url": "https://www.shapeamerica.org/standards/pe/new-pe-standards.aspx",
+    "license_acknowledgement": "National Physical Education Standards are used under license from SHAPE America.",
+    "standards": [
+      {
+        "id": "PE1",
+        "statement": "Develops a variety of motor skills."
+      },
+      {
+        "id": "PE2",
+        "statement": "Applies knowledge related to movement and fitness concepts."
+      },
+      {
+        "id": "PE3",
+        "statement": "Develops social skills through movement."
+      },
+      {
+        "id": "PE4",
+        "statement": "Develops personal skills, identifies personal benefits of movement, and chooses to engage in physical activity."
+      }
+    ],
+    "high_school_emphasis": [
+      "lifetime sports and activities",
+      "recreational and backyard games",
+      "outdoor pursuits",
+      "dance and movement sequences",
+      "cardiovascular, strength/endurance, flexibility and skill-related training",
+      "fitness planning, RPE, heart-rate concepts and rest",
+      "safe participation, hydration, equipment and environmental awareness",
+      "teamwork, feedback, problem solving and leadership",
+      "personally meaningful movement and post-high-school participation"
+    ]
+  },
+  "health_2024": {
+    "source": "SHAPE America National Health Education Standards (2024)",
+    "url": "https://www.shapeamerica.org/standards/health/new-he-standards.aspx",
+    "license_acknowledgement": "National Health Education Standards are used under license from SHAPE America.",
+    "standards": [
+      {
+        "id": "HE1",
+        "statement": "Use functional health information to support health and well-being of self and others."
+      },
+      {
+        "id": "HE2",
+        "statement": "Analyze influences that affect health and well-being of self and others."
+      },
+      {
+        "id": "HE3",
+        "statement": "Access valid and reliable resources to support health and well-being of self and others."
+      },
+      {
+        "id": "HE4",
+        "statement": "Use interpersonal communication skills to support health and well-being of self and others."
+      },
+      {
+        "id": "HE5",
+        "statement": "Use a decision-making process to support health and well-being of self and others."
+      },
+      {
+        "id": "HE6",
+        "statement": "Use a goal-setting process to support health and well-being of self and others."
+      },
+      {
+        "id": "HE7",
+        "statement": "Demonstrate practices and behaviors to support health and well-being of self and others."
+      },
+      {
+        "id": "HE8",
+        "statement": "Advocate to promote health and well-being of self and others."
+      }
+    ]
+  },
+  "cdc": {
+    "source": "CDC Physical Activity Guidelines for School-Aged Children and Adolescents",
+    "url": "https://www.cdc.gov/physical-activity-education/guidelines/index.html",
+    "summary": "Youth ages 6\u201317 are advised to get 60 minutes or more of moderate-to-vigorous physical activity daily, with vigorous, muscle-strengthening, and bone-strengthening activity included on at least 3 days per week."
+  },
+  "implementation_note": "These are national frameworks and guidance, not a universal state credit mandate. Local/state review is required before transcript or graduation claims."
+}

@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "course_id": "health-12",
+  "title": "Lifelong Health & Independent Living 12",
+  "grade": 12,
+  "duration_weeks": 18,
+  "lesson_blocks": 90,
+  "mastery_target": 80,
+  "standards": [
+    "HE1",
+    "HE2",
+    "HE3",
+    "HE4",
+    "HE5",
+    "HE6",
+    "HE7",
+    "HE8"
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Personal Health Records & Privacy",
+      "essential_question": "What information belongs in a personal health record, and how should privacy be protected?"
+    },
+    {
+      "week": 2,
+      "title": "Choosing Providers & Preparing for Appointments",
+      "essential_question": "How can adults prepare questions, describe concerns, and verify professional credentials?"
+    },
+    {
+      "week": 3,
+      "title": "Insurance, Benefits & Costs",
+      "essential_question": "How do premiums, deductibles, copays, networks, bills, and appeals affect access?"
+    },
+    {
+      "week": 4,
+      "title": "Preventive Care Literacy",
+      "essential_question": "How can adults use qualified guidance and evidence-based preventive services without self-diagnosis?"
+    },
+    {
+      "week": 5,
+      "title": "Sleep, Shift Work & Schedules",
+      "essential_question": "How can school, work, caregiving, and changing schedules affect sleep and recovery?"
+    },
+    {
+      "week": 6,
+      "title": "Lifelong Movement Planning",
+      "essential_question": "How can adults choose accessible, enjoyable, sustainable physical activity?"
+    },
+    {
+      "week": 7,
+      "title": "Food Planning & Budget Literacy",
+      "essential_question": "How can planning, food safety, budgeting, and flexibility support independent living?"
+    },
+    {
+      "week": 8,
+      "title": "Stress, Work & Recovery",
+      "essential_question": "How can boundaries, routines, support, and recovery reduce chronic overload?"
+    },
+    {
+      "week": 9,
+      "title": "Midterm Skills Review",
+      "essential_question": "Can I navigate adult health decisions using reliable information and realistic constraints?"
+    },
+    {
+      "week": 10,
+      "title": "Adult Communication & Relationships",
+      "essential_question": "How do respect, autonomy, negotiation, and conflict skills support adult relationships?"
+    },
+    {
+      "week": 11,
+      "title": "Consent, Boundaries & Safety",
+      "essential_question": "How do consent, privacy, digital boundaries, and personal safety continue into adulthood?"
+    },
+    {
+      "week": 12,
+      "title": "Substance Risk, Driving & Impairment",
+      "essential_question": "How can adults reduce risks involving alcohol/drugs, impairment, medications, and transportation?"
+    },
+    {
+      "week": 13,
+      "title": "Financial & Consumer Health Decisions",
+      "essential_question": "How do cost, contracts, scams, debt, and consumer protections intersect with health?"
+    },
+    {
+      "week": 14,
+      "title": "Workplace Health & Safety",
+      "essential_question": "How can workers recognize hazards, document concerns, and use appropriate safety channels?"
+    },
+    {
+      "week": 15,
+      "title": "Caregiving & Community Responsibility",
+      "essential_question": "How can adults support others without exceeding their training or neglecting their own well-being?"
+    },
+    {
+      "week": 16,
+      "title": "Digital Health, Privacy & AI",
+      "essential_question": "How should adults evaluate apps, portals, wearable data, AI health claims, and privacy risks?"
+    },
+    {
+      "week": 17,
+      "title": "Lifelong Health Plan Capstone",
+      "essential_question": "How can I build a sustainable adult wellness plan with supports, barriers, costs, and review points?"
+    },
+    {
+      "week": 18,
+      "title": "Final Portfolio Defense",
+      "essential_question": "Can I explain how I will access care, evaluate information, communicate, plan, and adapt after high school?"
+    }
+  ],
+  "privacy_policy": "No required disclosure of private medical, mental-health, trauma, sexuality, family medical history, or substance-use information.",
+  "medical_boundary": "Educational health literacy only; not diagnosis or individualized treatment."
+}

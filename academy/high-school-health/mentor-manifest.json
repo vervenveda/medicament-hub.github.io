@@ -1,0 +1,659 @@
+{
+  "version": 3,
+  "sourceId": "khaemenes.high",
+  "name": "Khaemenes Academy High School",
+  "classification": "educational",
+  "mentorSearchable": true,
+  "audiences": [
+    "high",
+    "parent"
+  ],
+  "roles": [
+    "student",
+    "parent",
+    "educator"
+  ],
+  "homepage": "https://vervenveda.com/Khaemenes_High.github.io/",
+  "repository": "vervenveda/Khaemenes_High.github.io",
+  "resources": [
+    {
+      "id": "high-home",
+      "title": "Khaemenes Academy High School",
+      "description": "Grades 9\u201312 Khaemenes Academy campus and course navigation.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "education",
+        "navigation"
+      ],
+      "skills": [],
+      "tags": [
+        "high-school",
+        "course-navigation"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "hub"
+    },
+    {
+      "id": "high-language-arts",
+      "title": "High School Language Arts",
+      "description": "Grades 9\u201312 English language arts, literature, composition, research, and analysis.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/language-arts/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "language-arts"
+      ],
+      "skills": [
+        "reading",
+        "writing",
+        "analysis"
+      ],
+      "tags": [
+        "english",
+        "literature",
+        "composition"
+      ],
+      "mentorEligible": true,
+      "resourceType": "department"
+    },
+    {
+      "id": "high-mathematics",
+      "title": "High School Mathematics",
+      "description": "High-school mathematics course family and quantitative tools.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/mathematics/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "mathematics"
+      ],
+      "skills": [
+        "mathematical-reasoning"
+      ],
+      "tags": [
+        "math",
+        "algebra",
+        "geometry",
+        "precalculus"
+      ],
+      "mentorEligible": true,
+      "resourceType": "department"
+    },
+    {
+      "id": "high-science",
+      "title": "High School Science Department",
+      "description": "Four-year laboratory science pathway: Integrated Science 9, Biology 10, Chemistry 11, Physics & Engineering 12, plus federated science extensions.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/science/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "science"
+      ],
+      "skills": [
+        "scientific-reasoning",
+        "evidence",
+        "modeling",
+        "data-analysis"
+      ],
+      "tags": [
+        "science",
+        "laboratory",
+        "inquiry",
+        "engineering"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "department"
+    },
+    {
+      "id": "science-integrated-9",
+      "title": "International Integrated Science 9",
+      "description": "36-week integrated foundation in life, matter, energy, Earth systems, inquiry, engineering, and scientific information literacy.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/science/integrated-science-9/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "science",
+        "biology",
+        "chemistry",
+        "physics",
+        "earth-science"
+      ],
+      "skills": [
+        "scientific-inquiry",
+        "modeling",
+        "data-analysis",
+        "CER"
+      ],
+      "tags": [
+        "grade-9",
+        "integrated-science",
+        "36-weeks"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "science"
+      ]
+    },
+    {
+      "id": "science-biology-10",
+      "title": "International Biology & Biotechnology 10",
+      "description": "36-week advanced biology sequence from molecular/cellular systems through genetics, biotechnology, evolution, ecology, biodiversity, and capstone.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/science/biology-10/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "biology",
+        "life-science",
+        "biotechnology",
+        "ecology"
+      ],
+      "skills": [
+        "scientific-inquiry",
+        "data-analysis",
+        "genetic-reasoning",
+        "CER"
+      ],
+      "tags": [
+        "grade-10",
+        "biology",
+        "biotechnology",
+        "36-weeks"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "biology"
+      ]
+    },
+    {
+      "id": "science-chemistry-11",
+      "title": "International Chemistry & Materials Science 11",
+      "description": "36-week quantitative chemistry sequence in structure, bonding, reactions, stoichiometry, kinetics, thermodynamics, equilibrium, acids/bases, electrochemistry, and materials.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/science/chemistry-11/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "chemistry",
+        "physical-science",
+        "materials-science"
+      ],
+      "skills": [
+        "quantitative-reasoning",
+        "laboratory-analysis",
+        "modeling",
+        "CER"
+      ],
+      "tags": [
+        "grade-11",
+        "chemistry",
+        "materials",
+        "36-weeks"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "chemistry"
+      ]
+    },
+    {
+      "id": "science-physics-12",
+      "title": "International Physics & Engineering 12",
+      "description": "36-week algebra-based physics and engineering sequence in mechanics, rotation, waves, fluids, thermal physics, electricity, magnetism, information technologies, space applications, and design.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/science/physics-engineering-12/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physics",
+        "engineering",
+        "physical-science"
+      ],
+      "skills": [
+        "quantitative-modeling",
+        "experimental-design",
+        "engineering-design",
+        "data-analysis"
+      ],
+      "tags": [
+        "grade-12",
+        "physics",
+        "engineering",
+        "36-weeks"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "physics",
+        "engineering"
+      ]
+    },
+    {
+      "id": "high-social-studies",
+      "title": "High School Social Studies",
+      "description": "Grades 9\u201312 social studies, history, civics, and public-life learning.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/social-studies/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "social-studies",
+        "civics",
+        "history"
+      ],
+      "skills": [
+        "historical-analysis",
+        "civic-literacy"
+      ],
+      "tags": [
+        "history",
+        "civics",
+        "social-studies"
+      ],
+      "mentorEligible": true,
+      "resourceType": "department"
+    },
+    {
+      "id": "high-physical-education",
+      "title": "High School Physical Education",
+      "description": "Canonical Grades 9\u201312 PE department with migrated 42-week portal, grade study guides/quizzes, PLERA reader, teacher guide, and current standards crosswalk.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/physical-education/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "fitness",
+        "movement",
+        "wellness"
+      ],
+      "skills": [
+        "physical-literacy",
+        "fitness-planning",
+        "movement-safety",
+        "goal-setting",
+        "leadership"
+      ],
+      "tags": [
+        "physical-education",
+        "grades-9-12",
+        "42-weeks",
+        "lifetime-fitness"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "department",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "pe-core-42-week",
+      "title": "High School PE \u2014 42 Week Core Portal",
+      "description": "Self-paced PE curriculum with weekly lessons, quizzes, progress tracking, final examination, certificate, and export/import.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/physical-education/core/42-week-portal.html",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "fitness",
+        "movement"
+      ],
+      "skills": [
+        "physical-literacy",
+        "fitness-planning",
+        "safe-participation"
+      ],
+      "tags": [
+        "pe",
+        "42-week",
+        "core-course"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "pe-reader",
+      "title": "PLERA P.E. Mini Textbook Reader",
+      "description": "Accessible PE101/PE201 reading companion with notes, TTS, print, search, progress, and local export/import.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/physical-education/reader/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "physical-education",
+        "reading"
+      ],
+      "skills": [
+        "health-literacy",
+        "study-skills"
+      ],
+      "tags": [
+        "pe-reader",
+        "tts",
+        "local-storage"
+      ],
+      "mentorEligible": true,
+      "resourceType": "reader",
+      "learningValue": "support",
+      "curricularWeight": "supplemental",
+      "subjects": [
+        "physical-education"
+      ]
+    },
+    {
+      "id": "high-health-wellness",
+      "title": "High School Health & Wellness",
+      "description": "Four-grade skills-based health education pathway aligned to the 2024 National Health Education Standards.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/health-wellness/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness",
+        "health-literacy"
+      ],
+      "skills": [
+        "resource-evaluation",
+        "communication",
+        "decision-making",
+        "goal-setting",
+        "advocacy"
+      ],
+      "tags": [
+        "health-education",
+        "grades-9-12",
+        "privacy-protective"
+      ],
+      "mentorEligible": true,
+      "featured": true,
+      "resourceType": "department",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical"
+    },
+    {
+      "id": "health-09",
+      "title": "Personal Health Foundations 9",
+      "description": "18-week Grade 9 health literacy course covering reliable information, sleep, movement, nutrition, stress, communication, safety, prevention, digital wellness, and healthcare navigation.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/health-wellness/grade-09/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "wellness"
+      ],
+      "skills": [
+        "health-literacy",
+        "communication",
+        "decision-making",
+        "goal-setting"
+      ],
+      "tags": [
+        "grade-9",
+        "health"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical"
+    },
+    {
+      "id": "health-10",
+      "title": "Relationships, Safety & Decision-Making 10",
+      "description": "18-week Grade 10 health course emphasizing influences, communication, healthy relationships, consent/boundaries, safety, substance prevention, mental-health literacy, consumer health, and advocacy.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/health-wellness/grade-10/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "relationships",
+        "safety"
+      ],
+      "skills": [
+        "communication",
+        "decision-making",
+        "resource-evaluation",
+        "advocacy"
+      ],
+      "tags": [
+        "grade-10",
+        "health"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical"
+    },
+    {
+      "id": "health-11",
+      "title": "Community Health, Media & Systems 11",
+      "description": "18-week Grade 11 course on social determinants, public health, health equity/access, epidemiology literacy, environmental/occupational health, healthcare systems, labels, media claims, preparedness, and community advocacy.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/health-wellness/grade-11/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "public-health",
+        "media-literacy"
+      ],
+      "skills": [
+        "data-literacy",
+        "resource-evaluation",
+        "systems-thinking",
+        "advocacy"
+      ],
+      "tags": [
+        "grade-11",
+        "health",
+        "public-health"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical"
+    },
+    {
+      "id": "health-12",
+      "title": "Lifelong Health & Independent Living 12",
+      "description": "18-week Grade 12 health course on adult healthcare navigation, privacy, insurance/cost literacy, prevention, lifelong movement, food planning, work/recovery, relationships, impairment risk, workplace safety, digital health, and a lifelong plan.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/health-wellness/grade-12/",
+      "audiences": [
+        "high"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "health-education",
+        "adult-readiness",
+        "healthcare-navigation"
+      ],
+      "skills": [
+        "health-literacy",
+        "planning",
+        "consumer-literacy",
+        "privacy"
+      ],
+      "tags": [
+        "grade-12",
+        "health",
+        "independent-living"
+      ],
+      "mentorEligible": true,
+      "resourceType": "course",
+      "learningValue": "core",
+      "curricularWeight": "core",
+      "subjects": [
+        "health-education"
+      ],
+      "highStakesDomain": "medical"
+    },
+    {
+      "id": "high-electives",
+      "title": "High School Electives & Explorations",
+      "description": "Federated High School catalog connecting students to source-owned specialist campuses for arts, music, languages, science, law, health, finance, service, research, civic learning, and professional tools.",
+      "url": "https://vervenveda.com/Khaemenes_High.github.io/courses/electives/",
+      "audiences": [
+        "high",
+        "parent"
+      ],
+      "roles": [
+        "student",
+        "parent",
+        "educator"
+      ],
+      "domains": [
+        "electives",
+        "career-exploration",
+        "arts",
+        "languages",
+        "service-learning"
+      ],
+      "skills": [
+        "exploration",
+        "portfolio-planning",
+        "pathway-selection"
+      ],
+      "tags": [
+        "electives",
+        "federated",
+        "source-owned"
+      ],
+      "mentorEligible": true,
+      "resourceType": "catalog",
+      "learningValue": "navigation",
+      "curricularWeight": "supplemental"
+    }
+  ],
+  "mentorNotes": "Repair 08 establishes Khaemenes High as the canonical academic owner of High School Physical Education; migrates existing PE source assets from Medicament without rewriting them; adds a separate 2024 standards crosswalk; establishes four privacy-protective Health Education courses; and adds a federated electives catalog. Specialist elective courses remain authoritative in their own repositories and should not be duplicated into this source manifest."
+}

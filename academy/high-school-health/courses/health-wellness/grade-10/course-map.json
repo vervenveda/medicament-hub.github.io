@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "course_id": "health-10",
+  "title": "Relationships, Safety & Decision-Making 10",
+  "grade": 10,
+  "duration_weeks": 18,
+  "lesson_blocks": 90,
+  "mastery_target": 80,
+  "standards": [
+    "HE1",
+    "HE2",
+    "HE3",
+    "HE4",
+    "HE5",
+    "HE6",
+    "HE7",
+    "HE8"
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Health Influences & Context",
+      "essential_question": "How do peers, family, culture, media, environment, and access shape health choices?"
+    },
+    {
+      "week": 2,
+      "title": "Decision-Making Under Pressure",
+      "essential_question": "How can a structured process improve decisions when time, emotion, or social pressure matters?"
+    },
+    {
+      "week": 3,
+      "title": "Goal Setting & Habit Design",
+      "essential_question": "How can goals account for barriers, supports, and changing circumstances?"
+    },
+    {
+      "week": 4,
+      "title": "Communication Across Contexts",
+      "essential_question": "How do listening, clarity, empathy, and digital communication affect well-being?"
+    },
+    {
+      "week": 5,
+      "title": "Conflict Prevention & Resolution",
+      "essential_question": "How can conflict be managed without escalation or harm?"
+    },
+    {
+      "week": 6,
+      "title": "Healthy Relationships",
+      "essential_question": "What behaviors support trust, respect, autonomy, and mutual responsibility?"
+    },
+    {
+      "week": 7,
+      "title": "Consent & Personal Boundaries",
+      "essential_question": "How can people communicate, respect, and withdraw consent and boundaries?"
+    },
+    {
+      "week": 8,
+      "title": "Violence Prevention & Help-Seeking",
+      "essential_question": "How can warning signs, safe bystander choices, and trusted resources reduce harm?"
+    },
+    {
+      "week": 9,
+      "title": "Midterm Skills Review",
+      "essential_question": "Can I combine communication, decisions, goals, and resource access?"
+    },
+    {
+      "week": 10,
+      "title": "Substance Risk & Protective Factors",
+      "essential_question": "How do environment, stress, marketing, dependence risk, and protective factors interact?"
+    },
+    {
+      "week": 11,
+      "title": "Mental Health Literacy",
+      "essential_question": "How can I support well-being, challenge stigma, and seek qualified help when needed?"
+    },
+    {
+      "week": 12,
+      "title": "Reproductive & Sexual Health Literacy",
+      "essential_question": "How can students use medically reliable, age-appropriate resources to make informed and respectful health decisions?"
+    },
+    {
+      "week": 13,
+      "title": "Digital Citizenship & Online Safety",
+      "essential_question": "How do privacy, permanence, harassment, scams, and misinformation affect health and safety?"
+    },
+    {
+      "week": 14,
+      "title": "Emergency & Injury Awareness",
+      "essential_question": "How should an untrained person respond safely while seeking qualified help?"
+    },
+    {
+      "week": 15,
+      "title": "Consumer Health",
+      "essential_question": "How can I evaluate health products, services, claims, and costs?"
+    },
+    {
+      "week": 16,
+      "title": "Misinformation & Disinformation",
+      "essential_question": "What methods help verify health claims before acting or sharing?"
+    },
+    {
+      "week": 17,
+      "title": "Health Advocacy Project",
+      "essential_question": "How can I communicate a practical health message responsibly to a defined audience?"
+    },
+    {
+      "week": 18,
+      "title": "Final Portfolio & Reflection",
+      "essential_question": "Can I apply the 2024 health-skill standards to a realistic adolescent scenario?"
+    }
+  ],
+  "privacy_policy": "No required disclosure of private medical, mental-health, trauma, sexuality, family medical history, or substance-use information.",
+  "medical_boundary": "Educational health literacy only; not diagnosis or individualized treatment."
+}

@@ -1,0 +1,18 @@
+REPAIR 08 — HIGH SCHOOL ROOT INDEX PATCH
+
+Repository:
+vervenveda/Khaemenes_High.github.io
+
+After uploading `data/repair08-pathways.js`, open the existing root `index.html`.
+
+Immediately before the closing `</body>` tag add:
+
+<script src="./data/repair08-pathways.js"></script>
+
+Do not replace the High School landing page.
+
+The extension:
+- adds a Whole Student Pathways section;
+- adds/activates links for Arts & Music, Health & Wellness, and Career & Life when those headings are found;
+- routes to the canonical PE, Health, and Electives pages;
+- leaves all existing High School logic intact.

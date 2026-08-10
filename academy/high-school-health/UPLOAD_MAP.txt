@@ -1,0 +1,45 @@
+Repair 08 upload map
+
+Repository: vervenveda/Khaemenes_High.github.io
+
+UPLOAD:
+.github/workflows/migrate-pe-from-medicament.yml
+mentor-manifest.json
+data/repair08-pathways.js
+
+courses/physical-education/index.html
+courses/physical-education/README.md
+courses/physical-education/standards-2024.json
+courses/physical-education/reader/index.html
+courses/physical-education/grade-09/index.html
+courses/physical-education/grade-10/index.html
+courses/physical-education/grade-11/index.html
+courses/physical-education/grade-12/index.html
+
+courses/health-wellness/index.html
+courses/health-wellness/README.md
+courses/health-wellness/grade-09/index.html
+courses/health-wellness/grade-09/course-map.json
+courses/health-wellness/grade-10/index.html
+courses/health-wellness/grade-10/course-map.json
+courses/health-wellness/grade-11/index.html
+courses/health-wellness/grade-11/course-map.json
+courses/health-wellness/grade-12/index.html
+courses/health-wellness/grade-12/course-map.json
+
+courses/electives/index.html
+courses/electives/README.md
+courses/electives/federation-map.json
+
+OPTIONAL AUDIT DOCS:
+MIGRATION.md
+INDEX_PATCH.txt
+RESEARCH_BASIS.md
+REPAIR_08_VALIDATION.md
+UPLOAD_MAP.txt
+
+THEN:
+1. run GitHub Action "Migrate High School PE from Medicament";
+2. add <script src="./data/repair08-pathways.js"></script> before </body> in root index.html;
+3. verify live routes;
+4. do not delete Medicament source assets until verification is complete.
