@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "sourceId": "verve.medicament.high-school-health-local",
+  "name": "Medicament High School Health Academy \u2014 Local Marker",
+  "classification": "educational",
+  "mentorSearchable": false,
+  "homepage": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/",
+  "repository": "vervenveda/medicament-hub.github.io",
+  "inventoryAuthority": "inherited-from-root",
+  "resources": [],
+  "mentorNotes": "NON-AUTHORITATIVE LOCAL MARKER. Mentor inventory authority is the root verve.medicament mentor-manifest.json. This file intentionally contains no independently discoverable resources."
+}
