@@ -109,7 +109,7 @@
     {
       "id": "medicament-pe",
       "title": "High School Physical Education",
-      "description": "Grades 9\u201312 Physical Education department with a 42-week core portal, grade study guides/quizzes, PLERA reader, teacher guide, and current standards crosswalk.",
+      "description": "Grades 9\u201312 PE department with the established 42-week portal, grade study guides/quizzes, PLERA reader, teacher guide, and current standards crosswalk.",
       "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/physical-education/",
       "audiences": [
         "high",
@@ -152,7 +152,7 @@
       "id": "medicament-pe-core",
       "title": "High School PE \u2014 42 Week Core Portal",
       "description": "Self-paced PE curriculum with weekly lessons, quizzes, progress tracking, final examination, certificate, and export/import.",
-      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/courses/physical-education/core/42-week-portal.html",
+      "url": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/High_School_Physical_Education_42week_index.html",
       "audiences": [
         "high",
         "parent"
@@ -421,5 +421,5 @@
       "requiresFreshnessCheck": true
     }
   ],
-  "mentorNotes": "VERIFIED PARTIAL INVENTORY. Medicament is still expanding. This manifest exposes the verified High School Health Academy plus the Medicament root; it does not claim that unlisted halls or apps are absent. Khaemenes High federates to these resources but does not duplicate Mentor ownership. Health resources are educational and high-stakes medical-information boundaries remain applicable."
+  "mentorNotes": "VERIFIED PARTIAL INVENTORY. Medicament remains the source authority for the High School Health Academy. Khaemenes High federates to these resources without duplicating Mentor ownership. The PE core resource intentionally points to the preserved academy source file; no migration workflow is required."
 }
