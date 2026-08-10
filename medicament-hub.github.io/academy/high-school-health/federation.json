@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "academyId": "verve.medicament.high-school-health",
+  "name": "Medicament High School Health Academy",
+  "sourceRepository": "vervenveda/medicament-hub.github.io",
+  "academicPartner": "vervenveda/Khaemenes_High.github.io",
+  "canonicalBase": "https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/",
+  "model": "federated-source-owned",
+  "sourceAuthority": "verve.medicament",
+  "programs": [
+    {
+      "id": "physical-education",
+      "title": "Physical Education",
+      "url": "./courses/physical-education/",
+      "status": "active",
+      "canonicalOwner": "vervenveda/medicament-hub.github.io"
+    },
+    {
+      "id": "health-wellness",
+      "title": "Health & Wellness",
+      "url": "./courses/health-wellness/",
+      "status": "active",
+      "canonicalOwner": "vervenveda/medicament-hub.github.io"
+    },
+    {
+      "id": "connected-explorations",
+      "title": "Connected Explorations",
+      "url": "./courses/electives/",
+      "status": "federated-navigation",
+      "canonicalOwner": "distributed"
+    }
+  ],
+  "notes": [
+    "Khaemenes High may route students into this academy without duplicating course files.",
+    "The Medicament root mentor-manifest.json is the Mentor inventory authority.",
+    "Specialist repositories referenced by the electives navigator retain their own source authority."
+  ]
+}

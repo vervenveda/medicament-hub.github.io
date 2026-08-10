@@ -1,0 +1,23 @@
+KHAEMENES HIGH — REPAIR 08b
+
+Repository:
+vervenveda/Khaemenes_High.github.io
+
+Upload:
+- mentor-manifest.json -> replace current root manifest
+- data/repair08b-health-federation.js
+
+Then open the existing root `index.html`.
+
+Immediately before `</body>` add:
+
+<script src="./data/repair08b-health-federation.js"></script>
+
+Do not replace the High School landing page.
+
+If the earlier line below was added, remove it to avoid obsolete routing:
+
+<script src="./data/repair08-pathways.js"></script>
+
+The new script routes students directly into:
+https://vervenveda.com/medicament-hub.github.io/academy/high-school-health/

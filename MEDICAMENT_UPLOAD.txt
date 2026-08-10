@@ -1,0 +1,21 @@
+MEDICAMENT — REPAIR 08b
+
+Repository:
+vervenveda/medicament-hub.github.io
+
+Upload:
+- mentor-manifest.json -> replace root manifest
+- academy/high-school-health/index.html
+- academy/high-school-health/federation.json
+- .github/workflows/normalize-high-school-health.yml
+
+Then run:
+GitHub → Actions → Normalize High School Health Academy → Run workflow
+
+The workflow:
+- copies the preserved PE originals into the normalized `courses/physical-education/` paths;
+- verifies PE, Health, reader and grade routes;
+- removes ONLY `academy/high-school-health/mentor-manifest.json`, because it incorrectly claims Khaemenes High source ownership;
+- preserves the original PE files in `academy/high-school-health/` as source/archive copies.
+
+Do NOT delete the original PE files during this repair.
