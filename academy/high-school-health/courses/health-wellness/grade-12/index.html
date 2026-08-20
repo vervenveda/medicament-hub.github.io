@@ -12,4 +12,6 @@ function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function drawWeeks(){document.getElementById("weeks").innerHTML=COURSE.weeks.map(w=>`<button data-w="${w.week}" class="${state.week===w.week?'active':''}">Week ${w.week} · ${esc(w.title)} ${state.done[w.week]?'✓':''}</button>`).join("");document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{state.week=+b.dataset.w;save();render()})}
 function render(){drawWeeks();const w=COURSE.weeks.find(x=>x.week===state.week);document.getElementById("content").innerHTML=`<article class="card week"><p class="brand">Week ${w.week}</p><h2>${esc(w.title)}</h2><p><strong>Essential question:</strong> ${esc(w.essentialQuestion)}</p><p>${w.standards.map(s=>`<span class="tag">${s}</span>`).join("")}</p>${w.days.map(d=>`<section class="day"><strong>${esc(d.day)} — ${esc(d.label)}</strong><p>${esc(d.task)}</p></section>`).join("")}<label>Portfolio note / evidence</label><textarea id="note">${esc(state.notes[w.week]||"")}</textarea><div class="row"><button id="save">Save</button><button id="done">${state.done[w.week]?'Mark Open':'Mark Complete'}</button></div></article>`;document.getElementById("save").onclick=()=>{state.notes[w.week]=document.getElementById("note").value;save()};document.getElementById("done").onclick=()=>{state.done[w.week]=!state.done[w.week];state.notes[w.week]=document.getElementById("note").value;save();render()}}
 render();
-</script></body></html>
+</script>
+<script src="/assets/vnv-beta-link.js" defer></script>
+</body></html>
