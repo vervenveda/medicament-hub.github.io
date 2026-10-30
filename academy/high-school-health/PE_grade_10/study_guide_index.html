@@ -471,7 +471,8 @@ document.getElementById('printChapter').onclick = ()=>{
   const id = readerState.current; const data = CURRICULUM[id];
   if(!data) return alert('No chapter loaded.');
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>${data.title}</title>
-  <style>body{font-family:Arial,Helvetica,sans-serif;color:#111;padding:28px} h1{font-size:22px}</style></head><body><h1>${data.title}</h1><h3>${data.subtitle}</h3>${data.body}</body></html>`;
+  <style>body{font-family:Arial,Helvetica,sans-serif;color:#111;padding:28px} h1{font-size:22px}</style></head><body><h1>${data.title}</h1><h3>${data.subtitle}</h3>${data.body}<script src="https://vervenveda.com/assets/vnv-ecosystem-toolbar.js"></script>
+</body></html>`;
   const w = window.open('', '_blank', 'width=900,height=700'); w.document.write(html); w.document.close();
   setTimeout(()=> w.print(), 350);
 };
@@ -545,6 +546,6 @@ init();
 
 /* ========== Utility ========= */
 </script>
-<script src="/assets/vnv-beta-link.js" defer></script>
+
 </body>
 </html>

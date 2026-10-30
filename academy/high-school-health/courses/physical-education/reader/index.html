@@ -543,7 +543,8 @@ document.getElementById('printChapter').onclick = ()=>{
   <h1>${TEXT[currentChapter].title}</h1>
   <h3>${TEXT[currentChapter].subtitle || ''}</h3>
   ${TEXT[currentChapter].body}
-  </body></html>`;
+  <script src="https://vervenveda.com/assets/vnv-ecosystem-toolbar.js"></script>
+</body></html>`;
   printWindow.document.write(html);
   printWindow.document.close();
   printWindow.focus();
@@ -702,6 +703,6 @@ window.addEventListener('message', (ev)=>{
   }
 });
 </script>
-<script src="/assets/vnv-beta-link.js" defer></script>
+
 </body>
 </html>
