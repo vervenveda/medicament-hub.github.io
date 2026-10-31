@@ -543,7 +543,9 @@ document.getElementById('printChapter').onclick = ()=>{
   <h1>${TEXT[currentChapter].title}</h1>
   <h3>${TEXT[currentChapter].subtitle || ''}</h3>
   ${TEXT[currentChapter].body}
-  <script src="https://vervenveda.com/assets/vnv-ecosystem-toolbar.js"></script>
+  <script src="https://vervenveda.com/assets/vnv-ticker-autopopulate.js" data-vnv-ticker-autopopulate></script>
+<script>VNV_TICKER.autoPopulate({label:"PE Grade 9 Quick Links",max:14,cleanLegacy:false});</script>
+<script src="https://vervenveda.com/assets/vnv-ecosystem-toolbar.js"></script>
 </body></html>`;
   printWindow.document.write(html);
   printWindow.document.close();
